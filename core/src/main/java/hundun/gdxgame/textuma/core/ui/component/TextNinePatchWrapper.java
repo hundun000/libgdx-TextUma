@@ -1,4 +1,4 @@
-package hundun.gdxgame.textuma.share.starter.ui.component;
+package hundun.gdxgame.textuma.core.ui.component;
 
 
 
@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
-import hundun.gdxgame.textuma.core.ui.screen.PlayScreen;
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
 /**

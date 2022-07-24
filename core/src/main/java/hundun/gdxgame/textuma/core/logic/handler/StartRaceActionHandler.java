@@ -2,49 +2,42 @@ package hundun.gdxgame.textuma.core.logic.handler;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.core.logic.manager.UmaManager.UmaState;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
 /**
  * @author hundun
  * Created on 2022/08/03
  */
-public class StartRaceActionHandler extends UmaActionHandler {
+public class StartRaceActionHandler extends BaseRaceActionHandler {
 
     public StartRaceActionHandler(TextUmaGame game) {
         super(game, UserActionId.START_RACE);
         
-        this.detailDescroptionConstPart = "Details of StartRace";
-        this.descriptionPackage = UmaActionHandler.MAX_LEVEL_AUTO_DESCRIPTION_PACKAGE;
+        this.descriptionPackage = UmaActionHandler.RACE_DESCRIPTION_PACKAGE;
         
     }
 
 
     @Override
-    public void onClick() {
-        // TODO Auto-generated method stub
+    public void onEffectableClick() {
 
     }
 
     @Override
     public boolean canClickEffect() {
-        // TODO Auto-generated method stub
-        return false;
+        return game.getModelContext().getUmaManager().getState() == UmaState.RACE_DAY_RACE_READY;
     }
+
+
+    
 
 
     @Override
-    public String getSecondDescroption() {
-        
-        return "SecondDescroption of StartRaceActionHandler";
-    }
-
-
-    @Override
-    public void updateModifiedValues() {
+    public String getPopupInfo() {
         // TODO Auto-generated method stub
-        
+        return null;
     }
-
 
 }

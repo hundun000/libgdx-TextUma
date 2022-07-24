@@ -1,5 +1,6 @@
 package hundun.gdxgame.textuma.share.framework.model;
 
+import hundun.gdxgame.textuma.core.logic.manager.UmaManager;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
 import hundun.gdxgame.textuma.share.framework.model.manager.AchievementManager;
 import hundun.gdxgame.textuma.share.framework.model.manager.BuffManager;
@@ -19,7 +20,8 @@ public class ManagerContext {
     BaseConstructionFactory constructionFactory;
     ConstructionManager constructionManager;
     GameEntityManager gameEntityManager;
-
+    UmaManager umaManager;
+    
     // ------ replace-lombok ------
     public StorageManager getStorageManager() {
         return storageManager;
@@ -57,6 +59,11 @@ public class ManagerContext {
     public void setGameEntityManager(GameEntityManager gameEntityManager) {
         this.gameEntityManager = gameEntityManager;
     }
-
+    public UmaManager getUmaManager() {
+        return umaManager;
+    }
+    public void setUmaManager(UmaManager umaManager) {
+        this.umaManager = umaManager;
+    }
 
 }

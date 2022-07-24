@@ -4,7 +4,8 @@ import com.badlogic.gdx.Gdx;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.core.logic.manager.UmaManager.UmaState;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainLevelComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
@@ -73,20 +74,32 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
     }
 
     @Override
-    public void onClick() {
-        // TODO Auto-generated method stub
-
+    public void onEffectableClick() {
+        
+        game.getModelContext().getUmaManager().trainAndNextDay(
+                outputComponent.getOutputCostPack().getModifiedValues(),
+                outputComponent.getOutputGainPack().getModifiedValues()
+                );
+        Gdx.app.log(this.name, "train done");
     }
 
     @Override
     public boolean canClickEffect() {
-        // TODO Auto-generated method stub
-        return false;
+        return game.getModelContext().getUmaManager().getState() == UmaState.TRAIN_DAY;
     }
     
     @Override
-    public String getSecondDescroption() {
+    public String getWorkingLevelDescroption() {
         return levelComponent.getWorkingLevelDescroption();
+    }
+
+
+    @Override
+    public String getPopupInfo() {
+        return String.format("Train cost: %s, gain: %s",
+                outputComponent.getOutputCostPack().getModifiedValuesDescription(),
+                outputComponent.getOutputGainPack().getModifiedValuesDescription()
+                );
     }
 
 

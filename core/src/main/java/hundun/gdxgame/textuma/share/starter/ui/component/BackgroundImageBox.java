@@ -13,11 +13,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
-public class BackgroundImageBox<T_GAME extends BaseIdleGame> extends Container<Image> implements IGameAreaChangeListener{
+public class BackgroundImageBox<T_GAME extends BaseHundunGame> extends Container<Image> implements IGameAreaChangeListener{
     BasePlayScreen<T_GAME> parent;
     Map<String, Drawable> imageMap = new HashMap<>();
 

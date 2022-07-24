@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
@@ -18,7 +18,7 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
  * @author hundun
  * Created on 2021/11/12
  */
-public class AchievementMaskBoard<T_GAME extends BaseIdleGame> extends Table {
+public class AchievementMaskBoard<T_GAME extends BaseHundunGame> extends Table {
 
     BasePlayScreen<T_GAME> parent;
     Label label;

@@ -8,7 +8,10 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
+	    TextUmaGame game = new TextUmaGame(new PreferencesSaveTool("TextUmaGame-desktop-save"));
+	    Runtime.getRuntime().addShutdownHook(new DesktopExitHookTask(game));
+	    
 	    Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		new Lwjgl3Application(new TextUmaGame(new PreferencesSaveTool("TextUmaGame-desktop-save")), config);
+		new Lwjgl3Application(game, config);
 	}
 }

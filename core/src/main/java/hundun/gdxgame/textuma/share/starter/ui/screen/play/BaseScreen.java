@@ -5,14 +5,14 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 
 /**
  * @author hundun
  * Created on 2021/11/02
  * @param <T_GAME>
  */
-public abstract class BaseScreen<T_GAME extends BaseIdleGame> implements Screen {
+public abstract class BaseScreen<T_GAME extends BaseHundunGame> implements Screen {
     public final T_GAME game;
     protected final Stage uiStage;
 

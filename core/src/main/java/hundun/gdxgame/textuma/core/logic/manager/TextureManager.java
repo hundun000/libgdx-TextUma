@@ -31,13 +31,8 @@ public class TextureManager extends AbstractTextureManager {
             Texture texture = textureOrDefault(Gdx.files.internal("resourceIcons.png"));
             TextureRegion[][] regions = TextureRegion.split(texture, 16, 16);
             defaultIcon = regions[0][0];
-            resourceIconMap.put(ResourceType.COIN, regions[0][1]);
+            resourceIconMap.put(ResourceType.COIN, "cion: ");
             //resourceIconMap.put(ResourceType.COOKIE, regions[0][2]);
-        }
-        {
-            Texture texture = textureOrDefault(Gdx.files.internal("resourceEntities.png"));
-            TextureRegion[][] regions = TextureRegion.split(texture, 32, 32);
-            //resourceEntityMap.put(ResourceType.COOKIE, regions[0][1]);
         }
         {
             Texture texture = textureOrDefault(Gdx.files.internal("constructionEntities.png"));
@@ -47,16 +42,6 @@ public class TextureManager extends AbstractTextureManager {
             constructionEntityMap.put(UserActionId.COOKIE_SELLER, regions[0][2]);
             //constructionEntityMap.put(ConstructionId.WIN_PROVIDER, regions[0][3]);
         }  
-        {
-            Texture texture = textureOrDefault(Gdx.files.internal("gameAreaIcons.png"));
-            TextureRegion[][] regions = TextureRegion.split(texture, 100, 50);
-            gameAreaLeftPartRegionMap.put(GameArea.AREA_RACE, regions[0][0]);
-            gameAreaLeftPartRegionMap.put(GameArea.AREA_TRAIN, regions[1][0]);
-            gameAreaLeftPartRegionMap.put(GameArea.AREA_RECORD, regions[2][0]);
-            gameAreaRightPartRegionMap.put(GameArea.AREA_RACE, regions[0][1]);
-            gameAreaRightPartRegionMap.put(GameArea.AREA_TRAIN, regions[1][1]);
-            gameAreaRightPartRegionMap.put(GameArea.AREA_RECORD, regions[2][1]);
-        }
         {
             Texture texture = textureOrDefault(Gdx.files.internal("areas.png"));
             TextureRegion[][] regions = TextureRegion.split(texture, 640, 480);

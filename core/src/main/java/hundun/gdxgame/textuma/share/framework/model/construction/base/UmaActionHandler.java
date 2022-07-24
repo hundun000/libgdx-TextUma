@@ -8,7 +8,8 @@ import java.util.Random;
 
 import com.badlogic.gdx.Gdx;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.core.TextUmaGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
 import hundun.gdxgame.textuma.share.framework.listener.IBuffChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
@@ -17,29 +18,20 @@ import hundun.gdxgame.textuma.share.framework.model.construction.base.Descriptio
 public abstract class UmaActionHandler {
 
 
-    public static final DescriptionPackage WORKING_LEVEL_AUTO_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            "AutoCost", "AutoGain", "UpgradeCost", "Upgrade",
-            ILevelDescroptionProvider.WORKING_LEVEL_IMP);
-
-    public static final DescriptionPackage MAX_LEVEL_AUTO_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            "AutoCost", "AutoGain", "UpgradeCost", "Upgrade",
-            ILevelDescroptionProvider.ONLY_LEVEL_IMP);
-
-    public static final DescriptionPackage SELLING_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            "Sell", "Gain", "UpgradeCost", "Upgrade",
-            ILevelDescroptionProvider.WORKING_LEVEL_IMP);
-
-
-    public static final DescriptionPackage GATHER_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            "Pay", "Gain", null, "Gather",
+    public static final DescriptionPackage RACE_DESCRIPTION_PACKAGE = new DescriptionPackage(
+            null, null, null, "DO",
             ILevelDescroptionProvider.EMPTY_IMP);
 
-    public static final DescriptionPackage WIN_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            null, null, "Pay", "Unlock",
-            ILevelDescroptionProvider.LOCK_IMP);
+    public static final DescriptionPackage TRAIN_DESCRIPTION_PACKAGE = new DescriptionPackage(
+            null, null, null, "DO",
+            ILevelDescroptionProvider.ONLY_LEVEL_IMP);
+
+    public static final DescriptionPackage RECORD_DESCRIPTION_PACKAGE = new DescriptionPackage(
+            null, null, null, "DO",
+            ILevelDescroptionProvider.WORKING_LEVEL_IMP);
 
     protected Random random = new Random();
-    protected final BaseIdleGame game;
+    protected final TextUmaGame game;
 
     /**
      * NotNull
@@ -65,12 +57,6 @@ public abstract class UmaActionHandler {
         return id;
     }
 
-    public String detailDescroptionConstPart;
-    // ------ replace-lombok ------
-    public String getDetailDescroptionConstPart() {
-        return detailDescroptionConstPart;
-    }
-
     public DescriptionPackage descriptionPackage;
     // ------ replace-lombok ------
     public DescriptionPackage getDescriptionPackage() {
@@ -78,7 +64,7 @@ public abstract class UmaActionHandler {
     }
 
 
-    public UmaActionHandler(BaseIdleGame game, String id) {
+    public UmaActionHandler(TextUmaGame game, String id) {
         this.game = game;
         this.saveData = new UmaUserActionHandlerSaveData();
         this.id = id;
@@ -89,7 +75,7 @@ public abstract class UmaActionHandler {
         }
     }
 
-    public abstract void onClick();
+    public abstract void onEffectableClick();
 
     public abstract boolean canClickEffect();
 
@@ -107,8 +93,8 @@ public abstract class UmaActionHandler {
     public String getSaveDataKey() {
         return id;
     }
-    public abstract String getSecondDescroption();
+    public abstract String getWorkingLevelDescroption();
     public abstract void updateModifiedValues();
-
+    public abstract String getPopupInfo();
 
 }

@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.entity.BaseGameEntityFactory;
 import hundun.gdxgame.textuma.share.framework.model.entity.GameEntity;
 import hundun.gdxgame.textuma.share.framework.model.entity.RandomMoveEntity;

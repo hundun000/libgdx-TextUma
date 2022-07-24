@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.listener.IOneFrameResourceChangeListener;
 import hundun.gdxgame.textuma.share.framework.model.entity.BaseGameEntityFactory;
 import hundun.gdxgame.textuma.share.framework.model.entity.GameEntity;
@@ -17,7 +17,7 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
  * Created on 2021/11/16
  * @param <T_GAME>
  */
-public class GameImageDrawer<T_GAME extends BaseIdleGame> implements IOneFrameResourceChangeListener {
+public class GameImageDrawer<T_GAME extends BaseHundunGame> implements IOneFrameResourceChangeListener {
 
     BasePlayScreen<T_GAME> parent;
     BaseGameEntityFactory gameEntityFactory;

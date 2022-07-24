@@ -5,4 +5,6 @@ package hundun.gdxgame.textuma.share.framework.util.text;
  */
 public interface IGameDictionary {
     String constructionIdToShowName(String constructionId);
+
+    String gameAreaIdToShowName(String gameAreaId);
 }

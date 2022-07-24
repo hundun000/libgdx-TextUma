@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
@@ -14,7 +14,7 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
  * @author hundun
  * Created on 2021/11/20
  */
-public class GameAreaControlBoard<T_GAME extends BaseIdleGame> extends Table implements IGameAreaChangeListener {
+public class GameAreaControlBoard<T_GAME extends BaseHundunGame> extends Table implements IGameAreaChangeListener {
 
     BasePlayScreen<T_GAME> parent;
     Map<String, GameAreaControlNode<T_GAME>> nodes = new LinkedHashMap<>();

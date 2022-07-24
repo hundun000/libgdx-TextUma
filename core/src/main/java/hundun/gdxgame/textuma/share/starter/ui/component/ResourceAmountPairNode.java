@@ -5,13 +5,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.HorizontalGroup;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 
 /**
  * @author hundun
  * Created on 2021/11/25
  */
-public class ResourceAmountPairNode<T_GAME extends BaseIdleGame> extends HorizontalGroup {
+public class ResourceAmountPairNode<T_GAME extends BaseHundunGame> extends HorizontalGroup {
 
     T_GAME game;
 
@@ -21,15 +21,15 @@ public class ResourceAmountPairNode<T_GAME extends BaseIdleGame> extends Horizon
         return resourceType;
     }
 
-    Image image;
+    Label image;
     Label label;
 
     public ResourceAmountPairNode(T_GAME game, String resourceType) {
         super();
         this.game = game;
         this.resourceType = resourceType;
-        TextureRegion textureRegion = game.getTextureManager().getResourceIcon(resourceType);
-        this.image = new Image(textureRegion);
+        String textureRegion = game.getTextureManager().getResourceIcon(resourceType);
+        this.image = new Label(textureRegion, game.getButtonSkin());
         this.addActor(image);
         this.label = new Label("", game.getButtonSkin());
         this.addActor(label);

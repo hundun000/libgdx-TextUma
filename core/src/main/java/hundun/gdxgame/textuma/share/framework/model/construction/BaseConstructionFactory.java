@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
 /**
@@ -15,7 +15,7 @@ import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionH
 public class BaseConstructionFactory {
 
     Map<String, UmaActionHandler> constructions = new HashMap<>();
-    protected BaseIdleGame game;
+    protected BaseHundunGame game;
 
     public void lazyInit(List<UmaActionHandler> constructions) {
         constructions.forEach(item -> register(item));

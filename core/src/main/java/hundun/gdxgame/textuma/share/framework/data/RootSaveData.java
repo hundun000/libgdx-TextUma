@@ -3,17 +3,20 @@ package hundun.gdxgame.textuma.share.framework.data;
 import java.util.Map;
 import java.util.Set;
 
+import hundun.gdxgame.textuma.core.data.UmaSaveData;
+
 /**
  * @author hundun
  * Created on 2021/11/09
  */
-public class SaveData {
+public class RootSaveData {
     Map<String, Long> ownResoueces;
     Set<String> unlockedResourceTypes;
     Map<String, Integer> buffAmounts;
     Map<String, UmaUserActionHandlerSaveData> constructionSaveDataMap;
     Set<String> unlockedAchievementNames;
-
+    UmaSaveData umaSaveData;
+    
     // ------ replace-lombok ------
     public Map<String, Long> getOwnResoueces() {
         return ownResoueces;
@@ -45,6 +48,11 @@ public class SaveData {
     public void setUnlockedAchievementNames(Set<String> unlockedAchievementNames) {
         this.unlockedAchievementNames = unlockedAchievementNames;
     }
-
+    public UmaSaveData getUmaSaveData() {
+        return umaSaveData;
+    }
+    public void setUmaSaveData(UmaSaveData umaSaveData) {
+        this.umaSaveData = umaSaveData;
+    }
 
 }

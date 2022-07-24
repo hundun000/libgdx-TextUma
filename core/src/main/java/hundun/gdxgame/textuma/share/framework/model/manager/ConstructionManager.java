@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
@@ -17,10 +17,10 @@ import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionH
  */
 public class ConstructionManager {
 
-    BaseIdleGame game;
+    BaseHundunGame game;
 
 
-    public ConstructionManager(BaseIdleGame game) {
+    public ConstructionManager(BaseHundunGame game) {
         this.game = game;
     }
 

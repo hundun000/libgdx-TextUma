@@ -1,4 +1,4 @@
-package hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl;
+package hundun.gdxgame.textuma.core.ui.component.construction.impl;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -10,11 +10,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+import hundun.gdxgame.textuma.core.logic.handler.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
+import hundun.gdxgame.textuma.core.ui.component.TextNinePatchWrapper;
+import hundun.gdxgame.textuma.core.ui.component.TextSkinButton;
+import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.gdxgame.textuma.share.starter.ui.component.TextNinePatchWrapper;
-import hundun.gdxgame.textuma.share.starter.ui.component.TextSkinButton;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst;
 
@@ -24,7 +26,7 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst
  * Created on 2021/11/05
  */
 public class BaseUserActionControlNode extends Table implements ILogicFrameListener {
-    BasePlayScreen<?> parent;
+    UmaPlayScreen parent;
     UmaActionHandler model;
     Label constructionNameLabel;
 
@@ -37,7 +39,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
 
 
 
-    public BaseUserActionControlNode(BasePlayScreen<?> parent, int index, PlayScreenLayoutConst playScreenLayoutConst) {
+    public BaseUserActionControlNode(UmaPlayScreen parent, int index, PlayScreenLayoutConst playScreenLayoutConst) {
         super();
         this.parent = parent;
 
@@ -52,8 +54,12 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         clickEffectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.log("clickEffectButton", "node of " + model.name + "clicked");
-                model.onClick();
+                if (model.canClickEffect()) {
+                    Gdx.app.log("clickEffectButton", "node of " + model.name + "clicked and can effect");
+                    model.onEffectableClick();
+                } else {
+                    Gdx.app.log("clickEffectButton", "node of " + model.name + "clicked and cannot effect");
+                }
             }
         });
 
@@ -75,6 +81,8 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
                 if (model != null && pointer == -1) {
                     if (model instanceof BaseTrainActionHandler) {
                         parent.infoBoardAsTrainInfo((BaseTrainActionHandler)model);
+                    } else if (model instanceof BaseRaceActionHandler) {
+                        parent.infoBoardAsRaceInfo((BaseRaceActionHandler)model);
                     }
                 }
                 super.enter(event, x, y, pointer, fromActor);
@@ -132,8 +140,8 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         }
         // ------ update text ------
         constructionNameLabel.setText(model.getName());
-        clickEffectButton.setText(model.getButtonDescroption());
-        workingLevelLabel.setText(model.getSecondDescroption());
+        clickEffectButton.contentSetText(model.getButtonDescroption());
+        workingLevelLabel.setText(model.getWorkingLevelDescroption());
 
         // ------ update clickable-state ------
         boolean canClickEffect = model.canClickEffect();

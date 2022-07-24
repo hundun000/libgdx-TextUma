@@ -17,18 +17,22 @@ import hundun.gdxgame.textuma.core.logic.GameDictionary;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.ScreenId;
 import hundun.gdxgame.textuma.core.logic.manager.TextureManager;
-import hundun.gdxgame.textuma.core.ui.screen.PlayScreen;
+import hundun.gdxgame.textuma.core.logic.manager.UmaManager;
+import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.core.ui.screen.ScreenContext;
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
+import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
+import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
+import hundun.gdxgame.textuma.share.framework.model.manager.GameEntityManager;
 import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
 import hundun.gdxgame.textuma.share.framework.util.text.TextFormatTool;
 import hundun.gdxgame.textuma.share.starter.ui.screen.menu.MenuScreen;
 
 
-public class TextUmaGame extends BaseIdleGame {
+public class TextUmaGame extends BaseHundunGame {
 
 
     private ScreenContext screenContext;
@@ -36,7 +40,6 @@ public class TextUmaGame extends BaseIdleGame {
     public ScreenContext getScreenContext() {
         return screenContext;
     }
-    
     
     public TextUmaGame(ISaveTool saveTool) {
         super(640, 480, saveTool);
@@ -48,7 +51,7 @@ public class TextUmaGame extends BaseIdleGame {
     
     @Override
     protected ChildGameConfig getChildGameConfig() {
-        return new IdleDemoGameConfig(this);
+        return new TextUmaGameConfig(this);
     }
     
     @Override
@@ -63,6 +66,8 @@ public class TextUmaGame extends BaseIdleGame {
     protected void initContexts() {
         super.initContexts();
         
+        getModelContext().setUmaManager(new UmaManager(this));
+        
         this.gameDictionary = new GameDictionary();
         this.textureManager = new TextureManager();
         
@@ -73,7 +78,7 @@ public class TextUmaGame extends BaseIdleGame {
                 new InputListener(){
                     @Override
                     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                        TextUmaGame.this.loadAndHookSave(true);
+                        TextUmaGame.this.loadOrNewGame(true);
                         TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getGameBeeScreen());
                         TextUmaGame.this.getAudioPlayManager().intoScreen(ScreenId.PLAY);
                     }
@@ -85,7 +90,7 @@ public class TextUmaGame extends BaseIdleGame {
                 new InputListener(){
                     @Override
                     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                        TextUmaGame.this.loadAndHookSave(false);
+                        TextUmaGame.this.loadOrNewGame(false);
                         TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getGameBeeScreen());
                         TextUmaGame.this.getAudioPlayManager().intoScreen(ScreenId.PLAY);
                     }
@@ -95,14 +100,12 @@ public class TextUmaGame extends BaseIdleGame {
                     }
                 }
         ));
-        screenContext.setGameBeeScreen(new PlayScreen(this));
+        screenContext.setGameBeeScreen(new UmaPlayScreen(this));
     }
 
     @Override
     public List<String> getGameAreaValues() {
         return GameArea.values;
     }
-    
-    
-    
+
 }

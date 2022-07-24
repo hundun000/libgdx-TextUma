@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.listener.IBuffChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.IGameStartListener;
 import hundun.gdxgame.textuma.share.framework.listener.IOneFrameResourceChangeListener;
@@ -19,7 +19,7 @@ import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
 import java.util.Set;
 
 public class AchievementManager implements IBuffChangeListener, IOneFrameResourceChangeListener, IGameStartListener {
-    BaseIdleGame game;
+    BaseHundunGame game;
 
     Map<String, AchievementPrototype> prototypes = new HashMap<>();
 
@@ -33,7 +33,7 @@ public class AchievementManager implements IBuffChangeListener, IOneFrameResourc
     }
 
 
-    public AchievementManager(BaseIdleGame game) {
+    public AchievementManager(BaseHundunGame game) {
         this.game = game;
         game.getEventManager().registerListener(this);
     }

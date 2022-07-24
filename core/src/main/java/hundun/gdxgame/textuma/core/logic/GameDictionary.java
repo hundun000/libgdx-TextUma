@@ -19,4 +19,18 @@ public class GameDictionary implements IGameDictionary {
                 return "[dic:" + constructionId + "]";
         }
     }
+
+    @Override
+    public String gameAreaIdToShowName(String gameAreaId) {
+        switch (gameAreaId) {
+            case GameArea.AREA_RACE:
+                return "area race";
+            case GameArea.AREA_TRAIN:
+                return "area train";
+            case GameArea.AREA_RECORD:
+                return "area record";
+            default:
+                return "[dic:" + gameAreaId + "]";
+        }
+    }
 }

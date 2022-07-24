@@ -1,7 +1,10 @@
 package hundun.gdxgame.textuma.share.framework;
 
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -9,8 +12,12 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+import hundun.gdxgame.textuma.core.data.UmaSaveData.UmaSaveDataFactory;
+import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
+import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
 import hundun.gdxgame.textuma.share.framework.data.StarterData;
+import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
 import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
@@ -27,7 +34,7 @@ import hundun.gdxgame.textuma.share.framework.util.text.IGameDictionary;
 import hundun.gdxgame.textuma.share.framework.util.text.TextFormatTool;
 
 
-public abstract class BaseIdleGame extends Game {
+public abstract class BaseHundunGame extends Game {
     public boolean debugMode = false;
     public boolean drawGameImageAndPlayAudio = true;
     public int desktopScale = 1;
@@ -93,7 +100,7 @@ public abstract class BaseIdleGame extends Game {
 
     private StarterData starterData;
 
-    public BaseIdleGame(int LOGIC_WIDTH, int LOGIC_HEIGHT, ISaveTool saveTool) {
+    public BaseHundunGame(int LOGIC_WIDTH, int LOGIC_HEIGHT, ISaveTool saveTool) {
         this.LOGIC_WIDTH = LOGIC_WIDTH;
         this.LOGIC_HEIGHT = LOGIC_HEIGHT;
         this.saveTool = saveTool;
@@ -112,34 +119,72 @@ public abstract class BaseIdleGame extends Game {
 
 	public abstract List<String> getGameAreaValues();
 
-	public void loadAndHookSave(boolean load) {
+	public void loadOrNewGame(boolean load) {
 
+	    RootSaveData saveData;
 	    if (load) {
-	        saveTool.load(modelContext);
-	        // post
-	        //this.getEventManager().notifyBuffChange(true);
-	        //this.getEventManager().notifyResourceAmountChange(true);
+	        saveData = saveTool.loadRootSaveData();
 	    } else {
-	        this.newSaveStarter(modelContext);
+	        saveData = SaveDataHelper.getNewGameSaveData(starterData, modelContext);
 	    }
 
-
-
-
+	    SaveDataHelper.applySaveData(saveData, modelContext);
+	    Gdx.app.log(this.getClass().getSimpleName(), load ? "load game done" : "new game done");
 	}
 
-    /**
-     * 作为新存档，也需要修改ModelContext
-     */
-    public void newSaveStarter(ManagerContext modelContext) {
-        Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
-        for (UmaActionHandler construction : constructions) {
-            construction.getSaveData().setLevel(starterData.getConstructionStarterLevelMap().getOrDefault(construction.getId(), 0));
-            if (starterData.getConstructionStarterWorkingLevelMap().getOrDefault(construction.getId(), false)) {
-                construction.getSaveData().setWorkingLevel(starterData.getConstructionStarterLevelMap().getOrDefault(construction.getId(), 0));
+	public static class SaveDataHelper {
+        public static void applySaveData(RootSaveData saveData, ManagerContext modelContext) {
+            modelContext.getStorageManager().setOwnResoueces(saveData.getOwnResoueces());
+            modelContext.getStorageManager().setUnlockedResourceTypes(saveData.getUnlockedResourceTypes());
+            modelContext.getBuffManager().setBuffAmounts(saveData.getBuffAmounts());
+            modelContext.getAchievementManager().setUnlockedAchievementNames(saveData.getUnlockedAchievementNames());
+            Map<String, UmaUserActionHandlerSaveData> map = saveData.getConstructionSaveDataMap();
+            Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
+            for (UmaActionHandler construction : constructions) {
+                loadConstructionSaveData(map, construction);
             }
+            modelContext.getUmaManager().applySaveData(saveData.getUmaSaveData()); 
         }
-    }
+        
+        private static void loadConstructionSaveData(Map<String, UmaUserActionHandlerSaveData> map, UmaActionHandler construction) {
+            construction.setSaveData(map.getOrDefault(construction.getSaveDataKey(), new UmaUserActionHandlerSaveData()));
+            construction.updateModifiedValues();
+        }
+        
+	    public static RootSaveData currentSituationToSaveData(ManagerContext modelContext) {
+	        RootSaveData saveData = new RootSaveData();
+	        saveData.setOwnResoueces(modelContext.getStorageManager().getOwnResoueces());
+	        saveData.setUnlockedResourceTypes(modelContext.getStorageManager().getUnlockedResourceTypes());
+	        saveData.setBuffAmounts(modelContext.getBuffManager().getBuffAmounts());
+	        saveData.setUnlockedAchievementNames(modelContext.getAchievementManager().getUnlockedAchievementNames());
+	        Map<String, UmaUserActionHandlerSaveData> map = new HashMap<>();
+	        Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
+	        for (UmaActionHandler construction : constructions) {
+	            appendConstructionSaveData(map, construction);
+	        }
+	        saveData.setConstructionSaveDataMap(map);
+	        return saveData;
+	    }
+	    
+	    private static void appendConstructionSaveData(Map<String, UmaUserActionHandlerSaveData> map, UmaActionHandler construction) {
+	        map.put(construction.getSaveDataKey(), construction.getSaveData());
+	    }
+	    
+	    public static RootSaveData getNewGameSaveData(StarterData starterData, ManagerContext modelContext) {
+	        RootSaveData saveData = new RootSaveData();
+	        saveData.setBuffAmounts(new HashMap<>());
+	        saveData.setConstructionSaveDataMap(new HashMap<>());
+	        saveData.setOwnResoueces(new HashMap<>());
+	        saveData.setUnlockedAchievementNames(new HashSet<>());
+	        saveData.setUnlockedResourceTypes(new HashSet<>());
+	        saveData.setUmaSaveData(UmaSaveDataFactory.forNewGame());
+	        saveData.getOwnResoueces().put(ResourceType.DAY, 1L);
+	        saveData.getUnlockedResourceTypes().add(ResourceType.DAY);
+	        return saveData;
+	    }
+	}
+	
+	
 
 
 	protected void initContexts() {

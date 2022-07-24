@@ -9,14 +9,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
 /**
  * @author hundun
  * Created on 2021/11/05
  */
-public class StorageInfoBoard<T_GAME extends BaseIdleGame> extends Table {
+public class StorageInfoBoard<T_GAME extends BaseHundunGame> extends Table {
 
     private static int NODE_HEIGHT = 25;
     private static int NODE_WIDTH = 120;

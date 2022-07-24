@@ -14,7 +14,7 @@ import hundun.gdxgame.textuma.core.logic.UserActionId;
 import hundun.gdxgame.textuma.core.logic.GameArea;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.ScreenId;
-import hundun.gdxgame.textuma.core.ui.screen.PlayScreen;
+import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.StarterData;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
@@ -24,9 +24,9 @@ import hundun.gdxgame.textuma.share.framework.util.JavaHighVersionFeature;
  * @author hundun
  * Created on 2022/01/11
  */
-public class IdleDemoGameConfig extends ChildGameConfig {
+public class TextUmaGameConfig extends ChildGameConfig {
     
-    public IdleDemoGameConfig(TextUmaGame game) {
+    public TextUmaGameConfig(TextUmaGame game) {
 
         BuiltinConstructionsLoader builtinConstructionsLoader = new BuiltinConstructionsLoader(game);
         this.setConstructions(builtinConstructionsLoader.load());

@@ -1,4 +1,4 @@
-package hundun.gdxgame.textuma.share.starter.ui.component.board.construction;
+package hundun.gdxgame.textuma.core.ui.component.construction;
 /**
  * @author hundun
  * Created on 2022/02/09
@@ -11,14 +11,15 @@ import java.util.stream.Collectors;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import hundun.gdxgame.textuma.core.ui.component.construction.impl.BaseUserActionControlNode;
+import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.BaseUserActionControlNode;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
 public abstract class AbstractConstructionControlBoard extends Table implements ILogicFrameListener, IGameAreaChangeListener {
-    protected BasePlayScreen<?> parent;
+    protected UmaPlayScreen parent;
     /**
      * 显示在当前screen的Construction集合。以ConstructionView形式存在。
      */
@@ -26,7 +27,7 @@ public abstract class AbstractConstructionControlBoard extends Table implements 
 
 
 
-    public AbstractConstructionControlBoard(BasePlayScreen<?> parent) {
+    public AbstractConstructionControlBoard(UmaPlayScreen parent) {
         super();
         this.parent = parent;
     }

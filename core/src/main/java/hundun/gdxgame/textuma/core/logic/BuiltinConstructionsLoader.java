@@ -8,7 +8,7 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.RunningTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.StartRaceActionHandler;
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainLevelComponent;

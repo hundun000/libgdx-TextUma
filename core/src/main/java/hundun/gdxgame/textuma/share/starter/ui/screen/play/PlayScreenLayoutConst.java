@@ -1,6 +1,7 @@
 package hundun.gdxgame.textuma.share.starter.ui.screen.play;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.ui.Value;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 
 /**
@@ -16,6 +17,7 @@ public class PlayScreenLayoutConst {
     public int STORAGE_BOARD_ROOT_BOX_HEIGHT = 80;
     public int AREA_BOARD_BORDER_WIDTH = 100;
     public int AREA_BOARD_CELL_HEIGHT = 50;
+    public int SECONDARY_INFO_BOARD_HEIGHT = 30;
 //    public static final int STORAGE_BOARD_CONTAIN_WIDTH = 100;
 //    public static final int STORAGE_BOARD_CONTAIN_HEIGHT = 50;
 
@@ -24,6 +26,7 @@ public class PlayScreenLayoutConst {
     public int EXPECTED_DRAW_MAX_X;
     public int EXPECTED_DRAW_MIN_Y;
     public int EXPECTED_DRAW_MAX_Y;
+    
 
     public PlayScreenLayoutConst(int gameLogicWidth, int gameLogicHeight) {
         this.EXPECTED_DRAW_MIN_X = 0;

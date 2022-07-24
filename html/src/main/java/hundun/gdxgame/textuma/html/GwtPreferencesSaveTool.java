@@ -14,9 +14,10 @@ import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 
 import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
-import hundun.gdxgame.textuma.share.framework.data.SaveData;
+import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
 import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
+import hundun.gdxgame.textuma.share.framework.util.save.AbstractSaveDataSaveTool;
 import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
 
 
@@ -26,48 +27,22 @@ import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
  * @author hundun
  * Created on 2021/11/10
  */
-public class GwtPreferencesSaveTool implements ISaveTool {
-    String preferencesName;
-    Preferences preferences;
-    private static final String ROOT_KEY = "root";
+public class GwtPreferencesSaveTool extends AbstractSaveDataSaveTool {
+
+    
     private SaveDataMapper objectMapper;
     
-    public static interface SaveDataMapper extends ObjectMapper<SaveData> {}
+    public static interface SaveDataMapper extends ObjectMapper<RootSaveData> {}
     
     
     public GwtPreferencesSaveTool(String preferencesName) {
-        this.preferencesName = preferencesName;
+        super(preferencesName);
         this.objectMapper = GWT.create(SaveDataMapper.class);
     }
-    
 
-    
-    private static void appendConstructionSaveData(Map<String, UmaUserActionHandlerSaveData> map, UmaActionHandler construction) {
-        map.put(construction.getSaveDataKey(), construction.getSaveData());
-    }
-    
-    private static void loadConstructionSaveData(Map<String, UmaUserActionHandlerSaveData> map, UmaActionHandler construction) {
-        construction.setSaveData(map.getOrDefault(construction.getSaveDataKey(), new UmaUserActionHandlerSaveData()));
-        construction.updateModifiedValues();
-    }
-    
-    
+
     @Override
-    public void save(ManagerContext modelContext) {
-        
-        SaveData saveData = new SaveData();
-        saveData.setOwnResoueces(modelContext.getStorageManager().getOwnResoueces());
-        saveData.setUnlockedResourceTypes(modelContext.getStorageManager().getUnlockedResourceTypes());
-        saveData.setBuffAmounts(modelContext.getBuffManager().getBuffAmounts());
-        saveData.setUnlockedAchievementNames(modelContext.getAchievementManager().getUnlockedAchievementNames());
-        Map<String, UmaUserActionHandlerSaveData> map = new HashMap<>();
-        Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
-        for (UmaActionHandler construction : constructions) {
-            appendConstructionSaveData(map, construction);
-        }
-        saveData.setConstructionSaveDataMap(map);
-        
-        
+    public void saveRootSaveData(RootSaveData saveData) {
         try {
             preferences.putString(ROOT_KEY, objectMapper.write(saveData));
             preferences.flush();
@@ -75,50 +50,21 @@ public class GwtPreferencesSaveTool implements ISaveTool {
         } catch (Exception e) {
             Gdx.app.error(getClass().getSimpleName(), "save() error", e);
         }
-        
     }
-    
-    @Override
-    public boolean hasSave() {
-        return preferences != null && preferences.contains(ROOT_KEY);
-    }
-    
 
-    
+
+
     @Override
-    public void load(ManagerContext modelContext) {
-        
-        if (!hasSave()) {
-            Gdx.app.log(getClass().getSimpleName(), "no savefile, load() do nothing");
-            return;
-        }
-        
-        SaveData saveData;
+    public RootSaveData loadRootSaveData() {
+
         try {
             String date = preferences.getString(ROOT_KEY);
-            saveData = objectMapper.read(date);
+            RootSaveData saveData = objectMapper.read(date);
+            return saveData;
         } catch (Exception e) {
             Gdx.app.error(getClass().getSimpleName(), "load() error", e);
-            return;
+            return null;
         }
         
-        modelContext.getStorageManager().setOwnResoueces(saveData.getOwnResoueces());
-        modelContext.getStorageManager().setUnlockedResourceTypes(saveData.getUnlockedResourceTypes());
-        modelContext.getBuffManager().setBuffAmounts(saveData.getBuffAmounts());
-        modelContext.getAchievementManager().setUnlockedAchievementNames(saveData.getUnlockedAchievementNames());
-        Map<String, UmaUserActionHandlerSaveData> map = saveData.getConstructionSaveDataMap();
-        Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
-        for (UmaActionHandler construction : constructions) {
-            loadConstructionSaveData(map, construction);
-        }
-
-        Gdx.app.log(getClass().getSimpleName(), "load() done");
-    }
-
-
-
-    @Override
-    public void lazyInitOnGameCreate() {
-        this.preferences = Gdx.app.getPreferences(preferencesName);
     }
 }

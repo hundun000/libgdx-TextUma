@@ -18,8 +18,7 @@ public class RunningTrainActionHandler extends BaseTrainActionHandler {
     public RunningTrainActionHandler(TextUmaGame game) {
         super(game, UserActionId.RUNNING_TRAIN);
         
-        this.detailDescroptionConstPart = "Details of RunningTrain";
-        this.descriptionPackage = UmaActionHandler.MAX_LEVEL_AUTO_DESCRIPTION_PACKAGE;
+        this.descriptionPackage = UmaActionHandler.TRAIN_DESCRIPTION_PACKAGE;
     
         TrainOutputComponent outputComponent = new TrainOutputComponent(this);
         outputComponent.setOutputCostPack(BuiltinConstructionsLoader.toPack(JavaHighVersionFeature.mapOf(

@@ -3,7 +3,7 @@ package hundun.gdxgame.textuma.share.framework.model.manager;
 import java.util.HashMap;
 import java.util.Map;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 
 /**
  * @author hundun
@@ -11,7 +11,7 @@ import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
  */
 public class BuffManager {
 
-    private BaseIdleGame game;
+    private BaseHundunGame game;
 
     private Map<String, Integer> buffAmounts = new HashMap<>();
     // ------ replace-lombok ------
@@ -22,7 +22,7 @@ public class BuffManager {
         this.buffAmounts = buffAmounts;
     }
 
-    public BuffManager(BaseIdleGame game) {
+    public BuffManager(BaseHundunGame game) {
         this.game = game;
     }
 

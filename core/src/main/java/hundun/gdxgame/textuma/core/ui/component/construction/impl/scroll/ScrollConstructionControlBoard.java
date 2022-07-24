@@ -1,4 +1,4 @@
-package hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.scroll;
+package hundun.gdxgame.textuma.core.ui.component.construction.impl.scroll;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
@@ -6,9 +6,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import hundun.gdxgame.textuma.share.starter.ui.component.TextNinePatchWrapper;
-import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.AbstractConstructionControlBoard;
-import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.BaseUserActionControlNode;
+import hundun.gdxgame.textuma.core.ui.component.TextNinePatchWrapper;
+import hundun.gdxgame.textuma.core.ui.component.construction.AbstractConstructionControlBoard;
+import hundun.gdxgame.textuma.core.ui.component.construction.impl.BaseUserActionControlNode;
+import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
 
@@ -31,7 +32,7 @@ public class ScrollConstructionControlBoard extends AbstractConstructionControlB
 
 
 
-    public ScrollConstructionControlBoard(BasePlayScreen<?> parent) {
+    public ScrollConstructionControlBoard(UmaPlayScreen parent) {
         super(parent);
 
         

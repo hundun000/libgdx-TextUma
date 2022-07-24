@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
-import hundun.gdxgame.textuma.share.starter.ui.component.TextNinePatchWrapper;
-import hundun.gdxgame.textuma.share.starter.ui.component.TextSkinButton;
+import hundun.gdxgame.textuma.core.ui.component.TextNinePatchWrapper;
+import hundun.gdxgame.textuma.core.ui.component.TextSkinButton;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseScreen;
 
 
 
-public class MenuScreen<T_GAME extends BaseIdleGame> extends BaseScreen<T_GAME> {
+public class MenuScreen<T_GAME extends BaseHundunGame> extends BaseScreen<T_GAME> {
 
 
 //    private MenuComponent<String> menu;

@@ -7,10 +7,17 @@ import java.util.Map;
  * Created on 2022/04/08
  */
 public class StarterData {
+    Map<String, Long> resourceStarterMap;
     Map<String, Integer> constructionStarterLevelMap;
     Map<String, Boolean> constructionStarterWorkingLevelMap;
 
     // ------ replace-lombok ------
+    public Map<String, Long> getResourceStarterMap() {
+        return resourceStarterMap;
+    }
+    public void setResourceStarterMap(Map<String, Long> resourceStarterMap) {
+        this.resourceStarterMap = resourceStarterMap;
+    }
     public Map<String, Integer> getConstructionStarterLevelMap() {
         return constructionStarterLevelMap;
     }

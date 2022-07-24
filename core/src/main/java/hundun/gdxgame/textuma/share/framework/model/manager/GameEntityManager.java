@@ -9,7 +9,7 @@ import java.util.List;
 
 import com.badlogic.gdx.Gdx;
 
-import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.entity.BaseGameEntityFactory;
 import hundun.gdxgame.textuma.share.framework.model.entity.GameEntity;
@@ -21,7 +21,7 @@ import hundun.gdxgame.textuma.share.framework.model.entity.GameEntity;
  */
 public class GameEntityManager {
 
-    private BaseIdleGame game;
+    private BaseHundunGame game;
 
     private Map<String, List<GameEntity>> gameEntitiesOfConstructionIds = new HashMap<>();
     // ------ replace-lombok ------
@@ -53,7 +53,7 @@ public class GameEntityManager {
         return areaShowEntityByChangeAmountResourceIds;
     }
 
-    public GameEntityManager(BaseIdleGame game) {
+    public GameEntityManager(BaseHundunGame game) {
         super();
         this.game = game;
     }
