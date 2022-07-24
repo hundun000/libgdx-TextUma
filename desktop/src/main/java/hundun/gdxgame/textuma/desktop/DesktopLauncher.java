@@ -9,6 +9,6 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 	    Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		new Lwjgl3Application(new TextUmaGame(), config);
+		new Lwjgl3Application(new TextUmaGame(new PreferencesSaveTool("TextUmaGame-desktop-save")), config);
 	}
 }

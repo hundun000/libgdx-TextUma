@@ -29,26 +29,31 @@ allprojects {
         gdxVersion = '1.9.12'
 	}
 	
-	
+	repositories {
+        //mavenLocal()
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+        //google()
+        //maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        //maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        
+    }
 }
 
 subprojects {
 	apply plugin: 'java-library'
 	version = '0.0.1-SNAPSHOT'
 	
-	repositories {
-        mavenLocal()
-        mavenCentral()
-        google()
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
-        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
-        maven { url "https://plugins.gradle.org/m2/" }
-	}
+	
 }
 
 project(":core") {
 	dependencies {
-		api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	   api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	   implementation 'com.github.hundun000:umamusume-simulation:7fbe941b0f'
+	   // from share
+	   api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.5'
+	   api group: 'com.github.nmorel.gwtjackson', name: 'gwt-jackson', version: '0.15.4'
 	}
 }
 
@@ -70,7 +75,6 @@ project(":html") {
 		implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
-
 	}
 }
 
