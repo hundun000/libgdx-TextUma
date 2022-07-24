@@ -1,0 +1,77 @@
+buildscript {
+    ext {
+        gwtPluginVersion = '1.1.16'
+    }
+	repositories {
+		mavenLocal()
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+        google()
+	}
+	dependencies {
+		classpath "org.wisepersist:gwt-gradle-plugin:$gwtPluginVersion"
+		classpath 'org.gretty:gretty:3.0.5'
+	}
+}
+
+allprojects {
+	apply plugin: 'eclipse'
+	apply plugin: 'idea'
+	apply plugin: 'java'
+	java {
+    	sourceCompatibility = JavaVersion.VERSION_1_8
+    	targetCompatibility = JavaVersion.VERSION_1_8
+    }
+	ext {
+        appName = 'demoUI'
+        gwtFrameworkVersion = '2.8.2'
+        
+        gdxVersion = '1.9.12'
+	}
+	
+	
+}
+
+subprojects {
+	apply plugin: 'java-library'
+	version = '0.0.1-SNAPSHOT'
+	
+	repositories {
+        mavenLocal()
+        mavenCentral()
+        google()
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+        maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url "https://plugins.gradle.org/m2/" }
+	}
+}
+
+project(":core") {
+	dependencies {
+		api "com.badlogicgames.gdx:gdx:$gdxVersion"
+	}
+}
+
+project(":desktop") {
+	dependencies {
+		implementation project(':core')
+		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+		implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+	}
+}
+
+project(":html") {
+	apply plugin: "gwt"
+	apply plugin: "war"
+	apply plugin: "org.gretty"
+
+	dependencies {
+		implementation project(':core')
+		implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
+		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
+		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+
+	}
+}
+
+eclipse.project.name = ext.appName
