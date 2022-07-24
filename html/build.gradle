@@ -6,8 +6,8 @@ gwt {
 	minHeapSize = '1G'
 
 	src = files(file('src/main/java')) // Needs to be in front of "modules" below.
-	modules 'com.mygdx.game.html.GdxDefinition'
-	devModules 'com.mygdx.game.html.GdxDefinitionSuperdev'
+	modules 'hundun.gdxgame.textuma.html.GdxDefinition'
+	devModules 'hundun.gdxgame.textuma.html.GdxDefinitionSuperdev'
 	project.webAppDirName = 'webapp'
 
 	compiler.strict = true

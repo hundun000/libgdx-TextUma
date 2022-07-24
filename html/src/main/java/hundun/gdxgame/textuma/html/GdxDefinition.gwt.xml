@@ -3,12 +3,8 @@
 <module rename-to="html">
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
 
-    <inherits name='HtmlApp' />
-    <entry-point class='com.mygdx.game.html.client.HtmlLauncher' />
-	
-	<add-linker name="xsiframe"/>
-	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
-	<set-configuration-property name="devModeRedirectEnabled" value="true"/>
+	<inherits name='HtmlApp' />
+	<entry-point class='hundun.gdxgame.textuma.html.client.HtmlLauncher' />
 	
 	<set-configuration-property name="gdx.assetpath" value="../assets" />
 </module>

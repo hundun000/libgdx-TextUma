@@ -1,4 +1,4 @@
-package com.mygdx.game.core;
+package hundun.gdxgame.textuma.core;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class MyGdxGame extends Game {
+public class TextUmaGame extends Game {
 	SpriteBatch batch;
 	Texture img;
 	
