@@ -5,7 +5,7 @@ package hundun.gdxgame.textuma.share.framework.data;
  * @author hundun
  * Created on 2021/11/10
  */
-public class ConstructionSaveData {
+public class UmaUserActionHandlerSaveData {
     private int level;
     private int workingLevel;
 

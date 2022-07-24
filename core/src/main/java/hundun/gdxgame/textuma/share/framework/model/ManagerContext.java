@@ -11,7 +11,7 @@ import hundun.gdxgame.textuma.share.framework.model.manager.StorageManager;
  * @author hundun
  * Created on 2021/11/02
  */
-public class ModelContext {
+public class ManagerContext {
     StorageManager storageManager;
     BuffManager buffManager;
     AchievementManager achievementManager;

@@ -1,6 +1,6 @@
 package hundun.gdxgame.textuma.share.framework.util.save;
 
-import hundun.gdxgame.textuma.share.framework.model.ModelContext;
+import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 
 /**
  * @author hundun
@@ -9,6 +9,6 @@ import hundun.gdxgame.textuma.share.framework.model.ModelContext;
 public interface ISaveTool {
     void lazyInitOnGameCreate();
     boolean hasSave();
-    void save(ModelContext modelContext);
-    void load(ModelContext modelContext);
+    void save(ManagerContext modelContext);
+    void load(ManagerContext modelContext);
 }

@@ -20,23 +20,7 @@ public abstract class AbstractTextureManager {
         return menuTexture;
     }
 
-    protected Texture defaultBoardNinePatchTexture;
-    // ------ replace-lombok ------
-    public Texture getDefaultBoardNinePatchTexture() {
-        return defaultBoardNinePatchTexture;
-    }
 
-    protected TextureRegion defaultBoardNinePatchMiddle;
-    // ------ replace-lombok ------
-    public TextureRegion getDefaultBoardNinePatchMiddle() {
-        return defaultBoardNinePatchMiddle;
-    }
-
-    protected int defaultBoardNinePatchEdgeSize;
-    // ------ replace-lombok ------
-    public int getDefaultBoardNinePatchEdgeSize() {
-        return defaultBoardNinePatchEdgeSize;
-    }
 
     protected Map<String, TextureRegion> resourceIconMap = new HashMap<>();
     protected Map<String, TextureRegion> resourceEntityMap = new HashMap<>();

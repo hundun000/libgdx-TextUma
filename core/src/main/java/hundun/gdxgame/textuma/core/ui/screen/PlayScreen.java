@@ -17,15 +17,16 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.GameArea;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.ScreenId;
+import hundun.gdxgame.textuma.core.ui.component.RaceInfoBoard;
 import hundun.gdxgame.textuma.core.ui.entity.GameEntityFactory;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.starter.ui.component.AchievementMaskBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.BackgroundImageBox;
 import hundun.gdxgame.textuma.share.starter.ui.component.GameAreaControlBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.GameImageDrawer;
-import hundun.gdxgame.textuma.share.starter.ui.component.PopupInfoBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.StorageInfoBoard;
+import hundun.gdxgame.textuma.share.starter.ui.component.TextNinePatchWrapper;
 import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.fixed.FixedConstructionControlBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.scroll.ScrollConstructionControlBoard;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
@@ -38,21 +39,9 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst
 public class PlayScreen extends BasePlayScreen<TextUmaGame> {
 
     public PlayScreen(TextUmaGame game) {
-        super(game, ScreenId.PLAY, GameArea.AREA_COOKIE, customLayoutConst(game));
+        super(game, ScreenId.PLAY, GameArea.AREA_RACE, new PlayScreenLayoutConst(game.LOGIC_WIDTH, game.LOGIC_HEIGHT));
     }
-    
-    private static PlayScreenLayoutConst customLayoutConst(TextUmaGame game) {
-        PlayScreenLayoutConst layoutConst = new PlayScreenLayoutConst(game.LOGIC_WIDTH, game.LOGIC_HEIGHT);
-        NinePatch ninePatch = new NinePatch(game.getTextureManager().getDefaultBoardNinePatchTexture(), 
-                game.getTextureManager().getDefaultBoardNinePatchEdgeSize(), 
-                game.getTextureManager().getDefaultBoardNinePatchEdgeSize(), 
-                game.getTextureManager().getDefaultBoardNinePatchEdgeSize(), 
-                game.getTextureManager().getDefaultBoardNinePatchEdgeSize()
-                );
-        layoutConst.simpleBoardBackground = new NinePatchDrawable(ninePatch);
-        layoutConst.simpleBoardBackgroundMiddle = new TextureRegionDrawable(game.getTextureManager().getDefaultBoardNinePatchMiddle());
-        return layoutConst;
-    }
+
     
     @Override
     protected void lazyInitLogicContext() {
@@ -70,13 +59,33 @@ public class PlayScreen extends BasePlayScreen<TextUmaGame> {
         
         storageInfoTable = new StorageInfoBoard<TextUmaGame>(this);
         storageInfoTable.lazyInit(ResourceType.VALUES_FOR_SHOW_ORDER);
-        uiRootTable.add(storageInfoTable).height(layoutConst.STORAGE_BOARD_BORDER_HEIGHT).fill().row();
+        uiRootTable.add(TextNinePatchWrapper.build(this, storageInfoTable))
+                .height(layoutConst.STORAGE_BOARD_ROOT_BOX_HEIGHT)
+                .fill()
+                .colspan(2)
+                .row()
+                ;
+        
+        raceInfoBoard = new RaceInfoBoard<>(this);
+        uiRootTable.add(raceInfoBoard)
+                .expand()
+                .fill()
+                ;
         
         gameAreaControlBoard = new GameAreaControlBoard<TextUmaGame>(this, GameArea.values);
-        uiRootTable.add(gameAreaControlBoard).expand().right().row();
+        uiRootTable.add(TextNinePatchWrapper.build(this, gameAreaControlBoard))
+                .right()
+                .row()
+                ;
+        
         // impl switchable
-        constructionControlBoard = new FixedConstructionControlBoard(this);
-        uiRootTable.add(constructionControlBoard).height(layoutConst.CONSTRUCION_BOARD_BORDER_HEIGHT).fill();
+        constructionControlBoard = new ScrollConstructionControlBoard(this);
+        uiRootTable.add(TextNinePatchWrapper.build(this, constructionControlBoard))
+                .height(layoutConst.CONSTRUCION_BOARD_ROOT_BOX_HEIGHT)
+                .bottom()
+                .fill()
+                .colspan(2)
+                ;
         
         if (game.debugMode) {
             uiRootTable.debugCell();
@@ -89,12 +98,6 @@ public class PlayScreen extends BasePlayScreen<TextUmaGame> {
         this.backgroundImageBox = new BackgroundImageBox<TextUmaGame>(this);
         backUiStage.addActor(backgroundImageBox);
         
-        
-        popUpInfoBoard = new PopupInfoBoard<TextUmaGame>(this);
-        popupRootTable.add(popUpInfoBoard).bottom().expand().row();
-        // empty image for hold the space
-        popupRootTable.add(new Image()).height(game.LOGIC_HEIGHT / 4);
-        
         achievementMaskBoard = new AchievementMaskBoard<TextUmaGame>(this);
         popupUiStage.addActor(achievementMaskBoard);
     }
@@ -105,6 +108,8 @@ public class PlayScreen extends BasePlayScreen<TextUmaGame> {
 
 
     }
+    
+    
 
 
 }

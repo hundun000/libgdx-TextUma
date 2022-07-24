@@ -11,16 +11,10 @@ public class GameDictionary implements IGameDictionary {
     
     public String constructionIdToShowName(String constructionId) {
         switch (constructionId) {
-        
-            case ConstructionId.COOKIE_CLICK_PROVIDER:
-                return "main cookie";
-            case ConstructionId.COOKIE_AUTO_PROVIDER:
-                return "cliker";
-            case ConstructionId.COOKIE_SELLER:
-                return "seller";
-            case ConstructionId.WIN_PROVIDER:
-                return "win";
-
+            case UserActionId.START_RACE:
+                return "start race";
+            case UserActionId.RUNNING_TRAIN:
+                return "running train";
             default:
                 return "[dic:" + constructionId + "]";
         }

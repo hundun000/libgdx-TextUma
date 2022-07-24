@@ -15,10 +15,10 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 
 
 import hundun.gdxgame.textuma.share.framework.data.SaveData;
-import hundun.gdxgame.textuma.share.framework.model.ModelContext;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
-import hundun.gdxgame.textuma.share.framework.data.ConstructionSaveData;
+import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
 
 
 /**
@@ -41,27 +41,27 @@ public class PreferencesSaveTool implements ISaveTool {
     
 
     
-    private static void appendConstructionSaveData(Map<String, ConstructionSaveData> map, BaseConstruction construction) {
+    private static void appendConstructionSaveData(Map<String, UmaUserActionHandlerSaveData> map, UmaActionHandler construction) {
         map.put(construction.getSaveDataKey(), construction.getSaveData());
     }
     
-    private static void loadConstructionSaveData(Map<String, ConstructionSaveData> map, BaseConstruction construction) {
-        construction.setSaveData(map.getOrDefault(construction.getSaveDataKey(), new ConstructionSaveData()));
+    private static void loadConstructionSaveData(Map<String, UmaUserActionHandlerSaveData> map, UmaActionHandler construction) {
+        construction.setSaveData(map.getOrDefault(construction.getSaveDataKey(), new UmaUserActionHandlerSaveData()));
         construction.updateModifiedValues();
     }
     
     
     @Override
-    public void save(ModelContext modelContext) {
+    public void save(ManagerContext modelContext) {
         
         SaveData saveData = new SaveData();
         saveData.setOwnResoueces(modelContext.getStorageManager().getOwnResoueces());
         saveData.setUnlockedResourceTypes(modelContext.getStorageManager().getUnlockedResourceTypes());
         saveData.setBuffAmounts(modelContext.getBuffManager().getBuffAmounts());
         saveData.setUnlockedAchievementNames(modelContext.getAchievementManager().getUnlockedAchievementNames());
-        Map<String, ConstructionSaveData> map = new HashMap<>();
-        Collection<BaseConstruction> constructions = modelContext.getConstructionFactory().getConstructions();
-        for (BaseConstruction construction : constructions) {
+        Map<String, UmaUserActionHandlerSaveData> map = new HashMap<>();
+        Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
+        for (UmaActionHandler construction : constructions) {
             appendConstructionSaveData(map, construction);
         }
         saveData.setConstructionSaveDataMap(map);
@@ -85,7 +85,7 @@ public class PreferencesSaveTool implements ISaveTool {
 
     
     @Override
-    public void load(ModelContext modelContext) {
+    public void load(ManagerContext modelContext) {
         
         if (!hasSave()) {
             Gdx.app.log(getClass().getSimpleName(), "no savefile, load() do nothing");
@@ -105,9 +105,9 @@ public class PreferencesSaveTool implements ISaveTool {
         modelContext.getStorageManager().setUnlockedResourceTypes(saveData.getUnlockedResourceTypes());
         modelContext.getBuffManager().setBuffAmounts(saveData.getBuffAmounts());
         modelContext.getAchievementManager().setUnlockedAchievementNames(saveData.getUnlockedAchievementNames());
-        Map<String, ConstructionSaveData> map = saveData.getConstructionSaveDataMap();
-        Collection<BaseConstruction> constructions = modelContext.getConstructionFactory().getConstructions();
-        for (BaseConstruction construction : constructions) {
+        Map<String, UmaUserActionHandlerSaveData> map = saveData.getConstructionSaveDataMap();
+        Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
+        for (UmaActionHandler construction : constructions) {
             loadConstructionSaveData(map, construction);
         }
 

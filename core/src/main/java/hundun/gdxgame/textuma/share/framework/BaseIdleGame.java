@@ -5,14 +5,15 @@ import java.util.List;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.StarterData;
-import hundun.gdxgame.textuma.share.framework.model.ModelContext;
+import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.manager.AbstractTextureManager;
 import hundun.gdxgame.textuma.share.framework.model.manager.AchievementManager;
 import hundun.gdxgame.textuma.share.framework.model.manager.AudioPlayManager;
@@ -41,9 +42,9 @@ public abstract class BaseIdleGame extends Game {
         return batch;
     }
 
-    private ModelContext modelContext;
+    private ManagerContext modelContext;
     // ------ replace-lombok ------
-    public ModelContext getModelContext() {
+    public ManagerContext getModelContext() {
         return modelContext;
     }
 
@@ -130,14 +131,13 @@ public abstract class BaseIdleGame extends Game {
     /**
      * 作为新存档，也需要修改ModelContext
      */
-    public void newSaveStarter(ModelContext modelContext) {
-        Collection<BaseConstruction> constructions = modelContext.getConstructionFactory().getConstructions();
-        for (BaseConstruction construction : constructions) {
+    public void newSaveStarter(ManagerContext modelContext) {
+        Collection<UmaActionHandler> constructions = modelContext.getConstructionFactory().getConstructions();
+        for (UmaActionHandler construction : constructions) {
             construction.getSaveData().setLevel(starterData.getConstructionStarterLevelMap().getOrDefault(construction.getId(), 0));
             if (starterData.getConstructionStarterWorkingLevelMap().getOrDefault(construction.getId(), false)) {
                 construction.getSaveData().setWorkingLevel(starterData.getConstructionStarterLevelMap().getOrDefault(construction.getId(), 0));
             }
-            construction.updateModifiedValues();
         }
     }
 
@@ -150,7 +150,7 @@ public abstract class BaseIdleGame extends Game {
             this.buttonSkin = new Skin(Gdx.files.internal(DEFAULT_SKIN_FILA_PATH));
         }
 
-        this.modelContext = new ModelContext();
+        this.modelContext = new ManagerContext();
         this.eventManager = new EventManager();
 
         modelContext.setStorageManager(new StorageManager(this));
@@ -188,6 +188,6 @@ public abstract class BaseIdleGame extends Game {
 
 
     }
-
+    
     protected abstract ChildGameConfig getChildGameConfig();
 }

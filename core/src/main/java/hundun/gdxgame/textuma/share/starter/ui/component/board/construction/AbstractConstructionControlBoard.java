@@ -13,8 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
-import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.ConstructionControlNode;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
+import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.BaseUserActionControlNode;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
 public abstract class AbstractConstructionControlBoard extends Table implements ILogicFrameListener, IGameAreaChangeListener {
@@ -22,7 +22,7 @@ public abstract class AbstractConstructionControlBoard extends Table implements 
     /**
      * 显示在当前screen的Construction集合。以ConstructionView形式存在。
      */
-    protected List<ConstructionControlNode> constructionControlNodes = new ArrayList<>();
+    protected List<BaseUserActionControlNode> constructionControlNodes = new ArrayList<>();
 
 
 
@@ -34,7 +34,7 @@ public abstract class AbstractConstructionControlBoard extends Table implements 
     @Override
     public void onLogicFrame() {
         constructionControlNodes.forEach(item -> item.onLogicFrame());
-        parent.game.getModelContext().getConstructionManager().logicFrameForAllConstructionModels();
+        //parent.game.getModelContext().getConstructionManager().logicFrameForAllConstructionModels();
 
     }
 
@@ -42,7 +42,7 @@ public abstract class AbstractConstructionControlBoard extends Table implements 
     public void onGameAreaChange(String last, String current) {
 
 
-        List<BaseConstruction> newConstructions = parent.game.getModelContext().getConstructionManager().getAreaShownConstructionsOrEmpty(current);
+        List<UmaActionHandler> newConstructions = parent.game.getModelContext().getConstructionManager().getAreaShownConstructionsOrEmpty(current);
 
         int childrenSize = initChild(newConstructions.size());
 

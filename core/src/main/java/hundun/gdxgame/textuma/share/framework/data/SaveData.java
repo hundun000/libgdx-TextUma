@@ -11,7 +11,7 @@ public class SaveData {
     Map<String, Long> ownResoueces;
     Set<String> unlockedResourceTypes;
     Map<String, Integer> buffAmounts;
-    Map<String, ConstructionSaveData> constructionSaveDataMap;
+    Map<String, UmaUserActionHandlerSaveData> constructionSaveDataMap;
     Set<String> unlockedAchievementNames;
 
     // ------ replace-lombok ------
@@ -33,10 +33,10 @@ public class SaveData {
     public void setBuffAmounts(Map<String, Integer> buffAmounts) {
         this.buffAmounts = buffAmounts;
     }
-    public Map<String, ConstructionSaveData> getConstructionSaveDataMap() {
+    public Map<String, UmaUserActionHandlerSaveData> getConstructionSaveDataMap() {
         return constructionSaveDataMap;
     }
-    public void setConstructionSaveDataMap(Map<String, ConstructionSaveData> constructionSaveDataMap) {
+    public void setConstructionSaveDataMap(Map<String, UmaUserActionHandlerSaveData> constructionSaveDataMap) {
         this.constructionSaveDataMap = constructionSaveDataMap;
     }
     public Set<String> getUnlockedAchievementNames() {

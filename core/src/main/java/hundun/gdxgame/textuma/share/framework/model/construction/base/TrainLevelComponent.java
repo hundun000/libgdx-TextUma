@@ -2,37 +2,31 @@ package hundun.gdxgame.textuma.share.framework.model.construction.base;
 
 import com.badlogic.gdx.Gdx;
 
+import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
+
 
 /**
  * @author hundun
  * Created on 2021/12/17
  */
-public class LevelComponent {
+public class TrainLevelComponent {
 
-    private final BaseConstruction construction;
+    private final BaseTrainActionHandler construction;
+    
+    protected static final int DEFAULT_MAX_LEVEL = 99;
+    protected int maxLevel = DEFAULT_MAX_LEVEL;
 
-
-    private final boolean workingLevelChangable;
-    // ------ replace-lombok ------
-    public boolean isWorkingLevelChangable() {
-        return workingLevelChangable;
-    }
-
-    public LevelComponent(BaseConstruction construction, boolean workingLevelChangable) {
+    public TrainLevelComponent(BaseTrainActionHandler construction) {
         super();
         this.construction = construction;
-        this.workingLevelChangable = workingLevelChangable;
     }
 
     public String getWorkingLevelDescroption() {
-        boolean reachMaxLevel = construction.getSaveData().getLevel() == construction.getMaxLevel();
+        boolean reachMaxLevel = construction.getSaveData().getLevel() == this.maxLevel;
         return construction.descriptionPackage.getLevelDescroptionProvider().provide(construction.saveData.getLevel(), construction.saveData.getWorkingLevel(), reachMaxLevel);
     }
 
     public boolean canChangeWorkingLevel(int delta) {
-        if (!workingLevelChangable) {
-            return false;
-        }
         int next = construction.saveData.getWorkingLevel() + delta;
         if (next > construction.saveData.getLevel() || next < 0) {
             return false;

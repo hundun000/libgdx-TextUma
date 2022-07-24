@@ -3,7 +3,7 @@ package hundun.gdxgame.textuma.share.starter.ui.component.board.construction.imp
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.AbstractConstructionControlBoard;
-import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.ConstructionControlNode;
+import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.impl.BaseUserActionControlNode;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
 
@@ -25,11 +25,11 @@ public class FixedConstructionControlBoard extends AbstractConstructionControlBo
         super(parent);
 
         childTable = new Table();
-        childTable.setBackground(parent.getLayoutConst().simpleBoardBackgroundMiddle);
+        //childTable.setBackground(parent.getLayoutConst().blackBoard);
 
         this.add(childTable);
 
-        this.setBackground(parent.getLayoutConst().simpleBoardBackground);
+        //this.setBackground(parent.getLayoutConst().blackBoard);
 
         if (parent.game.debugMode) {
             this.debugCell();
@@ -44,7 +44,7 @@ public class FixedConstructionControlBoard extends AbstractConstructionControlBo
         childTable.clearChildren();
 
         for (int i = 0; i < childrenSize; i++) {
-            ConstructionControlNode constructionView = new ConstructionControlNode(parent, i, parent.getLayoutConst());
+            BaseUserActionControlNode constructionView = new BaseUserActionControlNode(parent, i, parent.getLayoutConst());
             constructionControlNodes.add(constructionView);
             childTable.add(constructionView).spaceRight(10).expand();
         }

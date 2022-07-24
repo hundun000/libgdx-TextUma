@@ -10,7 +10,7 @@ import java.util.List;
 import com.badlogic.gdx.Gdx;
 
 import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.entity.BaseGameEntityFactory;
 import hundun.gdxgame.textuma.share.framework.model.entity.GameEntity;
 
@@ -158,9 +158,9 @@ public class GameEntityManager {
     }
 
     private void checkConstructionEntityByOwnAmount(String id, BaseGameEntityFactory gameEntityFactory) {
-        BaseConstruction construction = game.getModelContext().getConstructionFactory().getConstruction(id);
+        UmaActionHandler construction = game.getModelContext().getConstructionFactory().getConstruction(id);
         int resourceNum = construction.getSaveData().getWorkingLevel();
-        int MAX_DRAW_NUM = construction.getMaxDrawNum();
+        int MAX_DRAW_NUM = this.constructionMaxDrawNum();
         int drawNum = gameEntityFactory.calculateConstructionDrawNum(id, resourceNum, MAX_DRAW_NUM);
         gameEntitiesOfConstructionIds.computeIfAbsent(id, k -> new LinkedList<>());
         List<GameEntity> gameEntities = gameEntitiesOfConstructionIds.get(id);
@@ -179,6 +179,11 @@ public class GameEntityManager {
                 break;
             }
         }
+    }
+
+    private int constructionMaxDrawNum() {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
     public void lazyInit(Map<String, List<String>> areaShowEntityByOwnAmountConstructionIds,

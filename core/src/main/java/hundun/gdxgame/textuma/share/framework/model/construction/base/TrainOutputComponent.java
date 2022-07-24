@@ -3,6 +3,7 @@ package hundun.gdxgame.textuma.share.framework.model.construction.base;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
 
@@ -11,8 +12,8 @@ import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
  * @author hundun
  * Created on 2021/12/17
  */
-public class OutputComponent {
-    private final BaseConstruction construction;
+public class TrainOutputComponent {
+    private final BaseTrainActionHandler construction;
 
     /**
      * 对于Click型，即为基础点击收益；对于Auto型，即为基础自动收益；
@@ -38,20 +39,10 @@ public class OutputComponent {
         this.outputCostPack = outputCostPack;
     }
 
-    private static final int DEFAULT_AUTO_OUPUT_SECOND_MAX = 1;
-    private int autoOutputSecondCountMax = DEFAULT_AUTO_OUPUT_SECOND_MAX;
-    // ------ replace-lombok ------
-    public void setAutoOutputSecondCountMax(int autoOutputSecondCountMax) {
-        this.autoOutputSecondCountMax = autoOutputSecondCountMax;
-    }
-    public int getAutoOutputSecondCountMax() {
-        return autoOutputSecondCountMax;
-    }
 
 
 
-
-    public OutputComponent(BaseConstruction construction) {
+    public TrainOutputComponent(BaseTrainActionHandler construction) {
         this.construction = construction;
     }
 

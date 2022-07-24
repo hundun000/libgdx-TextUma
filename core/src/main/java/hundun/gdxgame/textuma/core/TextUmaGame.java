@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 import hundun.gdxgame.textuma.core.logic.BuiltinConstructionsLoader;
-import hundun.gdxgame.textuma.core.logic.ConstructionId;
+import hundun.gdxgame.textuma.core.logic.UserActionId;
 import hundun.gdxgame.textuma.core.logic.GameArea;
 import hundun.gdxgame.textuma.core.logic.GameDictionary;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
@@ -41,7 +43,7 @@ public class TextUmaGame extends BaseIdleGame {
         //this.skinFilePath = "skins/orange/skin/uiskin.json";
         desktopScale = 1;
         drawGameImageAndPlayAudio = true;
-        debugMode = false;
+        debugMode = true;
     }
     
     @Override
@@ -52,7 +54,7 @@ public class TextUmaGame extends BaseIdleGame {
     @Override
     public void create () {
         super.create();
-       
+        
         setScreen(screenContext.getMenuScreen());
         getAudioPlayManager().intoScreen(screenContext.getMenuScreen().getScreenId());
     }
@@ -100,5 +102,7 @@ public class TextUmaGame extends BaseIdleGame {
     public List<String> getGameAreaValues() {
         return GameArea.values;
     }
+    
+    
     
 }

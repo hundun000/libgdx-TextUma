@@ -39,10 +39,7 @@ public class StorageInfoBoard<T_GAME extends BaseIdleGame> extends Table {
 
     public StorageInfoBoard(BasePlayScreen<T_GAME> parent) {
         this.parent = parent;
-        this.setBackground(BasePlayScreen.createBorderBoard(
-                25,
-                10,
-                0.7f, 1));
+        //this.setBackground(BasePlayScreen.blackBoard);
 
 
         if (parent.game.debugMode) {

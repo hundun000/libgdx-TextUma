@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
 /**
  * @author hundun
@@ -15,7 +15,7 @@ public abstract class ChildGameConfig {
     Map<String, List<String>> areaShowEntityByOwnAmountConstructionIds;
     Map<String, List<String>> areaShowEntityByOwnAmountResourceIds;
     Map<String, List<String>> areaShowEntityByChangeAmountResourceIds;
-    List<BaseConstruction> constructions;
+    List<UmaActionHandler> constructions;
     StarterData starterData;
     Map<String, String> screenIdToFilePathMap;
     List<AchievementPrototype> achievementPrototypes;
@@ -47,10 +47,10 @@ public abstract class ChildGameConfig {
             Map<String, List<String>> areaShowEntityByChangeAmountResourceIds) {
         this.areaShowEntityByChangeAmountResourceIds = areaShowEntityByChangeAmountResourceIds;
     }
-    public List<BaseConstruction> getConstructions() {
+    public List<UmaActionHandler> getConstructions() {
         return constructions;
     }
-    public void setConstructions(List<BaseConstruction> constructions) {
+    public void setConstructions(List<UmaActionHandler> constructions) {
         this.constructions = constructions;
     }
     public StarterData getStarterData() {

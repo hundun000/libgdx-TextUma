@@ -9,6 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
+import hundun.gdxgame.textuma.share.starter.ui.component.TextNinePatchWrapper;
+import hundun.gdxgame.textuma.share.starter.ui.component.TextSkinButton;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseScreen;
 
 
@@ -27,9 +29,9 @@ public class MenuScreen<T_GAME extends BaseIdleGame> extends BaseScreen<T_GAME> 
     final InputListener buttonContinueGameInputListener;
     final InputListener buttonNewGameInputListener;
 
-    Button buttonContinueGame;
-    Button buttonNewGame;
-    Button buttonIntoSettingScreen;
+    TextSkinButton buttonContinueGame;
+    TextSkinButton buttonNewGame;
+    TextSkinButton buttonIntoSettingScreen;
     Table table;
     public MenuScreen(T_GAME game, String screenId, InputListener buttonContinueGameInputListener, InputListener buttonNewGameInputListener) {
         super(game, screenId);
@@ -51,7 +53,7 @@ public class MenuScreen<T_GAME extends BaseIdleGame> extends BaseScreen<T_GAME> 
         //table.setBounds((game.LOGIC_WIDTH - BUTTON_WIDTH)/2, 0, BUTTON_WIDTH, game.LOGIC_HEIGHT / 2);
         uiStage.addActor(table);
 
-        buttonContinueGame = new TextButton("Continue Game", game.getButtonSkin());
+        buttonContinueGame = TextSkinButton.typeButton("Continue", game);
         //buttonContinueGame.setSize(100, 100);
         //buttonContinueGame.setPosition(0, 0);
         buttonContinueGame.addListener(buttonContinueGameInputListener);
@@ -65,7 +67,7 @@ public class MenuScreen<T_GAME extends BaseIdleGame> extends BaseScreen<T_GAME> 
 
 
 
-        buttonNewGame = new TextButton("New Game", game.getButtonSkin());
+        buttonNewGame = TextSkinButton.typeButton("New", game);
         buttonNewGame.addListener(buttonNewGameInputListener);
         table.add(buttonNewGame)
             .height(game.getSaveTool().hasSave() ? BUTTON_SMALL_HEIGHT : BUTTON_BIG_HEIGHT)

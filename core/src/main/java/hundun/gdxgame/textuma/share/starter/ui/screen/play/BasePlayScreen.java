@@ -14,19 +14,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
+import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
+import hundun.gdxgame.textuma.core.ui.component.RaceInfoBoard;
 import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
 import hundun.gdxgame.textuma.share.framework.listener.IAchievementUnlockListener;
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.starter.ui.component.AchievementMaskBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.BackgroundImageBox;
 import hundun.gdxgame.textuma.share.starter.ui.component.GameAreaControlBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.GameImageDrawer;
-import hundun.gdxgame.textuma.share.starter.ui.component.PopupInfoBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.StorageInfoBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.board.construction.AbstractConstructionControlBoard;
+import hundun.simulationgame.umamusume.record.gui.GuiFrameData.RaceInfo;
 
 
 /**
@@ -76,7 +78,7 @@ public abstract class BasePlayScreen<T_GAME extends BaseIdleGame>
 
     // ====== need child lazy-init start ======
     protected AchievementMaskBoard<T_GAME> achievementMaskBoard;
-    protected PopupInfoBoard<T_GAME> popUpInfoBoard;
+    protected RaceInfoBoard<T_GAME> raceInfoBoard;
     protected GameImageDrawer<T_GAME> gameImageDrawer;
     protected StorageInfoBoard<T_GAME> storageInfoTable;
     protected AbstractConstructionControlBoard constructionControlBoard;
@@ -161,14 +163,23 @@ public abstract class BasePlayScreen<T_GAME extends BaseIdleGame>
         Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
         return drawable;
     }
+    
+    public static Drawable createOneColorBoard(int width, int height, float grayColor) {
+        Pixmap pixmap = new Pixmap(width, height, Pixmap.Format.RGB565);
+        pixmap.setColor(grayColor, grayColor, grayColor, 1.0f);
+        pixmap.fill();
+        Drawable drawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
+        return drawable;
+    }
+    
+    public static Drawable blackBoard = BasePlayScreen.createOneColorBoard(10, 10, 0.99f);
 
-    public void showAndUpdateGuideInfo(BaseConstruction model) {
-        popUpInfoBoard.setVisible(true);
-        popUpInfoBoard.update(model);
+    public void infoBoardAsTrainInfo(BaseTrainActionHandler model) {
+        raceInfoBoard.updateAsTrainInfo(model);
     }
 
-    public void hideAndCleanGuideInfo() {
-        popUpInfoBoard.setVisible(false);
+    public void infoBoardAsIdle() {
+        raceInfoBoard.updateAsIdleGuide("details of idle-guide");
         //popUpInfoBoard.setText("GUIDE_TEXT");
     }
 

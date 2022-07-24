@@ -8,8 +8,8 @@ import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
-import hundun.gdxgame.textuma.share.framework.model.ModelContext;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
 /**
  * @author hundun
@@ -28,15 +28,15 @@ public class ConstructionManager {
     /**
      * 运行中的设施集合。key: constructionId
      */
-    Map<String, BaseConstruction> runningConstructionModelMap = new HashMap<>();
+    Map<String, UmaActionHandler> runningConstructionModelMap = new HashMap<>();
 
     /**
      * 根据GameArea显示不同的Construction集合
      */
-    Map<String, List<BaseConstruction>> areaControlableConstructions;
+    Map<String, List<UmaActionHandler>> areaControlableConstructions;
 
     public void lazyInit(Map<String, List<String>> areaControlableConstructionIds) {
-        ModelContext modelContext = game.getModelContext();
+        ManagerContext modelContext = game.getModelContext();
         areaControlableConstructions = new HashMap<>();
         if (areaControlableConstructionIds != null) {
             for (Entry<String, List<String>> entry : areaControlableConstructionIds.entrySet()) {
@@ -73,13 +73,10 @@ public class ConstructionManager {
         areaControlableConstructions.values().forEach(items -> items.forEach(item -> runningConstructionModelMap.putIfAbsent(item.getId(), item)));
     }
 
-    public void logicFrameForAllConstructionModels() {
-        runningConstructionModelMap.values().forEach(item -> item.onLogicFrame());
-    }
 
-    public List<BaseConstruction> getAreaShownConstructionsOrEmpty(String gameArea) {
+    public List<UmaActionHandler> getAreaShownConstructionsOrEmpty(String gameArea) {
         areaControlableConstructions.computeIfAbsent(gameArea, gameArea2 -> new ArrayList<>());
-        List<BaseConstruction> constructions = areaControlableConstructions.get(gameArea);
+        List<UmaActionHandler> constructions = areaControlableConstructions.get(gameArea);
         return constructions;
     }
 

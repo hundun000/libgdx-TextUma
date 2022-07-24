@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import hundun.gdxgame.textuma.share.framework.BaseIdleGame;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstruction;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
 /**
  * @author hundun
@@ -14,26 +14,26 @@ import hundun.gdxgame.textuma.share.framework.model.construction.base.BaseConstr
  */
 public class BaseConstructionFactory {
 
-    Map<String, BaseConstruction> constructions = new HashMap<>();
+    Map<String, UmaActionHandler> constructions = new HashMap<>();
     protected BaseIdleGame game;
 
-    public void lazyInit(List<BaseConstruction> constructions) {
+    public void lazyInit(List<UmaActionHandler> constructions) {
         constructions.forEach(item -> register(item));
     }
 
-    protected void register(BaseConstruction construction) {
+    protected void register(UmaActionHandler construction) {
         constructions.put(construction.getId(), construction);
     }
 
-    public BaseConstruction getConstruction(String id) {
-        BaseConstruction result = constructions.get(id);
+    public UmaActionHandler getConstruction(String id) {
+        UmaActionHandler result = constructions.get(id);
         if (result == null) {
             throw new RuntimeException("getConstruction " + id + " not found");
         }
         return result;
     }
 
-    public Collection<BaseConstruction> getConstructions() {
+    public Collection<UmaActionHandler> getConstructions() {
         return constructions.values();
     }
 }
