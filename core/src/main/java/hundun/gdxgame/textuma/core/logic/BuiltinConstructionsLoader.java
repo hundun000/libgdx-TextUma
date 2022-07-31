@@ -7,7 +7,10 @@ import java.util.Map;
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.RunningTrainActionHandler;
-import hundun.gdxgame.textuma.core.logic.handler.StartRaceActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.race.EndRaceRecordNodeActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.race.NextRaceRecordNodeActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.race.ReplayRaceRecordNodeActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.race.StartRaceActionHandler;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
@@ -35,6 +38,18 @@ public class BuiltinConstructionsLoader {
     private void initProviders() {
         {
             UmaActionHandler construction = new StartRaceActionHandler(game);
+            constructions.add(construction);
+        }
+        {
+            UmaActionHandler construction = new NextRaceRecordNodeActionHandler(game);
+            constructions.add(construction);
+        }
+        {
+            UmaActionHandler construction = new ReplayRaceRecordNodeActionHandler(game);
+            constructions.add(construction);
+        }
+        {
+            UmaActionHandler construction = new EndRaceRecordNodeActionHandler(game);
             constructions.add(construction);
         }
         {

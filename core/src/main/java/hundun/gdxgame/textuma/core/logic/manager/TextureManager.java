@@ -39,7 +39,6 @@ public class TextureManager extends AbstractTextureManager {
             TextureRegion[][] regions = TextureRegion.split(texture, 32, 32);
             //constructionEntityMap.put(ConstructionId.COOKIE_CLICK_PROVIDER, regions[0][0]);
             constructionEntityMap.put(UserActionId.RUNNING_TRAIN, regions[0][1]);
-            constructionEntityMap.put(UserActionId.COOKIE_SELLER, regions[0][2]);
             //constructionEntityMap.put(ConstructionId.WIN_PROVIDER, regions[0][3]);
         }  
         {

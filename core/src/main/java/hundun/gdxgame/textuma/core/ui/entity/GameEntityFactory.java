@@ -38,8 +38,6 @@ public class GameEntityFactory extends BaseGameEntityFactory {
                 return null;
             case UserActionId.RUNNING_TRAIN:
                 return this.rowStableConstructionEntity(id, index, 1);
-            case UserActionId.COOKIE_SELLER:
-                return this.rowStableConstructionEntity(id, index, 0); 
             default:
                 // no need GameEntity
                 return null;

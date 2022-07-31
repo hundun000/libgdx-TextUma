@@ -1,4 +1,4 @@
-package hundun.gdxgame.textuma.core.logic.handler;
+package hundun.gdxgame.textuma.core.logic.handler.race;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
@@ -10,24 +10,22 @@ import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionH
  * @author hundun
  * Created on 2022/08/03
  */
-public class StartRaceActionHandler extends BaseRaceActionHandler {
+public class NextRaceRecordNodeActionHandler extends BaseRaceActionHandler {
 
-    public StartRaceActionHandler(TextUmaGame game) {
-        super(game, UserActionId.START_RACE);
-        
+    public NextRaceRecordNodeActionHandler(TextUmaGame game) {
+        super(game, UserActionId.NEXT_RACE_RECORD_NODE);
         this.descriptionPackage = UmaActionHandler.RACE_DESCRIPTION_PACKAGE;
-        
     }
 
 
     @Override
     public void onEffectableClick() {
-
+        game.getModelContext().getUmaManager().bigStepRaceRecordNode();
     }
 
     @Override
     public boolean canClickEffect() {
-        return game.getModelContext().getUmaManager().getState() == UmaState.RACE_DAY_RACE_READY;
+        return game.getModelContext().getUmaManager().waitingNextRaceRecordNode();
     }
 
 

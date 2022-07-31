@@ -11,6 +11,10 @@ import java.util.Map;
  */
 public class JavaHighVersionFeature {
 
+    public static Map<String, Integer> mapOf() {
+        return new HashMap<>(0);
+    }
+    
     public static <K, V> Map<K, V> mapOf(K k1, V v1) {
         Map<K, V> map = new HashMap<>(2);
         map.put(k1, v1);
@@ -90,4 +94,6 @@ public class JavaHighVersionFeature {
         list.add(item5);
         return list;
     }
+
+    
 }

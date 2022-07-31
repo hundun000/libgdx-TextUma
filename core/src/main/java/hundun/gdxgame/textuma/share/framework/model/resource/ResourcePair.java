@@ -30,6 +30,11 @@ public class ResourcePair {
     public void setAmount(Long amount) {
         this.amount = amount;
     }
+    @Override
+    public String toString() {
+        return String.format("{type=%s, amount=%s}", type, amount);
+    }
+    
 
 
 }

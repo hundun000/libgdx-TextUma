@@ -19,8 +19,8 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.GameArea;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.ScreenId;
-import hundun.gdxgame.textuma.core.logic.handler.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.race.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.core.ui.component.MainInfoBoard;
 import hundun.gdxgame.textuma.core.ui.component.PopupInfoBoard;
 import hundun.gdxgame.textuma.core.ui.component.TextNinePatchWrapper;
@@ -63,6 +63,7 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
         gameImageDrawer = new GameImageDrawer<>(this, gameEntityFactory);
         
         logicFrameListeners.add(constructionControlBoard);
+        logicFrameListeners.add(game.getModelContext().getUmaManager());
         gameAreaChangeListeners.add(backgroundImageBox);
         gameAreaChangeListeners.add(constructionControlBoard);
         gameAreaChangeListeners.add(gameAreaControlBoard);

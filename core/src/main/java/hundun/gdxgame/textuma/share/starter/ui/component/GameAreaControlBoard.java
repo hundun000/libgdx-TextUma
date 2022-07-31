@@ -54,9 +54,9 @@ public class GameAreaControlBoard<T_GAME extends BaseHundunGame> extends Table i
 
         nodes.entrySet().forEach(entry -> {
             if (entry.getKey() == current) {
-                entry.getValue().changeVersion(true);
-            } else {
                 entry.getValue().changeVersion(false);
+            } else {
+                entry.getValue().changeVersion(true);
             }
 
         });

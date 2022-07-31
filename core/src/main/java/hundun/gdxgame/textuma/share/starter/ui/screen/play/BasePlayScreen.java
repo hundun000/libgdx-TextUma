@@ -40,7 +40,7 @@ public abstract class BasePlayScreen<T_GAME extends BaseHundunGame>
         extends BaseScreen<T_GAME>
         implements IAchievementUnlockListener {
 
-    public static final int LOGIC_FRAME_PER_SECOND = 30;
+    public static final int LOGIC_FRAME_PER_SECOND = 10;
     private static final float LOGIC_FRAME_LENGTH = 1f / LOGIC_FRAME_PER_SECOND;
     private int clockCount = 0;
     private float logicFramAccumulator;

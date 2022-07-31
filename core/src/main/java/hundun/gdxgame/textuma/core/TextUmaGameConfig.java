@@ -1,6 +1,9 @@
 package hundun.gdxgame.textuma.core;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -8,9 +11,12 @@ import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
 
+import hundun.gdxgame.textuma.core.data.UmaSaveData;
+import hundun.gdxgame.textuma.core.data.UmaSaveData.TurnConfig;
 import hundun.gdxgame.textuma.core.logic.BuffId;
 import hundun.gdxgame.textuma.core.logic.BuiltinConstructionsLoader;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
+import hundun.gdxgame.textuma.core.logic.manager.UmaManager.UmaState;
 import hundun.gdxgame.textuma.core.logic.GameArea;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.ScreenId;
@@ -19,6 +25,12 @@ import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.StarterData;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
 import hundun.gdxgame.textuma.share.framework.util.JavaHighVersionFeature;
+import hundun.simulationgame.umamusume.horse.HorsePrototype;
+import hundun.simulationgame.umamusume.horse.HorsePrototypeFactory;
+import hundun.simulationgame.umamusume.horse.RunStrategyType;
+import hundun.simulationgame.umamusume.race.RaceLengthType;
+import hundun.simulationgame.umamusume.race.RacePrototype;
+import hundun.simulationgame.umamusume.race.TrackGroundType;
 
 /**
  * @author hundun
@@ -33,7 +45,10 @@ public class TextUmaGameConfig extends ChildGameConfig {
         
         Map<String, List<String>> areaShownConstructionIds = new HashMap<>(); 
         areaShownConstructionIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
-                UserActionId.START_RACE
+                UserActionId.START_RACE,
+                UserActionId.NEXT_RACE_RECORD_NODE,
+                UserActionId.REPLAY_RACE_RECORD,
+                UserActionId.END_RACE_RECORD
         ));
         areaShownConstructionIds.put(GameArea.AREA_TRAIN, JavaHighVersionFeature.arraysAsList(
                 UserActionId.RUNNING_TRAIN
@@ -61,9 +76,9 @@ public class TextUmaGameConfig extends ChildGameConfig {
         this.setAreaShowEntityByChangeAmountResourceIds(areaShowEntityByChangeAmountResourceIds);
         
         StarterData starterData = new StarterData();
-        Map<String, Integer> constructionStarterLevelMap = JavaHighVersionFeature.mapOf(UserActionId.COOKIE_SELLER, 1);
+        Map<String, Integer> constructionStarterLevelMap = new HashMap<>();
         starterData.setConstructionStarterLevelMap(constructionStarterLevelMap);
-        Map<String, Boolean> constructionStarterWorkingLevelMap = JavaHighVersionFeature.mapOf(UserActionId.COOKIE_SELLER, Boolean.FALSE);
+        Map<String, Boolean> constructionStarterWorkingLevelMap = new HashMap<>();
         starterData.setConstructionStarterWorkingLevelMap(constructionStarterWorkingLevelMap);
         this.setStarterData(starterData); 
         
@@ -82,5 +97,60 @@ public class TextUmaGameConfig extends ChildGameConfig {
         this.setAchievementPrototypes(achievementPrototypes);
     }
 
-    
+    public static class UmaSaveDataFactory {
+        public static UmaSaveData forNewGame() {
+            NumberFormat formatter = new DecimalFormat("#000");
+            UmaSaveData umaSaveData = new UmaSaveData();
+            umaSaveData.state = UmaState.TRAIN_DAY;
+            
+            {
+                HorsePrototype horsePrototype;
+                horsePrototype = new HorsePrototype();
+                horsePrototype.setName("SpecialWeek");
+                horsePrototype.setBaseSpeed((int) (600* 1.05));
+                horsePrototype.setBaseStamina((int) (600* 1.05));
+                horsePrototype.setBasePower((int) (600* 1.05));
+                horsePrototype.setBaseGuts((int) (600* 1.05));
+                horsePrototype.setBaseWisdom((int) (200* 1.05));
+                horsePrototype.setDefaultRunStrategyType(RunStrategyType.FRONT);
+                HorsePrototypeFactory.fillDefaultFields(horsePrototype);
+                horsePrototype.setCharImage("Uma");
+                umaSaveData.playerHorse = horsePrototype;
+            }    
+            
+            umaSaveData.turnConfigMap = new HashMap<>();
+            {
+                HorsePrototype horsePrototype;
+                TurnConfig turnConfig = new TurnConfig();
+                turnConfig.rivalHorses = new ArrayList<>();
+                
+                RacePrototype racePrototype;
+                racePrototype = new RacePrototype();
+                racePrototype.setName("ShortDemoRace");
+                racePrototype.setGroundType(TrackGroundType.TURF);
+                racePrototype.setLength(1200);
+                racePrototype.setLengthType(RaceLengthType.MILE);
+                racePrototype.setDefaultHorseNum(4);
+                turnConfig.race = racePrototype;
+                
+                for (int i = 1; i <= 5; i++) {
+                    horsePrototype = new HorsePrototype();
+                    horsePrototype.setName("SilenceSuzuka" + formatter.format(i));
+                    horsePrototype.setBaseSpeed(600 + 20 * i);
+                    horsePrototype.setBaseStamina(600 - 10 * i);
+                    horsePrototype.setBasePower(600 - 10 * i);
+                    horsePrototype.setBaseGuts(600);
+                    horsePrototype.setBaseWisdom(200);
+                    horsePrototype.setDefaultRunStrategyType(RunStrategyType.FIRST);
+                    HorsePrototypeFactory.fillDefaultFields(horsePrototype);
+                    horsePrototype.setCharImage("uma");
+                    turnConfig.rivalHorses.add(horsePrototype);
+                }
+                umaSaveData.turnConfigMap.put(3, turnConfig);
+            } 
+            
+            return umaSaveData;
+        }
+    }
+
 }

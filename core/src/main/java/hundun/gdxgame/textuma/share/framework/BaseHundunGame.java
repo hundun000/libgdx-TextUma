@@ -12,7 +12,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-import hundun.gdxgame.textuma.core.data.UmaSaveData.UmaSaveDataFactory;
+import hundun.gdxgame.textuma.core.TextUmaGameConfig.UmaSaveDataFactory;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.RootSaveData;

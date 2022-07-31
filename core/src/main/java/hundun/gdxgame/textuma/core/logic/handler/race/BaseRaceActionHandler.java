@@ -1,4 +1,4 @@
-package hundun.gdxgame.textuma.core.logic.handler;
+package hundun.gdxgame.textuma.core.logic.handler.race;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;

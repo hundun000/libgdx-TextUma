@@ -13,6 +13,12 @@ public class GameDictionary implements IGameDictionary {
         switch (constructionId) {
             case UserActionId.START_RACE:
                 return "start race";
+            case UserActionId.NEXT_RACE_RECORD_NODE:
+                return "skip";
+            case UserActionId.END_RACE_RECORD:
+                return "end";
+            case UserActionId.REPLAY_RACE_RECORD:
+                return "replay";
             case UserActionId.RUNNING_TRAIN:
                 return "running train";
             default:
@@ -37,6 +43,8 @@ public class GameDictionary implements IGameDictionary {
     @Override
     public String resourceIdToShowName(String resourceId) {
         switch (resourceId) {
+            case ResourceType.TURN:
+                return "Day";
             case ResourceType.COIN:
                 return "Coin";
             case ResourceType.HORSE_SPEED:

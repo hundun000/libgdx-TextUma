@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
-import hundun.gdxgame.textuma.core.logic.handler.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.race.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
@@ -21,6 +21,8 @@ import hundun.gdxgame.textuma.share.starter.ui.component.ResourceAmountPairNode;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.simulationgame.umamusume.horse.HorsePrototype;
 import hundun.simulationgame.umamusume.race.RacePrototype;
+import hundun.simulationgame.umamusume.record.RecordPackage.RecordNode;
+import hundun.simulationgame.umamusume.record.text.TextFrameData;
 
 
 /**
@@ -77,6 +79,70 @@ public class MainInfoBoard extends Table {
                 .append("Wisdom: ").append(horsePrototype.getBaseWisdom()).append("")
                 .append("\n");
  */
+
+    public void updateAsHorseStatus(HorsePrototype horsePrototype, String trainDescription, List<ResourcePair> gainList) {
+        this.clearChildren();
+        
+        MainInfoHelper.buildHorseStatus(this, parent.game, horsePrototype, trainDescription, gainList);
+        
+        if (parent.game.debugMode) {
+            this.debug();
+        }
+        
+    }
+
+
+    public void updateAsClear() {
+        this.clearChildren();
+
+        
+        if (parent.game.debugMode) {
+            this.debug();
+        }
+    }
+
+
+    public void updateAsRaceReady(RacePrototype racePrototype, List<HorsePrototype> rivalHorses) {
+        this.clearChildren();
+        
+        MainInfoHelper.buildRaceReady(this, parent.game, racePrototype, rivalHorses);
+        
+        if (parent.game.debugMode) {
+            this.debug();
+        }
+    }
+
+
+    public void updateAsText(String text) {
+        this.clearChildren();
+
+        add(new Label(text, parent.game.getButtonSkin()));
+
+        if (parent.game.debugMode) {
+            this.debug();
+        }
+    }
+
+
+    public void updateAsRaceRecordNode(RecordNode<TextFrameData> recordNode) {
+        this.clearChildren();
+
+        if (recordNode.getContent().getRaceInfo() != null) {
+            this.add(new Label(recordNode.getContent().getRaceInfo(), parent.game.getButtonSkin()));
+            this.row();
+        } 
+        if (recordNode.getContent().getEventInfo() != null) {
+            this.add(new Label(recordNode.getContent().getEventInfo(), parent.game.getButtonSkin()));
+        }
+        
+
+        if (parent.game.debugMode) {
+            this.debug();
+        }
+        
+    }
+
+
     private static class MainInfoHelper {
         
         
@@ -132,53 +198,10 @@ public class MainInfoBoard extends Table {
                     null
                     );
         }
+
+
     }
     
-    
-    public void updateAsHorseStatus(HorsePrototype horsePrototype, String trainDescription, List<ResourcePair> gainList) {
-        this.clearChildren();
-        
-        MainInfoHelper.buildHorseStatus(this, parent.game, horsePrototype, trainDescription, gainList);
-        
-        if (parent.game.debugMode) {
-            this.debug();
-        }
-        
-    }
-
-
-    public void updateAsClear() {
-        this.clearChildren();
-
-        
-        if (parent.game.debugMode) {
-            this.debug();
-        }
-    }
-
-
-    public void updateAsRaceReady(RacePrototype racePrototype, List<HorsePrototype> rivalHorses) {
-        this.clearChildren();
-        
-        MainInfoHelper.buildRaceReady(this, parent.game, racePrototype, rivalHorses);
-        
-        if (parent.game.debugMode) {
-            this.debug();
-        }
-    }
-
-
-    public void updateAsText(String text) {
-        this.clearChildren();
-
-        add(new Label(text, parent.game.getButtonSkin()));
-
-        if (parent.game.debugMode) {
-            this.debug();
-        }
-    }
-
-
     
 
 }
