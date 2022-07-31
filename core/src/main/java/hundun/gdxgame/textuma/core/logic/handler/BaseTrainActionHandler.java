@@ -57,9 +57,6 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
         outputComponent.lazyInitDescription();
     }
     
-    public abstract long calculateModifiedOutput(long baseValue, int level);
-    public abstract long calculateModifiedOutputCost(long baseValue, int level);
-    
     /**
      * 重新计算各个数值的加成后的结果
      */
@@ -77,10 +74,11 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
     public void onEffectableClick() {
         
         game.getModelContext().getUmaManager().trainAndNextDay(
+                "Train done.",
                 outputComponent.getOutputCostPack().getModifiedValues(),
                 outputComponent.getOutputGainPack().getModifiedValues()
                 );
-        Gdx.app.log(this.name, "train done");
+        
     }
 
     @Override
@@ -94,13 +92,14 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
     }
 
 
-    @Override
-    public String getPopupInfo() {
-        return String.format("Train cost: %s, gain: %s",
-                outputComponent.getOutputCostPack().getModifiedValuesDescription(),
-                outputComponent.getOutputGainPack().getModifiedValuesDescription()
-                );
+
+
+    public long calculateModifiedOutput(long baseValue, int level) {
+        return (long) (baseValue * (1 + 0.2 * level));
     }
 
+    public long calculateModifiedOutputCost(long baseValue, int level) {
+        return (long) (baseValue * (1 + 0.2 * level));
+    }
 
 }

@@ -34,7 +34,8 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.menu.MenuScreen;
 
 public class TextUmaGame extends BaseHundunGame {
 
-
+    public static final String GAME_WORD_SKIN_KEY = "game-word";
+    
     private ScreenContext screenContext;
     // ------ replace-lombok ------
     public ScreenContext getScreenContext() {
@@ -66,7 +67,7 @@ public class TextUmaGame extends BaseHundunGame {
     protected void initContexts() {
         super.initContexts();
         
-        getModelContext().setUmaManager(new UmaManager(this));
+        
         
         this.gameDictionary = new GameDictionary();
         this.textureManager = new TextureManager();
@@ -79,7 +80,7 @@ public class TextUmaGame extends BaseHundunGame {
                     @Override
                     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                         TextUmaGame.this.loadOrNewGame(true);
-                        TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getGameBeeScreen());
+                        TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getPlayScreen());
                         TextUmaGame.this.getAudioPlayManager().intoScreen(ScreenId.PLAY);
                     }
                     @Override
@@ -91,7 +92,7 @@ public class TextUmaGame extends BaseHundunGame {
                     @Override
                     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
                         TextUmaGame.this.loadOrNewGame(false);
-                        TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getGameBeeScreen());
+                        TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getPlayScreen());
                         TextUmaGame.this.getAudioPlayManager().intoScreen(ScreenId.PLAY);
                     }
                     @Override
@@ -100,7 +101,9 @@ public class TextUmaGame extends BaseHundunGame {
                     }
                 }
         ));
-        screenContext.setGameBeeScreen(new UmaPlayScreen(this));
+        screenContext.setPlayScreen(new UmaPlayScreen(this));
+        
+        getModelContext().setUmaManager(new UmaManager(this, screenContext.getPlayScreen()));
     }
 
     @Override

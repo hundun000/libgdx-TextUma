@@ -7,4 +7,6 @@ public interface IGameDictionary {
     String constructionIdToShowName(String constructionId);
 
     String gameAreaIdToShowName(String gameAreaId);
+
+    String resourceIdToShowName(String type);
 }

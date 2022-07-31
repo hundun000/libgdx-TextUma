@@ -22,5 +22,5 @@ public abstract class BaseRecordActionHandler extends UmaActionHandler {
         
     }
 
-
+    public abstract String getPopupInfo();
 }

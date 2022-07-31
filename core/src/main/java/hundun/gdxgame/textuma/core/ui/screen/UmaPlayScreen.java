@@ -35,6 +35,7 @@ import hundun.gdxgame.textuma.share.starter.ui.component.GameImageDrawer;
 import hundun.gdxgame.textuma.share.starter.ui.component.StorageInfoBoard;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst;
+import hundun.simulationgame.umamusume.horse.HorsePrototype;
 
 /**
  * @author hundun
@@ -42,8 +43,14 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst
  */
 public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
 
-    protected MainInfoBoard<TextUmaGame> mainInfoBoard;
-    protected PopupInfoBoard<TextUmaGame> secondaryInfoBoard;
+    protected MainInfoBoard mainInfoBoard;
+    public MainInfoBoard getMainInfoBoard() {
+        return mainInfoBoard;
+    }
+    protected PopupInfoBoard secondaryInfoBoard;
+    public PopupInfoBoard getSecondaryInfoBoard() {
+        return secondaryInfoBoard;
+    }
     
     public UmaPlayScreen(TextUmaGame game) {
         super(game, ScreenId.PLAY, GameArea.AREA_RACE, new PlayScreenLayoutConst(game.LOGIC_WIDTH, game.LOGIC_HEIGHT));
@@ -59,6 +66,7 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
         gameAreaChangeListeners.add(backgroundImageBox);
         gameAreaChangeListeners.add(constructionControlBoard);
         gameAreaChangeListeners.add(gameAreaControlBoard);
+        gameAreaChangeListeners.add(game.getModelContext().getUmaManager());
     }
 
     @Override
@@ -73,19 +81,30 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
                 .row()
                 ;
         
-        mainInfoBoard = new MainInfoBoard<>(this); 
-        uiRootTable.add(mainInfoBoard)
+        mainInfoBoard = new MainInfoBoard(this); 
+        Table infoBoadArea = new Table();
+        infoBoadArea.add(mainInfoBoard)
+                .expand()
+                .fill()
+                .row();
+                ;
+        infoBoadArea.add(new Image())
+                .height(layoutConst.SECONDARY_INFO_BOARD_HEIGHT)
+                .expandY()
+                .fillY()
+                ;
+        uiRootTable.add(infoBoadArea)
                 .expand()
                 .fill()
                 ;
-        
-        
         
         gameAreaControlBoard = new GameAreaControlBoard<TextUmaGame>(this, GameArea.values);
         uiRootTable.add(TextNinePatchWrapper.build(this, gameAreaControlBoard))
                 .right()
                 .row()
                 ;
+        
+        
         
         // impl switchable
         constructionControlBoard = new ScrollConstructionControlBoard(this);
@@ -98,6 +117,7 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
         
         if (game.debugMode) {
             uiRootTable.debugCell();
+            infoBoadArea.debugCell();
         }
     }
     
@@ -107,7 +127,7 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
         this.backgroundImageBox = new BackgroundImageBox<TextUmaGame>(this);
         backUiStage.addActor(backgroundImageBox);
         
-        secondaryInfoBoard = new PopupInfoBoard<>(this);
+        secondaryInfoBoard = new PopupInfoBoard(this);
         popupRootTable.add(secondaryInfoBoard).bottom().expand().row();
         popupRootTable.add(new Image())
                 .height(layoutConst.CONSTRUCION_BOARD_ROOT_BOX_HEIGHT);
@@ -129,20 +149,28 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
 
     }
     
-    public void infoBoardAsRaceInfo(BaseRaceActionHandler model) {
-        mainInfoBoard.updateAsRaceInfo(model);
-        secondaryInfoBoard.updateAsRaceInfo(model);
-    }
-    
-    public void infoBoardAsTrainInfo(BaseTrainActionHandler model) {
-        mainInfoBoard.updateAsTrainInfo(model);
-        secondaryInfoBoard.updateAsTrainInfo(model);
-    }
-
-    public void infoBoardAsIdle() {
-        String idleGuideText = "details of idle-guide";
-        secondaryInfoBoard.updateAsIdleGuide(idleGuideText);
-    }
+//    public void infoBoardAsRaceInfo(BaseRaceActionHandler model) {
+//        mainInfoBoard.updateAsRaceInfo(model);
+//        secondaryInfoBoard.updateAsRaceInfo(model);
+//    }
+//    
+//    public void mainInfoBoardUpdate(HorsePrototype horsePrototype) {
+//        mainInfoBoard.updateAsHorseStatus(horsePrototype);
+//    }
+//    
+//    public void infoBoardAsTrainInfo(BaseTrainActionHandler model) {
+//        secondaryInfoBoard.updateAsTrainInfo(model);
+//    }
+//
+//    public void infoBoardAsIdle() {
+//        String idleGuideText = "details of idle-guide";
+//        secondaryInfoBoard.updateAsIdleGuide(idleGuideText);
+//    }
+//
+//
+//    public void mainInfoBoardClear() {
+//        mainInfoBoard.updateAsClear();
+//    }
     
 
 

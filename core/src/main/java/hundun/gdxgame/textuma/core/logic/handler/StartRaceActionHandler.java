@@ -36,8 +36,7 @@ public class StartRaceActionHandler extends BaseRaceActionHandler {
 
     @Override
     public String getPopupInfo() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.getClass().getSimpleName() + " PopupInfo";
     }
 
 }

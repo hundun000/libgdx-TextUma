@@ -48,13 +48,15 @@ public class TextUmaGameConfig extends ChildGameConfig {
         
         Map<String, List<String>> areaShownResourceIds = new HashMap<>(); 
         areaShownResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
-            ResourceType.COIN
+                ResourceType.TURN,
+                ResourceType.COIN
         ));
         this.setAreaShowEntityByOwnAmountResourceIds(areaShownResourceIds);
         
         Map<String, List<String>> areaShowEntityByChangeAmountResourceIds = new HashMap<>(); 
         areaShowEntityByChangeAmountResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
-            ResourceType.COIN
+                ResourceType.TURN,
+                ResourceType.COIN
         ));
         this.setAreaShowEntityByChangeAmountResourceIds(areaShowEntityByChangeAmountResourceIds);
         

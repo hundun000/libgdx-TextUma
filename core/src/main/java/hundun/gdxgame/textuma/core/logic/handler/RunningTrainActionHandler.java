@@ -37,16 +37,6 @@ public class RunningTrainActionHandler extends BaseTrainActionHandler {
         
     }
 
-    @Override
-    public long calculateModifiedOutput(long baseValue, int level) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
-
-    @Override
-    public long calculateModifiedOutputCost(long baseValue, int level) {
-        // TODO Auto-generated method stub
-        return 0;
-    }
+    
 
 }

@@ -3,9 +3,12 @@ package hundun.gdxgame.textuma.core.ui.component;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
 import com.badlogic.gdx.scenes.scene2d.ui.Container;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
+import hundun.gdxgame.textuma.core.TextUmaGame;
+import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.handler.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
@@ -20,13 +23,13 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
  * @author hundun
  * Created on 2021/11/08
  */
-public class PopupInfoBoard<T_GAME extends BaseHundunGame> extends Table {
+public class PopupInfoBoard extends Table {
     private static int NODE_HEIGHT = 25;
     private static int NODE_WIDTH = 70;
 
-    BasePlayScreen<T_GAME> parent;
+    BasePlayScreen<TextUmaGame> parent;
 
-    public PopupInfoBoard(BasePlayScreen<T_GAME> parent) {
+    public PopupInfoBoard(BasePlayScreen<TextUmaGame> parent) {
         //super("GUIDE_TEXT", parent.game.getButtonSkin());
         this.parent = parent;
         //this.setBounds(5, GameAreaControlBoard.Y, GameAreaControlBoard.X - 10, 120);
@@ -39,7 +42,7 @@ public class PopupInfoBoard<T_GAME extends BaseHundunGame> extends Table {
     
 
 
-    public void updateAsTrainInfo(BaseTrainActionHandler model) {
+    public void updateAsTrainActionHint(BaseTrainActionHandler model) {
         this.clearChildren();
 
         TrainInfoHelper.work(this, model);
@@ -50,7 +53,7 @@ public class PopupInfoBoard<T_GAME extends BaseHundunGame> extends Table {
     }
 
 
-    public void updateAsIdleGuide(String text) {
+    public void updateAsClear() {
         this.clearChildren();
 
         
@@ -61,17 +64,59 @@ public class PopupInfoBoard<T_GAME extends BaseHundunGame> extends Table {
 
     private static class TrainInfoHelper {
         
-        public static void work(PopupInfoBoard<?> table, BaseTrainActionHandler model) {
+        private static void work(PopupInfoBoard table, BaseTrainActionHandler model) {
             table.clearChildren();
 
-            table.add(new Label(model.getPopupInfo(), table.parent.game.getButtonSkin()))
-                ;
+            table.add(new Label("Cost: ", table.parent.game.getButtonSkin()));
+            model.getOutputComponent().getOutputCostPack().getModifiedValues().forEach(it -> 
+                buildOneGain(table, table.parent.game, 
+                        table.parent.game.getGameDictionary().resourceIdToShowName(it.getType()), 
+                        it.getAmount()
+                        )
+            );
+            table.row();
+            table.add(new Label("Gain: ", table.parent.game.getButtonSkin()));
+            model.getOutputComponent().getOutputGainPack().getModifiedValues().forEach(it -> 
+                buildOneGain(table, table.parent.game, 
+                        table.parent.game.getGameDictionary().resourceIdToShowName(it.getType()), 
+                        it.getAmount()
+                        )
+            );
 
         }
+        
+        private static void buildOneGain(Table table, TextUmaGame game, String key, Object value) {
+            table.add(new Label(key, game.getButtonSkin(), TextUmaGame.GAME_WORD_SKIN_KEY));
+            table.add(new Label(": ", game.getButtonSkin()));
+            table.add(new Label(value.toString(), game.getButtonSkin()));
+        }
+        
+        
     }
 
-    public void updateAsRaceInfo(BaseRaceActionHandler model) {
-        // TODO Auto-generated method stub
+    public void updateAsRaceActionHint(BaseRaceActionHandler model) {
+        this.clearChildren();
+
+        this.add(new Label(model.getPopupInfo(), parent.game.getButtonSkin()));
+
+        if (parent.game.debugMode) {
+            this.debug();
+        }
+        
+    }
+
+
+
+
+
+    public void updateAsText(String text) {
+        this.clearChildren();
+
+        this.add(new Label(text, parent.game.getButtonSkin()));
+
+        if (parent.game.debugMode) {
+            this.debug();
+        }
         
     }
 

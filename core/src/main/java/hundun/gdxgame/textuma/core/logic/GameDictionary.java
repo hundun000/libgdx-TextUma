@@ -33,4 +33,20 @@ public class GameDictionary implements IGameDictionary {
                 return "[dic:" + gameAreaId + "]";
         }
     }
+
+    @Override
+    public String resourceIdToShowName(String resourceId) {
+        switch (resourceId) {
+            case ResourceType.COIN:
+                return "Coin";
+            case ResourceType.HORSE_SPEED:
+                return "Speed";
+            case ResourceType.HORSE_STAMINA:
+                return "Stamina";
+            case ResourceType.HORSE_POWER:
+                return "Power";
+            default:
+                return "[dic:" + resourceId + "]";
+        }
+    }
 }

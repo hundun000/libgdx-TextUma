@@ -27,4 +27,5 @@ public abstract class BaseRaceActionHandler extends UmaActionHandler {
         return "";
     }
 
+    public abstract String getPopupInfo();
 }

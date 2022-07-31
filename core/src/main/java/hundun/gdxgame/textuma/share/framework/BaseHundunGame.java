@@ -163,6 +163,8 @@ public abstract class BaseHundunGame extends Game {
 	            appendConstructionSaveData(map, construction);
 	        }
 	        saveData.setConstructionSaveDataMap(map);
+	        
+	        saveData.setUmaSaveData(modelContext.getUmaManager().getUmaSaveData());
 	        return saveData;
 	    }
 	    
@@ -178,8 +180,10 @@ public abstract class BaseHundunGame extends Game {
 	        saveData.setUnlockedAchievementNames(new HashSet<>());
 	        saveData.setUnlockedResourceTypes(new HashSet<>());
 	        saveData.setUmaSaveData(UmaSaveDataFactory.forNewGame());
-	        saveData.getOwnResoueces().put(ResourceType.DAY, 1L);
-	        saveData.getUnlockedResourceTypes().add(ResourceType.DAY);
+	        saveData.getOwnResoueces().put(ResourceType.TURN, 1L);
+	        saveData.getOwnResoueces().put(ResourceType.COIN, 100L);
+	        saveData.getUnlockedResourceTypes().add(ResourceType.TURN);
+	        saveData.getUnlockedResourceTypes().add(ResourceType.COIN);
 	        return saveData;
 	    }
 	}

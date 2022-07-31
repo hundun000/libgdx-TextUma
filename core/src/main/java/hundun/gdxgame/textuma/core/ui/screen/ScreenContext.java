@@ -9,7 +9,7 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.menu.MenuScreen;
  */
 public class ScreenContext {
     MenuScreen<TextUmaGame> menuScreen;
-    UmaPlayScreen gameBeeScreen;
+    UmaPlayScreen playScreen;
     
     // ------ replace-lombok ------
     public MenuScreen<TextUmaGame> getMenuScreen() {
@@ -18,11 +18,11 @@ public class ScreenContext {
     public void setMenuScreen(MenuScreen<TextUmaGame> menuScreen) {
         this.menuScreen = menuScreen;
     }
-    public UmaPlayScreen getGameBeeScreen() {
-        return gameBeeScreen;
+    public UmaPlayScreen getPlayScreen() {
+        return playScreen;
     }
-    public void setGameBeeScreen(UmaPlayScreen gameBeeScreen) {
-        this.gameBeeScreen = gameBeeScreen;
+    public void setPlayScreen(UmaPlayScreen gameBeeScreen) {
+        this.playScreen = gameBeeScreen;
     }
     
     

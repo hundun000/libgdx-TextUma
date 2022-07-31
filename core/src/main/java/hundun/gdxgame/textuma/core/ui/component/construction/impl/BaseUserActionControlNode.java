@@ -37,6 +37,22 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
     Table changeWorkingLevelGroup;
 
 
+    private void clickedOrEnter() {
+        if (model instanceof BaseTrainActionHandler) {
+            if (model.canClickEffect()) {
+                parent.getSecondaryInfoBoard().updateAsTrainActionHint((BaseTrainActionHandler)model);
+            } else {
+                parent.getSecondaryInfoBoard().updateAsText("Disabled");
+            }
+        } else if (model instanceof BaseRaceActionHandler) {
+            if (model.canClickEffect()) {
+                parent.getSecondaryInfoBoard().updateAsRaceActionHint((BaseRaceActionHandler) model);
+            } else {
+                parent.getSecondaryInfoBoard().updateAsText("Disabled");
+            }
+            
+        }
+    }
 
 
     public BaseUserActionControlNode(UmaPlayScreen parent, int index, PlayScreenLayoutConst playScreenLayoutConst) {
@@ -68,9 +84,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (model != null) {
-                    if (model instanceof BaseTrainActionHandler) {
-                        parent.infoBoardAsTrainInfo((BaseTrainActionHandler)model);
-                    }
+                    BaseUserActionControlNode.this.clickedOrEnter();
                 }
                 //Gdx.app.log(BaseUserActionControlNode.class.getSimpleName(), "clicked event");
                 super.clicked(event, x, y);
@@ -79,11 +93,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
             @Override
             public void enter(InputEvent event, float x, float y, int pointer, Actor fromActor) {
                 if (model != null && pointer == -1) {
-                    if (model instanceof BaseTrainActionHandler) {
-                        parent.infoBoardAsTrainInfo((BaseTrainActionHandler)model);
-                    } else if (model instanceof BaseRaceActionHandler) {
-                        parent.infoBoardAsRaceInfo((BaseRaceActionHandler)model);
-                    }
+                    BaseUserActionControlNode.this.clickedOrEnter();
                 }
                 super.enter(event, x, y, pointer, fromActor);
             }
@@ -91,7 +101,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
             @Override
             public void exit(InputEvent event, float x, float y, int pointer, Actor toActor) {
                 if (pointer == -1) {
-                    parent.infoBoardAsIdle();
+                    parent.getSecondaryInfoBoard().updateAsClear();
                 }
                 super.exit(event, x, y, pointer, toActor);
             }
@@ -148,12 +158,8 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         //clickEffectButton.setTouchable(clickable ? Touchable.enabled : Touchable.disabled);
 
 
-        if (canClickEffect) {
-            clickEffectButton.setColor(Color.WHITE);
-        } else {
-            //clickEffectButton.setDisabled(true);
-            clickEffectButton.setColor(Color.RED);
-        }
+        clickEffectButton.contentSetEnable(canClickEffect);
+
         // ------ update model ------
         //model.onLogicFrame();
 

@@ -68,7 +68,11 @@ public class TrainOutputComponent {
             );
             this.outputGainPack.setModifiedValuesDescription(
                     outputGainPack.getModifiedValues().stream()
-                    .map(pair -> pair.getType() + "x" + pair.getAmount())
+                    .map(pair -> {
+                        return construction.game.getGameDictionary().resourceIdToShowName(pair.getType()) 
+                                + "x" 
+                                + pair.getAmount();
+                    })
                     .collect(Collectors.joining(", "))
                     + "; "
             );
@@ -85,7 +89,11 @@ public class TrainOutputComponent {
             );
             this.outputCostPack.setModifiedValuesDescription(
                     outputCostPack.getModifiedValues().stream()
-                    .map(pair -> pair.getType() + "x" + pair.getAmount())
+                    .map(pair -> {
+                        return construction.game.getGameDictionary().resourceIdToShowName(pair.getType()) 
+                                + "x" 
+                                + pair.getAmount();
+                    })
                     .collect(Collectors.joining(", "))
                     + "; "
             );

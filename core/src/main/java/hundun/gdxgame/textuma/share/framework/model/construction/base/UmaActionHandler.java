@@ -95,6 +95,6 @@ public abstract class UmaActionHandler {
     }
     public abstract String getWorkingLevelDescroption();
     public abstract void updateModifiedValues();
-    public abstract String getPopupInfo();
+    
 
 }

@@ -27,7 +27,7 @@ public abstract class AbstractTextureManager {
     protected Map<String, TextureRegion> constructionEntityMap = new HashMap<>();
     protected Map<String, TextureRegion> gameAreaBackMap = new HashMap<>();
 
-    protected String defaultIconString = "[?]";
+
     
     protected TextureRegion defaultIcon;
     protected TextureRegion defaultAreaBack;
@@ -38,9 +38,7 @@ public abstract class AbstractTextureManager {
         return gameAreaBackMap.getOrDefault(gameArea, defaultAreaBack);
     }
 
-    public String getResourceIcon(String resourceType) {
-        return resourceIconMap.getOrDefault(resourceType, defaultIconString);
-    }
+
 
     public TextureRegion getResourceEntity(String resourceType) {
         return resourceEntityMap.getOrDefault(resourceType, defaultIcon);
