@@ -1,5 +1,6 @@
 package hundun.gdxgame.textuma.share.framework.model.resource;
 
+import hundun.simulationgame.umamusume.util.JavaFeatureForGwt;
 
 /**
  * ResourceType and amount
@@ -32,7 +33,7 @@ public class ResourcePair {
     }
     @Override
     public String toString() {
-        return String.format("{type=%s, amount=%s}", type, amount);
+        return JavaFeatureForGwt.stringFormat("{type=%s, amount=%s}", type, amount);
     }
     
 

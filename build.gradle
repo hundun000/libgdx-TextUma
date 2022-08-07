@@ -50,7 +50,8 @@ subprojects {
 project(":core") {
 	dependencies {
 	   api "com.badlogicgames.gdx:gdx:$gdxVersion"
-	   implementation 'com.github.hundun000:umamusume-simulation:3a61a316ed'
+	   api project(':umamusume-simulation')
+	   //implementation 'com.github.hundun000:umamusume-simulation:3a61a316ed'
 	   // from share
 	   api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.5'
 	   api group: 'com.github.nmorel.gwtjackson', name: 'gwt-jackson', version: '0.15.4'

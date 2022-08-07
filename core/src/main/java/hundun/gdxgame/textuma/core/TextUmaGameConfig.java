@@ -1,8 +1,5 @@
 package hundun.gdxgame.textuma.core;
 
-import java.io.File;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -31,6 +28,7 @@ import hundun.simulationgame.umamusume.horse.RunStrategyType;
 import hundun.simulationgame.umamusume.race.RaceLengthType;
 import hundun.simulationgame.umamusume.race.RacePrototype;
 import hundun.simulationgame.umamusume.race.TrackGroundType;
+import hundun.simulationgame.umamusume.util.JavaFeatureForGwt.NumberFormat;
 
 /**
  * @author hundun
@@ -99,7 +97,7 @@ public class TextUmaGameConfig extends ChildGameConfig {
 
     public static class UmaSaveDataFactory {
         public static UmaSaveData forNewGame() {
-            NumberFormat formatter = new DecimalFormat("#000");
+            NumberFormat formatter = NumberFormat.getFormat(3, 0);
             UmaSaveData umaSaveData = new UmaSaveData();
             umaSaveData.state = UmaState.TRAIN_DAY;
             

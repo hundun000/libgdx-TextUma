@@ -1,9 +1,5 @@
 package hundun.gdxgame.textuma.core.data;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
