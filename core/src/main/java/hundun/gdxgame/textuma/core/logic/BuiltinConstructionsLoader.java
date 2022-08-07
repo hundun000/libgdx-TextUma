@@ -10,7 +10,10 @@ import hundun.gdxgame.textuma.core.logic.handler.race.NextRaceRecordNodeActionHa
 import hundun.gdxgame.textuma.core.logic.handler.race.ReplayRaceRecordNodeActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.race.StartRaceActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.train.FreeTrainActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.train.PowerTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.train.RunningTrainActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.train.SwimmingTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
@@ -36,26 +39,16 @@ public class BuiltinConstructionsLoader {
     }
     
     private void initProviders() {
-        {
-            UmaActionHandler construction = new StartRaceActionHandler(game);
-            constructions.add(construction);
-        }
-        {
-            UmaActionHandler construction = new NextRaceRecordNodeActionHandler(game);
-            constructions.add(construction);
-        }
-        {
-            UmaActionHandler construction = new ReplayRaceRecordNodeActionHandler(game);
-            constructions.add(construction);
-        }
-        {
-            UmaActionHandler construction = new EndRaceRecordNodeActionHandler(game);
-            constructions.add(construction);
-        }
-        {
-            BaseTrainActionHandler construction = new RunningTrainActionHandler(game);
-            constructions.add(construction);
-        }
+
+        constructions.add(new StartRaceActionHandler(game));
+        constructions.add(new NextRaceRecordNodeActionHandler(game));
+        constructions.add(new ReplayRaceRecordNodeActionHandler(game));
+        constructions.add(new EndRaceRecordNodeActionHandler(game));
+
+        constructions.add(new RunningTrainActionHandler(game));
+        constructions.add(new SwimmingTrainActionHandler(game));
+        constructions.add(new PowerTrainActionHandler(game));
+        constructions.add(new FreeTrainActionHandler(game));
     }
     
     public static ResourcePack toPack(Map<String, Integer> map) {

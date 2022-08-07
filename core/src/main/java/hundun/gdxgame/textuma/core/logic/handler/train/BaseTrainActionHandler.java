@@ -77,15 +77,21 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
         
         game.getModelContext().getUmaManager().trainAndNextDay(
                 "Train done.",
-                outputComponent.getOutputCostPack().getModifiedValues(),
+                outputComponent.getOutputCostPack() != null ?
+                        outputComponent.getOutputCostPack().getModifiedValues() : null,
                 outputComponent.getOutputGainPack().getModifiedValues()
                 );
         
     }
 
     @Override
-    public boolean canClickEffect() {
-        return game.getModelContext().getUmaManager().getState() == UmaState.TRAIN_DAY;
+    public ClickEffectType canClickEffect() {
+        if (game.getModelContext().getUmaManager().getState() != UmaState.TRAIN_DAY) {
+            return ClickEffectType.CANNOT_BY_STATE;
+        } else if (!outputComponent.canOutput()) {
+            return ClickEffectType.CANNOT_BY_COST;
+        }
+        return ClickEffectType.CAN;
     }
     
     @Override

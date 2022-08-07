@@ -26,17 +26,20 @@ public class StartRaceActionHandler extends BaseRaceActionHandler {
     }
 
     @Override
-    public boolean canClickEffect() {
-        return game.getModelContext().getUmaManager().getState() == UmaState.RACE_DAY_RACE_READY;
+    public ClickEffectType canClickEffect() {
+        if (game.getModelContext().getUmaManager().getState() != UmaState.RACE_DAY_RACE_READY) {
+            return ClickEffectType.CANNOT_BY_STATE;
+        }
+        return ClickEffectType.CAN;
     }
 
 
     
 
 
-    @Override
-    public String getPopupInfo() {
-        return this.getClass().getSimpleName() + " PopupInfo";
-    }
+//    @Override
+//    public String getPopupInfo() {
+//        return this.getClass().getSimpleName() + " PopupInfo";
+//    }
 
 }

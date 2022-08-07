@@ -13,20 +13,18 @@ import hundun.gdxgame.textuma.share.framework.util.JavaHighVersionFeature;
  * @author hundun
  * Created on 2022/08/03
  */
-public class RunningTrainActionHandler extends BaseTrainActionHandler {
+public class FreeTrainActionHandler extends BaseTrainActionHandler {
 
-    public RunningTrainActionHandler(TextUmaGame game) {
-        super(game, UserActionId.RUNNING_TRAIN);
+    public FreeTrainActionHandler(TextUmaGame game) {
+        super(game, UserActionId.FREE_TRAIN);
         
         this.descriptionPackage = UmaActionHandler.TRAIN_DESCRIPTION_PACKAGE;
     
         TrainOutputComponent outputComponent = new TrainOutputComponent(this);
-        outputComponent.setOutputCostPack(BuiltinConstructionsLoader.toPack(JavaHighVersionFeature.mapOf(
-                ResourceType.COIN, 100
-                )));
         outputComponent.setOutputGainPack(BuiltinConstructionsLoader.toPack(JavaHighVersionFeature.mapOf(
-                ResourceType.HORSE_SPEED, 25,
-                ResourceType.HORSE_POWER, 10
+                ResourceType.HORSE_SPEED, 5,
+                ResourceType.HORSE_STAMINA, 5,
+                ResourceType.HORSE_POWER, 5
                 )));
         this.setOutputComponent(outputComponent);
         

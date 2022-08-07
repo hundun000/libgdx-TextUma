@@ -50,23 +50,14 @@ public class GameAreaControlNode<T_GAME extends BaseHundunGame> extends Table {
         changeVersion(longVersion);
     }
 
-    private Drawable getNewImage(boolean longVersion) {
-        if (longVersion) {
-            Drawable drawable = BasePlayScreen.createBlackBoard(100, 50);
-            return drawable;
-        } else {
-            Drawable drawable = BasePlayScreen.createBlackBoard(75, 50);
-            return drawable;
-        }
-    }
 
     public void changeVersion(boolean enable) {
         //this.setBackground(getNewImage(enable));
         this.content.contentSetEnable(enable);
         if (enable) {
-            this.content.contentSetText(text);
+            this.content.contentSetText("To " + text);
         } else {
-            this.content.contentSetText("   " + text);
+            this.content.contentSetText("In " + text);
         }
     }
 

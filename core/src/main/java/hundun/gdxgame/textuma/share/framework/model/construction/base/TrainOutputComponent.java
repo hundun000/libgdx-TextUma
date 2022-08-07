@@ -104,7 +104,7 @@ public class TrainOutputComponent {
         return outputCostPack != null;
     }
 
-    protected boolean canOutput() {
+    public boolean canOutput() {
         if (!hasCost()) {
             return true;
         }

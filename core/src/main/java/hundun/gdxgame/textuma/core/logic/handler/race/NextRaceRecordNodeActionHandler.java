@@ -24,17 +24,20 @@ public class NextRaceRecordNodeActionHandler extends BaseRaceActionHandler {
     }
 
     @Override
-    public boolean canClickEffect() {
-        return game.getModelContext().getUmaManager().waitingNextRaceRecordNode();
+    public ClickEffectType canClickEffect() {
+        if (!game.getModelContext().getUmaManager().waitingNextRaceRecordNode()) {
+            return ClickEffectType.CANNOT_BY_STATE;
+        }
+        return ClickEffectType.CAN;
     }
 
 
     
 
 
-    @Override
-    public String getPopupInfo() {
-        return this.getClass().getSimpleName() + " PopupInfo";
-    }
+//    @Override
+//    public String getPopupInfo() {
+//        return this.getClass().getSimpleName() + " PopupInfo";
+//    }
 
 }

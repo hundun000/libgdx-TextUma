@@ -1,8 +1,11 @@
 package hundun.gdxgame.textuma.core.logic.manager;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
 
@@ -25,11 +28,13 @@ import hundun.simulationgame.umamusume.race.RacePrototypeFactory;
 import hundun.simulationgame.umamusume.race.RaceSituation;
 import hundun.simulationgame.umamusume.race.TrackWetType;
 import hundun.simulationgame.umamusume.record.IRecorder;
+import hundun.simulationgame.umamusume.record.RecordPackage.EndRecordNode.EndRecordHorseInfo;
 import hundun.simulationgame.umamusume.record.RecordPackage.RecordNode;
 import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.Translator;
 import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.StrategyPackage;
 import hundun.simulationgame.umamusume.record.text.CharImageRecorder;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
+import hundun.simulationgame.umamusume.util.JavaFeatureForGwt;
 
 /**
  * @author hundun
@@ -59,7 +64,13 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
         
         
         Translator translator = Translator.Factory.english();
-        StrategyPackage strategyPackage = StrategyPackage.Factory.longWidth();
+        StrategyPackage strategyPackage = new StrategyPackage();
+        strategyPackage.setHorsePositionBarMaxWidth(30);
+        strategyPackage.setCameraProcessBarWidth(25);
+        strategyPackage.setCameraProcessBarChar1("█");
+        strategyPackage.setCameraProcessBarChar2("▓");
+        strategyPackage.setCameraProcessBarChar3("░");
+
         // no GUTS WISDOM
         strategyPackage.setHorseRaceStartTemplate(
                 "${TRACK_PART}: ${NAME_PART} "
@@ -133,7 +144,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
             }
             toNext = waitingNextRaceRecordNode() && skipCount > 0;
         }
-        Gdx.app.log(this.getClass().getSimpleName(), "nextLimitOrEventRaceRecordNode result = " + umaSaveData.currentRaceRecordNodeIndex);
+        //Gdx.app.log(this.getClass().getSimpleName(), "nextLimitOrEventRaceRecordNode result = " + umaSaveData.currentRaceRecordNodeIndex);
         checkUiByAreaAndState(playScreen.getArea());
     }
     
@@ -155,11 +166,15 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
         currentRaceSituation.addHorse(base, base.getDefaultRunStrategyType());
         
         currentRaceSituation.calculateResult();
-        Gdx.app.log(this.getClass().getSimpleName(), "Race start and calculateResult done, will displayer.printRecordPackage");
-        displayer.printRecordPackage();
+        Gdx.app.log(this.getClass().getSimpleName(), "Race start and calculateResult done");
+        //displayer.printRecordPackage();
         
         setStateAndLog(UmaState.RACE_DAY_RACE_HAS_RESULT_RECORD);
         umaSaveData.currentRaceRecordNodes = displayer.getRecordPackage().getNodes();
+        umaSaveData.sortedRaceEndRecordNode = displayer.getRecordPackage().getEndNode().getHorseInfos().stream()
+                .sorted(Comparator.comparing(EndRecordHorseInfo::getReachTick))
+                .collect(Collectors.toList())
+                ;
         
         replayRaceRecord();
     }
@@ -170,6 +185,18 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
         
     }
 
+    private Integer getNextRaceTurnTimeDiff() {
+        int currentTurn = (int) game.getModelContext().getStorageManager().getResourceNumOrZero(ResourceType.TURN);
+        Integer nextRaceTurn = umaSaveData.turnConfigMap.entrySet().stream()
+            .filter(entry -> entry.getKey() > currentTurn)
+            .sorted(Comparator.comparing(Entry<Integer, TurnConfig>::getKey))
+            .map(entry -> entry.getKey())
+            .findFirst()
+            .orElseGet(() -> null)
+            ;
+        return nextRaceTurn != null ? (nextRaceTurn - currentTurn) : null;
+    }
+    
     private void nextDay() {
         game.getModelContext().getStorageManager().modifyAllResourceNum(
                 JavaHighVersionFeature.mapOf(ResourceType.TURN, 1L), 
@@ -192,11 +219,20 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                 case ResourceType.HORSE_SPEED:
                     horsePrototype.setBaseSpeed(horsePrototype.getBaseSpeed() + resourcePair.getAmount().intValue());
                     break;
+                case ResourceType.HORSE_STAMINA:
+                    horsePrototype.setBaseStamina(horsePrototype.getBaseStamina() + resourcePair.getAmount().intValue());
+                    break;
+                case ResourceType.HORSE_POWER:
+                    horsePrototype.setBasePower(horsePrototype.getBasePower() + resourcePair.getAmount().intValue());
+                    break;
                 default:
                     break;
             }
         });
-        game.getModelContext().getStorageManager().modifyAllResourceNum(costList, false);
+        if (costList != null) {
+            game.getModelContext().getStorageManager().modifyAllResourceNum(costList, false);
+        }
+        
         
         Gdx.app.log(this.getClass().getSimpleName(), "train done, gain = " + gainList.toString());
         nextDay();
@@ -220,9 +256,28 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                     List<HorsePrototype> rivalHorses = currentTurnConfig.rivalHorses;
                     playScreen.getMainInfoBoard().updateAsRaceReady(racePrototype, rivalHorses);
                 } else if (getState() == UmaState.RACE_DAY_RACE_HAS_RESULT_RECORD) {
-                    playScreen.getMainInfoBoard().updateAsRaceRecordNode(umaSaveData.currentRaceRecordNodes.get(umaSaveData.currentRaceRecordNodeIndex));
+                    if (waitingEndRaceRecord()) {
+                        playScreen.getMainInfoBoard().updateAsRaceEndResult(
+                                umaSaveData.sortedRaceEndRecordNode,
+                                currentTurnConfig.rankToAwardMap
+                                );
+                    } else {
+                        playScreen.getMainInfoBoard().updateAsRaceRecordNode(umaSaveData.currentRaceRecordNodes.get(umaSaveData.currentRaceRecordNodeIndex));
+                    }
+                    
                 } else {
-                    playScreen.getMainInfoBoard().updateAsText("Not race-day.");
+                    Integer nextRaceTurnTimeDiff = getNextRaceTurnTimeDiff();
+                    if (nextRaceTurnTimeDiff != null) {
+                        playScreen.getMainInfoBoard().updateAsText(JavaFeatureForGwt.stringFormat(
+                                "Not race-day now. The next race is in %s %s.", 
+                                nextRaceTurnTimeDiff,
+                                nextRaceTurnTimeDiff > 1 ? "days" : "day"
+                                ));
+                    } else {
+                        playScreen.getMainInfoBoard().updateAsText(
+                                "No more race-day."
+                                );
+                    }
                 }
                 break;
             default:
@@ -239,7 +294,17 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
     
     @Override
     public void endRaceRecord() {
+        EndRecordHorseInfo playerHorseInfo = umaSaveData.sortedRaceEndRecordNode.stream()
+                .filter(horseInfo -> horseInfo.getHorseName().equals(umaSaveData.playerHorse.getCharImage()))
+                .findAny()
+                .get()
+                ;
+        int rank = umaSaveData.sortedRaceEndRecordNode.indexOf(playerHorseInfo);
+        long award = getCurrentTurnConfig().rankToAwardMap.get(rank);
+        game.getModelContext().getStorageManager().modifyAllResourceNum(
+                JavaFeatureForGwt.mapOf(ResourceType.COIN, award), true);
         umaSaveData.currentRaceRecordNodes = null;
+        umaSaveData.sortedRaceEndRecordNode = null;
         nextDay();
     }
     @Override

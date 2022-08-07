@@ -1,6 +1,8 @@
 package hundun.gdxgame.textuma.core.ui.component;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.IntStream;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Touchable;
@@ -22,7 +24,9 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.simulationgame.umamusume.horse.HorsePrototype;
 import hundun.simulationgame.umamusume.race.RacePrototype;
 import hundun.simulationgame.umamusume.race.RaceSituation;
+import hundun.simulationgame.umamusume.record.RecordPackage.EndRecordNode;
 import hundun.simulationgame.umamusume.record.RecordPackage.RecordNode;
+import hundun.simulationgame.umamusume.record.RecordPackage.EndRecordNode.EndRecordHorseInfo;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
 
 
@@ -148,9 +152,9 @@ public class MainInfoBoard extends Table {
 
 
     private static class MainInfoHelper {
+
         
-        
-        private static void buildOneHorseStatus(Table table, TextUmaGame game, 
+        private static void buildOneInfo(Table table, TextUmaGame game, 
                 String key, Object value, ResourcePair gainPair) {
             table.add(new Label(key, game.getButtonSkin(), TextUmaGame.GAME_WORD_SKIN_KEY));
             table.add(new Label(": ", game.getButtonSkin()));
@@ -172,18 +176,18 @@ public class MainInfoBoard extends Table {
                 table.add(new Label(trainDescription, game.getButtonSkin())).colspan(5).row();
             }
             
-            MainInfoHelper.buildOneHorseStatus(table, game, "Name", horsePrototype.getName(), null);
-            MainInfoHelper.buildOneHorseStatus(table, game, 
+            MainInfoHelper.buildOneInfo(table, game, "Name", horsePrototype.getName(), null);
+            MainInfoHelper.buildOneInfo(table, game, 
                     game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_SPEED), 
                     horsePrototype.getBaseSpeed(),
                     gainList == null ? null : gainList.stream().filter(it -> it.getType().equals(ResourceType.HORSE_SPEED)).findFirst().orElseGet(() -> null)
                     );
-            MainInfoHelper.buildOneHorseStatus(table, game, 
+            MainInfoHelper.buildOneInfo(table, game, 
                     game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_STAMINA), 
                     horsePrototype.getBaseStamina(),
                     gainList == null ? null : gainList.stream().filter(it -> it.getType().equals(ResourceType.HORSE_STAMINA)).findFirst().orElseGet(() -> null)
                     );
-            MainInfoHelper.buildOneHorseStatus(table, game, 
+            MainInfoHelper.buildOneInfo(table, game, 
                     game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_POWER), 
                     horsePrototype.getBasePower(),
                     gainList == null ? null : gainList.stream().filter(it -> it.getType().equals(ResourceType.HORSE_POWER)).findFirst().orElseGet(() -> null)
@@ -195,15 +199,49 @@ public class MainInfoBoard extends Table {
             
             table.add(new Label("RaceReady", game.getButtonSkin())).colspan(5).row();
             
-            MainInfoHelper.buildOneHorseStatus(table, game, "Name", racePrototype.getName(), null);
-            MainInfoHelper.buildOneHorseStatus(table, game, 
+            MainInfoHelper.buildOneInfo(table, game, "Name", racePrototype.getName(), null);
+            MainInfoHelper.buildOneInfo(table, game, 
                     "Length", 
                     racePrototype.getLength(),
                     null
                     );
         }
 
+        public static void buildRaceEnd(Table table, TextUmaGame game,
+                List<EndRecordHorseInfo> sortedRaceEndRecordNode, Map<Integer, Integer> rankToAwardMap) {
+            
+            table.add(new Label("RaceEnd", game.getButtonSkin())).colspan(5).row();
+            for (int i = 0; i < sortedRaceEndRecordNode.size(); i++) {
+                EndRecordHorseInfo horseInfo = sortedRaceEndRecordNode.get(i);
+                int prize = rankToAwardMap.get(i);
+                buildOnePrize(table, game, horseInfo, prize);
+            }
 
+            
+        }
+
+        private static void buildOnePrize(Table table, TextUmaGame game, EndRecordHorseInfo horseInfo, int prize) {
+            table.add(new Label(horseInfo.getHorseName(), game.getButtonSkin())).padRight(5);
+            table.add(new Label(horseInfo.getReachTimeText(), game.getButtonSkin())).padRight(5);
+            table.add(new Label(game.getGameDictionary().resourceIdToShowName(ResourceType.COIN), game.getButtonSkin(), TextUmaGame.GAME_WORD_SKIN_KEY));
+            table.add(new Label("x", game.getButtonSkin()));
+            table.add(new Label(String.valueOf(prize), game.getButtonSkin()));
+            table.row();
+        }
+
+
+    }
+
+
+    public void updateAsRaceEndResult(List<EndRecordHorseInfo> sortedRaceEndRecordNode, Map<Integer, Integer> rankToAwardMap) {
+        this.clearChildren();
+        
+        MainInfoHelper.buildRaceEnd(this, parent.game, sortedRaceEndRecordNode, rankToAwardMap);
+        
+        if (parent.game.debugMode) {
+            this.debug();
+        }
+        
     }
     
     

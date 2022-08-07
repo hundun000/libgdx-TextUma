@@ -49,7 +49,10 @@ public class TextUmaGameConfig extends ChildGameConfig {
                 UserActionId.END_RACE_RECORD
         ));
         areaShownConstructionIds.put(GameArea.AREA_TRAIN, JavaHighVersionFeature.arraysAsList(
-                UserActionId.RUNNING_TRAIN
+                UserActionId.RUNNING_TRAIN,
+                UserActionId.SWIMMING_TRAIN,
+                UserActionId.POWER_TRAIN,
+                UserActionId.FREE_TRAIN
         ));
 //        areaShownConstructionIds.put(GameArea.AREA_RECORD, JavaHighVersionFeature.arraysAsList(
 //                UserActionId.RECORD_PRE_PAGE,
@@ -60,17 +63,17 @@ public class TextUmaGameConfig extends ChildGameConfig {
         this.setAreaShowEntityByOwnAmountConstructionIds(areaShownConstructionIds);
         
         Map<String, List<String>> areaShownResourceIds = new HashMap<>(); 
-        areaShownResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
-                ResourceType.TURN,
-                ResourceType.COIN
-        ));
+//        areaShownResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
+//                ResourceType.TURN,
+//                ResourceType.COIN
+//        ));
         this.setAreaShowEntityByOwnAmountResourceIds(areaShownResourceIds);
         
         Map<String, List<String>> areaShowEntityByChangeAmountResourceIds = new HashMap<>(); 
-        areaShowEntityByChangeAmountResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
-                ResourceType.TURN,
-                ResourceType.COIN
-        ));
+//        areaShowEntityByChangeAmountResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
+//                ResourceType.TURN,
+//                ResourceType.COIN
+//        ));
         this.setAreaShowEntityByChangeAmountResourceIds(areaShowEntityByChangeAmountResourceIds);
         
         StarterData starterData = new StarterData();
@@ -101,6 +104,9 @@ public class TextUmaGameConfig extends ChildGameConfig {
             UmaSaveData umaSaveData = new UmaSaveData();
             umaSaveData.state = UmaState.TRAIN_DAY;
             
+            int SAME_GUTS = 600;
+            int SAME_WISDOM = 200;
+            
             {
                 HorsePrototype horsePrototype;
                 horsePrototype = new HorsePrototype();
@@ -108,8 +114,8 @@ public class TextUmaGameConfig extends ChildGameConfig {
                 horsePrototype.setBaseSpeed((int) (600* 1.05));
                 horsePrototype.setBaseStamina((int) (600* 1.05));
                 horsePrototype.setBasePower((int) (600* 1.05));
-                horsePrototype.setBaseGuts((int) (600* 1.05));
-                horsePrototype.setBaseWisdom((int) (200* 1.05));
+                horsePrototype.setBaseGuts(SAME_GUTS);
+                horsePrototype.setBaseWisdom(SAME_WISDOM);
                 horsePrototype.setDefaultRunStrategyType(RunStrategyType.FRONT);
                 HorsePrototypeFactory.fillDefaultFields(horsePrototype);
                 horsePrototype.setCharImage("Your");
@@ -120,8 +126,7 @@ public class TextUmaGameConfig extends ChildGameConfig {
             {
                 HorsePrototype horsePrototype;
                 TurnConfig turnConfig = new TurnConfig();
-                turnConfig.rivalHorses = new ArrayList<>();
-                
+
                 RacePrototype racePrototype;
                 racePrototype = new RacePrototype();
                 racePrototype.setName("ShortDemoRace");
@@ -131,19 +136,34 @@ public class TextUmaGameConfig extends ChildGameConfig {
                 racePrototype.setDefaultHorseNum(4);
                 turnConfig.race = racePrototype;
                 
-                for (int i = 1; i <= 5; i++) {
+                int numRival = racePrototype.getDefaultHorseNum() - 1;
+                turnConfig.rivalHorses = new ArrayList<>();
+                RunStrategyType[] rivalRunStrategyTypes = new RunStrategyType[] {
+                        RunStrategyType.FIRST, 
+                        RunStrategyType.FRONT, 
+                        RunStrategyType.BACK, 
+                        RunStrategyType.TAIL
+                        };
+                for (int i = 0; i < numRival; i++) {
                     horsePrototype = new HorsePrototype();
-                    horsePrototype.setName("SilenceSuzuka" + formatter.format(i));
-                    horsePrototype.setBaseSpeed(600 + 20 * i);
-                    horsePrototype.setBaseStamina(600 - 10 * i);
-                    horsePrototype.setBasePower(600 - 10 * i);
-                    horsePrototype.setBaseGuts(600);
-                    horsePrototype.setBaseWisdom(200);
-                    horsePrototype.setDefaultRunStrategyType(RunStrategyType.FIRST);
+                    horsePrototype.setName("Rival-race1-" + i);
+                    horsePrototype.setBaseSpeed(550);
+                    horsePrototype.setBaseStamina(550);
+                    horsePrototype.setBasePower(550);
+                    horsePrototype.setBaseGuts(SAME_GUTS);
+                    horsePrototype.setBaseWisdom(SAME_WISDOM);
+                    horsePrototype.setDefaultRunStrategyType(rivalRunStrategyTypes[i]);
                     HorsePrototypeFactory.fillDefaultFields(horsePrototype);
-                    horsePrototype.setCharImage("Rival" + i);
+                    horsePrototype.setCharImage("Rival" + (i + 1));
                     turnConfig.rivalHorses.add(horsePrototype);
                 }
+                
+                int maxAward = 100 + 100 * racePrototype.getDefaultHorseNum();
+                turnConfig.rankToAwardMap = new HashMap<>();
+                for (int i = 0; i< racePrototype.getDefaultHorseNum(); i++) {
+                    turnConfig.rankToAwardMap.put(i, maxAward - (50 * i));
+                }
+                
                 umaSaveData.turnConfigMap.put(3, turnConfig);
             } 
             

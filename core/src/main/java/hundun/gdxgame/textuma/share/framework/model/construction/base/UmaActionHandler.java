@@ -77,8 +77,15 @@ public abstract class UmaActionHandler {
 
     public abstract void onEffectableClick();
 
-    public abstract boolean canClickEffect();
+    public abstract ClickEffectType canClickEffect();
 
+    public enum ClickEffectType {
+        CANNOT_BY_COST,
+        CANNOT_BY_STATE,
+        CAN
+        ;
+    }
+    
     public String getButtonDescroption() {
         return this.getName();
     }

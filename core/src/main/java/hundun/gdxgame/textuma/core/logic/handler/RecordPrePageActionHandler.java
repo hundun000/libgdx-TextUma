@@ -23,9 +23,9 @@ public class RecordPrePageActionHandler extends BaseRecordActionHandler {
     }
 
     @Override
-    public boolean canClickEffect() {
+    public ClickEffectType canClickEffect() {
         // TODO Auto-generated method stub
-        return false;
+        return ClickEffectType.CANNOT_BY_STATE;
     }
 
     @Override

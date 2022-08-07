@@ -42,10 +42,10 @@ public class PopupInfoBoard extends Table {
     
 
 
-    public void updateAsTrainActionHint(BaseTrainActionHandler model) {
+    public void updateAsTrainActionHint(BaseTrainActionHandler model, boolean afford) {
         this.clearChildren();
 
-        TrainInfoHelper.work(this, model);
+        TrainInfoHelper.work(this, model, afford);
 
         if (parent.game.debugMode) {
             this.debug();
@@ -64,17 +64,25 @@ public class PopupInfoBoard extends Table {
 
     private static class TrainInfoHelper {
         
-        private static void work(PopupInfoBoard table, BaseTrainActionHandler model) {
+        private static void work(PopupInfoBoard table, BaseTrainActionHandler model, boolean afford) {
             table.clearChildren();
 
-            table.add(new Label("Cost: ", table.parent.game.getButtonSkin()));
-            model.getOutputComponent().getOutputCostPack().getModifiedValues().forEach(it -> 
-                buildOneGain(table, table.parent.game, 
-                        table.parent.game.getGameDictionary().resourceIdToShowName(it.getType()), 
-                        it.getAmount()
-                        )
-            );
-            table.row();
+            if (!afford) {
+                table.add(new Label("(Can't afford!)", table.parent.game.getButtonSkin()));
+                table.row();
+            }
+            
+            if (model.getOutputComponent().getOutputCostPack() != null) {
+                table.add(new Label("Cost: ", table.parent.game.getButtonSkin()));
+                model.getOutputComponent().getOutputCostPack().getModifiedValues().forEach(it -> 
+                    buildOneGain(table, table.parent.game, 
+                            table.parent.game.getGameDictionary().resourceIdToShowName(it.getType()), 
+                            it.getAmount()
+                            )
+                );
+                table.row();
+            }
+            
             table.add(new Label("Gain: ", table.parent.game.getButtonSkin()));
             model.getOutputComponent().getOutputGainPack().getModifiedValues().forEach(it -> 
                 buildOneGain(table, table.parent.game, 
@@ -87,8 +95,8 @@ public class PopupInfoBoard extends Table {
         
         private static void buildOneGain(Table table, TextUmaGame game, String key, Object value) {
             table.add(new Label(key, game.getButtonSkin(), TextUmaGame.GAME_WORD_SKIN_KEY));
-            table.add(new Label(": ", game.getButtonSkin()));
             table.add(new Label(value.toString(), game.getButtonSkin()));
+            table.add(new Label("; ", game.getButtonSkin()));
         }
         
         
@@ -97,7 +105,7 @@ public class PopupInfoBoard extends Table {
     public void updateAsRaceActionHint(BaseRaceActionHandler model) {
         this.clearChildren();
 
-        this.add(new Label(model.getPopupInfo(), parent.game.getButtonSkin()));
+        //this.add(new Label(model.getPopupInfo(), parent.game.getButtonSkin()));
 
         if (parent.game.debugMode) {
             this.debug();

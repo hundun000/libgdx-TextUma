@@ -17,6 +17,7 @@ import hundun.gdxgame.textuma.core.ui.component.TextSkinButton;
 import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler.ClickEffectType;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst;
 
@@ -38,17 +39,20 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
 
 
     private void clickedOrEnter() {
+        ClickEffectType clickEffectType = model.canClickEffect();
         if (model instanceof BaseTrainActionHandler) {
-            if (model.canClickEffect()) {
-                parent.getSecondaryInfoBoard().updateAsTrainActionHint((BaseTrainActionHandler)model);
+            if (clickEffectType == ClickEffectType.CAN) {
+                parent.getSecondaryInfoBoard().updateAsTrainActionHint((BaseTrainActionHandler)model, true);
+            } else if (clickEffectType == ClickEffectType.CANNOT_BY_COST) {
+                parent.getSecondaryInfoBoard().updateAsTrainActionHint((BaseTrainActionHandler)model, false);
             } else {
-                parent.getSecondaryInfoBoard().updateAsText("Disabled");
+                parent.getSecondaryInfoBoard().updateAsText("");
             }
         } else if (model instanceof BaseRaceActionHandler) {
-            if (model.canClickEffect()) {
+            if (clickEffectType == ClickEffectType.CAN) {
                 parent.getSecondaryInfoBoard().updateAsRaceActionHint((BaseRaceActionHandler) model);
             } else {
-                parent.getSecondaryInfoBoard().updateAsText("Disabled");
+                parent.getSecondaryInfoBoard().updateAsText("");
             }
             
         }
@@ -70,7 +74,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         clickEffectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (model.canClickEffect()) {
+                if (model.canClickEffect() == ClickEffectType.CAN) {
                     Gdx.app.log("clickEffectButton", "node of " + model.name + "clicked and can effect");
                     model.onEffectableClick();
                 } else {
@@ -154,7 +158,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         workingLevelLabel.setText(model.getWorkingLevelDescroption());
 
         // ------ update clickable-state ------
-        boolean canClickEffect = model.canClickEffect();
+        boolean canClickEffect = model.canClickEffect() == ClickEffectType.CAN;
         //clickEffectButton.setTouchable(clickable ? Touchable.enabled : Touchable.disabled);
 
 
