@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
  * Created on 2022/01/22
  */
 public class PlayScreenLayoutConst {
-    public int CONSTRUCION_BOARD_ROOT_BOX_HEIGHT = 200;
+    public int CONSTRUCION_BOARD_ROOT_BOX_HEIGHT = 100;
     public int CONSTRUCION_CHILD_BOX_WIDTH = 120;
     public int CONSTRUCION_CHILD_BOX_BUTTON_HEIGHT = 30;
     public int CONSTRUCION_CHILD_BOX_NAME_HEIGHT = 50;

@@ -31,6 +31,7 @@ public class UmaSaveData {
     public static class TurnConfig {
         public RacePrototype race;
         public List<HorsePrototype> rivalHorses;
+        public Map<Integer, Integer> rankToAwardMap;
     }
     
 }

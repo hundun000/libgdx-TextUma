@@ -47,7 +47,7 @@ public class TextureManager extends AbstractTextureManager {
             defaultAreaBack = regions[0][0];
             gameAreaBackMap.put(GameArea.AREA_RACE, regions[0][1]);
             gameAreaBackMap.put(GameArea.AREA_TRAIN, regions[0][2]);
-            gameAreaBackMap.put(GameArea.AREA_RECORD, regions[0][3]);
+//            gameAreaBackMap.put(GameArea.AREA_RECORD, regions[0][3]);
         }
         
     }

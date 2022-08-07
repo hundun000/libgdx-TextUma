@@ -2,7 +2,7 @@ package hundun.gdxgame.textuma.share.framework.model.construction.base;
 
 import com.badlogic.gdx.Gdx;
 
-import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 
 
 /**

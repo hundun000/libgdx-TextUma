@@ -1,4 +1,4 @@
-package hundun.gdxgame.textuma.core.logic.handler;
+package hundun.gdxgame.textuma.core.logic.handler.train;
 
 import com.badlogic.gdx.Gdx;
 
@@ -6,6 +6,7 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
 import hundun.gdxgame.textuma.core.logic.manager.UmaManager.UmaState;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+import hundun.gdxgame.textuma.share.framework.model.construction.base.DescriptionPackage.ILevelDescroptionProvider;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainLevelComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
@@ -28,6 +29,7 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
         
     }
     
+    ILevelDescroptionProvider levelDescroptionProvider;
     
     /**
      * NotNull
@@ -100,6 +102,11 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
 
     public long calculateModifiedOutputCost(long baseValue, int level) {
         return (long) (baseValue * (1 + 0.2 * level));
+    }
+
+
+    public ILevelDescroptionProvider getLevelDescroptionProvider() {
+        return levelDescroptionProvider;
     }
 
 }

@@ -11,8 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
-import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.race.BaseRaceActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
@@ -21,6 +21,7 @@ import hundun.gdxgame.textuma.share.starter.ui.component.ResourceAmountPairNode;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.simulationgame.umamusume.horse.HorsePrototype;
 import hundun.simulationgame.umamusume.race.RacePrototype;
+import hundun.simulationgame.umamusume.race.RaceSituation;
 import hundun.simulationgame.umamusume.record.RecordPackage.RecordNode;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
 
@@ -127,6 +128,9 @@ public class MainInfoBoard extends Table {
     public void updateAsRaceRecordNode(RecordNode<TextFrameData> recordNode) {
         this.clearChildren();
 
+        this.add(new Label(recordNode.getTimeText(), parent.game.getButtonSkin()));
+        this.row();
+        
         if (recordNode.getContent().getRaceInfo() != null) {
             this.add(new Label(recordNode.getContent().getRaceInfo(), parent.game.getButtonSkin()));
             this.row();

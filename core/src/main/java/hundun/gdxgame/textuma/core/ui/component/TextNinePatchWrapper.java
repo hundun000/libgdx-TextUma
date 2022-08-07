@@ -25,8 +25,10 @@ public class TextNinePatchWrapper extends Table {
 
     public static BitmapFont boxBitmapFont = new BitmapFont(Gdx.files.internal("fonts/Amble-Regular-26.fnt"));
     //public static BitmapFont boxBitmapFont = new BitmapFont(Gdx.files.internal("fonts/BoxDrawing-26.fnt"));
-    static String[] corners = new String[]{"+", "+", "+", "+"};
-    //static String[] corners = new String[]{"┌", "┐", "└", "┘"};
+    //static String[] corners = new String[]{"+", "+", "+", "+"};
+    static String[] corners = new String[]{"┌", "┐", "└", "┘"};
+    static String vertical = "│";
+    static String horizontal = "─";
     
     public static TextNinePatchWrapper build(BasePlayScreen<?> parent, Actor content) {
         return type1(parent, content);
@@ -38,24 +40,24 @@ public class TextNinePatchWrapper extends Table {
         Skin styleOrSkin = parent.game.getButtonSkin();
         
         result.add(new Label(corners[0], styleOrSkin));
-        result.add(new Label("-", styleOrSkin)).left().expandX();
-        result.add(new Label("-", styleOrSkin)).right().expandX();
+        result.add(new Label(horizontal, styleOrSkin)).left().expandX();
+        result.add(new Label(horizontal, styleOrSkin)).right().expandX();
         result.add(new Label(corners[1], styleOrSkin)).row();
         
         Table left = new Table();
-        left.add(new Label("|", styleOrSkin)).top().expandY().row();
-        left.add(new Label("|", styleOrSkin)).bottom().expandY();
+        left.add(new Label(vertical, styleOrSkin)).top().expandY().row();
+        left.add(new Label(vertical, styleOrSkin)).bottom().expandY();
         result.add(left).fillY();
         result.add(content).colspan(2);
         Table right = new Table();
-        right.add(new Label("|", styleOrSkin)).top().expandY().row();
-        right.add(new Label("|", styleOrSkin)).bottom().expandY();
+        right.add(new Label(vertical, styleOrSkin)).top().expandY().row();
+        right.add(new Label(vertical, styleOrSkin)).bottom().expandY();
         result.add(right).fillY();
         result.row();
         
         result.add(new Label(corners[2], styleOrSkin));
-        result.add(new Label("-", styleOrSkin)).left().expandX();
-        result.add(new Label("-", styleOrSkin)).right().expandX();
+        result.add(new Label(horizontal, styleOrSkin)).left().expandX();
+        result.add(new Label(horizontal, styleOrSkin)).right().expandX();
         result.add(new Label(corners[3], styleOrSkin)).row();
         
         if (parent.game.debugMode) {

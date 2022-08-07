@@ -19,15 +19,15 @@ public abstract class UmaActionHandler {
 
 
     public static final DescriptionPackage RACE_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            null, null, null, "DO",
+            null, null, null, null,
             ILevelDescroptionProvider.EMPTY_IMP);
 
     public static final DescriptionPackage TRAIN_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            null, null, null, "DO",
-            ILevelDescroptionProvider.ONLY_LEVEL_IMP);
+            null, null, null, null,
+            ILevelDescroptionProvider.EMPTY_IMP);
 
     public static final DescriptionPackage RECORD_DESCRIPTION_PACKAGE = new DescriptionPackage(
-            null, null, null, "DO",
+            null, null, null, null,
             ILevelDescroptionProvider.WORKING_LEVEL_IMP);
 
     protected Random random = new Random();
@@ -80,7 +80,7 @@ public abstract class UmaActionHandler {
     public abstract boolean canClickEffect();
 
     public String getButtonDescroption() {
-        return descriptionPackage.getButtonDescroption();
+        return this.getName();
     }
 
 

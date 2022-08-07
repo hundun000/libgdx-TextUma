@@ -33,8 +33,8 @@ public class GameDictionary implements IGameDictionary {
                 return "area race";
             case GameArea.AREA_TRAIN:
                 return "area train";
-            case GameArea.AREA_RECORD:
-                return "area record";
+//            case GameArea.AREA_RECORD:
+//                return "area record";
             default:
                 return "[dic:" + gameAreaId + "]";
         }

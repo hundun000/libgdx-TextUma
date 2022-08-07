@@ -47,7 +47,7 @@ public class TextUmaGame extends BaseHundunGame {
         //this.skinFilePath = "skins/orange/skin/uiskin.json";
         desktopScale = 1;
         drawGameImageAndPlayAudio = true;
-        debugMode = true;
+        debugMode = false;
     }
     
     @Override

@@ -3,7 +3,7 @@ package hundun.gdxgame.textuma.share.framework.model.construction.base;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
 

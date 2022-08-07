@@ -27,6 +27,7 @@ import hundun.simulationgame.umamusume.race.TrackWetType;
 import hundun.simulationgame.umamusume.record.IRecorder;
 import hundun.simulationgame.umamusume.record.RecordPackage.RecordNode;
 import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.Translator;
+import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.StrategyPackage;
 import hundun.simulationgame.umamusume.record.text.CharImageRecorder;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
 
@@ -58,14 +59,15 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
         
         
         Translator translator = Translator.Factory.english();
+        StrategyPackage strategyPackage = StrategyPackage.Factory.longWidth();
         // no GUTS WISDOM
-        translator.setHorseRaceStartTemplate(
+        strategyPackage.setHorseRaceStartTemplate(
                 "${TRACK_PART}: ${NAME_PART} "
                 + "${SPEED_KEY}${SPEED_VALUE}, "
                 + "${STAMINA_KEY}${STAMINA_VALUE}, "
                 + "${POWER_KEY}${POWER_VALUE}\n");
         
-        this.displayer = new CharImageRecorder(translator);
+        this.displayer = new CharImageRecorder(translator, strategyPackage);
     }
     
     
@@ -194,7 +196,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                     break;
             }
         });
-        
+        game.getModelContext().getStorageManager().modifyAllResourceNum(costList, false);
         
         Gdx.app.log(this.getClass().getSimpleName(), "train done, gain = " + gainList.toString());
         nextDay();
@@ -237,6 +239,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
     
     @Override
     public void endRaceRecord() {
+        umaSaveData.currentRaceRecordNodes = null;
         nextDay();
     }
     @Override

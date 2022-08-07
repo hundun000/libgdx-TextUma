@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
-import hundun.gdxgame.textuma.core.logic.handler.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.race.BaseRaceActionHandler;
+import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.core.ui.component.TextNinePatchWrapper;
 import hundun.gdxgame.textuma.core.ui.component.TextSkinButton;
 import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
@@ -28,7 +28,7 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst
 public class BaseUserActionControlNode extends Table implements ILogicFrameListener {
     UmaPlayScreen parent;
     UmaActionHandler model;
-    Label constructionNameLabel;
+    //Label constructionNameLabel;
 
     Label workingLevelLabel;
 
@@ -63,7 +63,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         int BUTTON_CHILD_HEIGHT = playScreenLayoutConst.CONSTRUCION_CHILD_BOX_BUTTON_HEIGHT;
         int NAME_CHILD_HEIGHT = playScreenLayoutConst.CONSTRUCION_CHILD_BOX_NAME_HEIGHT;
 
-        this.constructionNameLabel = new Label("", parent.game.getButtonSkin());
+        //this.constructionNameLabel = new Label("", parent.game.getButtonSkin());
         //constructionNameLabel.setWrap(true);
 
         this.clickEffectButton = TextSkinButton.typeButton("", parent.game);
@@ -118,10 +118,10 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         
 
         // ------ this ------
-        this.add(constructionNameLabel)
-                .center()
-                .size(CHILD_WIDTH, NAME_CHILD_HEIGHT)
-                .row();
+//        this.add(constructionNameLabel)
+//                .center()
+//                .size(CHILD_WIDTH, NAME_CHILD_HEIGHT)
+//                .row();
         this.add(clickEffectButton)
                 .size(CHILD_WIDTH, BUTTON_CHILD_HEIGHT)
                 .row();
@@ -149,7 +149,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
             //Gdx.app.log("ConstructionView", model.getName() + " set to its view");
         }
         // ------ update text ------
-        constructionNameLabel.setText(model.getName());
+        //constructionNameLabel.setText(model.getName());
         clickEffectButton.contentSetText(model.getButtonDescroption());
         workingLevelLabel.setText(model.getWorkingLevelDescroption());
 

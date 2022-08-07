@@ -66,7 +66,7 @@ public class GameAreaControlNode<T_GAME extends BaseHundunGame> extends Table {
         if (enable) {
             this.content.contentSetText(text);
         } else {
-            this.content.contentSetText(" ".repeat(3) + text);
+            this.content.contentSetText("   " + text);
         }
     }
 

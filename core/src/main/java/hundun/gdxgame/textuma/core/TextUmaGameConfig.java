@@ -114,7 +114,7 @@ public class TextUmaGameConfig extends ChildGameConfig {
                 horsePrototype.setBaseWisdom((int) (200* 1.05));
                 horsePrototype.setDefaultRunStrategyType(RunStrategyType.FRONT);
                 HorsePrototypeFactory.fillDefaultFields(horsePrototype);
-                horsePrototype.setCharImage("Uma");
+                horsePrototype.setCharImage("Your");
                 umaSaveData.playerHorse = horsePrototype;
             }    
             
@@ -143,7 +143,7 @@ public class TextUmaGameConfig extends ChildGameConfig {
                     horsePrototype.setBaseWisdom(200);
                     horsePrototype.setDefaultRunStrategyType(RunStrategyType.FIRST);
                     HorsePrototypeFactory.fillDefaultFields(horsePrototype);
-                    horsePrototype.setCharImage("uma");
+                    horsePrototype.setCharImage("Rival" + i);
                     turnConfig.rivalHorses.add(horsePrototype);
                 }
                 umaSaveData.turnConfigMap.put(3, turnConfig);
