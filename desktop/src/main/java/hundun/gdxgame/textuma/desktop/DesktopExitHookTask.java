@@ -23,7 +23,7 @@ public class DesktopExitHookTask extends Thread {
     
     @Override
     public void run() {
-        game.getSaveTool().saveRootSaveData(SaveDataHelper.currentSituationToSaveData(game.getModelContext()));
+        game.saveCurrent();
         Gdx.app.log(this.getClass().getSimpleName(), "run done");
     }
 

@@ -52,7 +52,7 @@ public class GameDictionary implements IGameDictionary {
             case ResourceType.TURN:
                 return "Day";
             case ResourceType.COIN:
-                return "Coin";
+                return "Money";
             case ResourceType.HORSE_SPEED:
                 return "Speed";
             case ResourceType.HORSE_STAMINA:
@@ -62,5 +62,19 @@ public class GameDictionary implements IGameDictionary {
             default:
                 return "[dic:" + resourceId + "]";
         }
+    }
+    
+    @Override
+    public String gameWordToShowName(String gameWord) {
+        switch (gameWord) {
+            case GameWord.RUN_STRATEGY:
+                return "Strategy";
+            default:
+                return "[dic:" + gameWord + "]";
+        }
+    }
+    
+    public static class GameWord {
+        public static final String RUN_STRATEGY = "ENUM_GW@RUN_STRATEGY";
     }
 }

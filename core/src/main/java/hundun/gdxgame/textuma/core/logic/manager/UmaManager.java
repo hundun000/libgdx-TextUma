@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
@@ -21,20 +22,20 @@ import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
 import hundun.gdxgame.textuma.share.framework.util.JavaHighVersionFeature;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
-import hundun.simulationgame.umamusume.horse.HorsePrototype;
-import hundun.simulationgame.umamusume.horse.HorsePrototypeFactory;
-import hundun.simulationgame.umamusume.race.RacePrototype;
-import hundun.simulationgame.umamusume.race.RacePrototypeFactory;
-import hundun.simulationgame.umamusume.race.RaceSituation;
-import hundun.simulationgame.umamusume.race.TrackWetType;
-import hundun.simulationgame.umamusume.record.IRecorder;
-import hundun.simulationgame.umamusume.record.RecordPackage.EndRecordNode.EndRecordHorseInfo;
-import hundun.simulationgame.umamusume.record.RecordPackage.RecordNode;
-import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.Translator;
-import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.StrategyPackage;
+import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
+import hundun.simulationgame.umamusume.core.horse.HorsePrototypeFactory;
+import hundun.simulationgame.umamusume.core.race.RacePrototype;
+import hundun.simulationgame.umamusume.core.race.RacePrototypeFactory;
+import hundun.simulationgame.umamusume.core.race.RaceSituation;
+import hundun.simulationgame.umamusume.core.race.TrackWetType;
+import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
+import hundun.simulationgame.umamusume.record.base.IRecorder;
+import hundun.simulationgame.umamusume.record.base.RecordPackage.RecordNode;
+import hundun.simulationgame.umamusume.record.base.RecordPackage.EndRecordNode.EndRecordHorseInfo;
 import hundun.simulationgame.umamusume.record.text.CharImageRecorder;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
-import hundun.simulationgame.umamusume.util.JavaFeatureForGwt;
+import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.StrategyPackage;
+import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.Translator;
 
 /**
  * @author hundun
@@ -47,7 +48,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
     
     //TurnConfig currentTurnConfig;
     private final IRecorder<TextFrameData> displayer;
-    
+    private final Translator translator;
     // ------ replace-lombok ------
     
     public UmaState getState() {
@@ -63,7 +64,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
         this.game = game;
         
         
-        Translator translator = Translator.Factory.english();
+        this.translator = Translator.Factory.english();
         StrategyPackage strategyPackage = new StrategyPackage();
         strategyPackage.setHorsePositionBarMaxWidth(30);
         strategyPackage.setCameraProcessBarWidth(25);
@@ -130,27 +131,43 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
     static final int smallStepColdDownCountReset = BasePlayScreen.LOGIC_FRAME_PER_SECOND * 2;
     int smallStepColdDownCount = -1;
     
+    
     private void nextLimitOrEventRaceRecordNode(int skipCount) {
-        boolean toNext = waitingNextRaceRecordNode();        
-        while (toNext) {
-            umaSaveData.currentRaceRecordNodeIndex++;
-            RecordNode<TextFrameData> node = umaSaveData.currentRaceRecordNodes.get(umaSaveData.currentRaceRecordNodeIndex);
-            boolean isImportant = node.getContent().getEventInfo() != null && node.getContent().getRaceInfo() != null;
-            if (isImportant) {
-                smallStepColdDownCount = smallStepColdDownCountReset;
-                skipCount = 0;
+
+        RecordNode<TextFrameData> nextImportantNode = umaSaveData.currentRaceRecordNodes.stream()
+                .skip(umaSaveData.currentRaceRecordNodeIndex + 1)
+                .filter(node -> node.getContent().getEventInfo() != null && node.getContent().getRaceInfo() != null)
+                .findFirst()
+                .orElseGet(() -> null);
+        
+        if (nextImportantNode != null) {
+            int nextImportantNodeIndex = umaSaveData.currentRaceRecordNodes.indexOf(nextImportantNode);
+            if (nextImportantNodeIndex > umaSaveData.currentRaceRecordNodeIndex + skipCount) {
+                umaSaveData.currentRaceRecordNodeIndex = umaSaveData.currentRaceRecordNodeIndex + skipCount;
             } else {
-                skipCount--;
+                umaSaveData.currentRaceRecordNodeIndex = nextImportantNodeIndex;
+                smallStepColdDownCount = smallStepColdDownCountReset;
             }
-            toNext = waitingNextRaceRecordNode() && skipCount > 0;
+        } else {
+            umaSaveData.currentRaceRecordNodeIndex = umaSaveData.currentRaceRecordNodes.size() -1;
         }
-        //Gdx.app.log(this.getClass().getSimpleName(), "nextLimitOrEventRaceRecordNode result = " + umaSaveData.currentRaceRecordNodeIndex);
+
+        Gdx.app.log(this.getClass().getSimpleName(), "nextLimitOrEventRaceRecordNode result = " + umaSaveData.currentRaceRecordNodeIndex);
         checkUiByAreaAndState(playScreen.getArea());
     }
     
     @Override
     public void bigStepRaceRecordNode() {
+        int before = umaSaveData.currentRaceRecordNodeIndex;
         nextLimitOrEventRaceRecordNode(999999);
+        Gdx.app.log(this.getClass().getSimpleName(), 
+                JavaFeatureForGwt.stringFormat(
+                        "bigStepRaceRecordNode result = %s -> %s", 
+                        before,
+                        umaSaveData.currentRaceRecordNodeIndex
+                        )
+                );
+
     }
     
     @Override
@@ -209,6 +226,8 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
             setStateAndLog(UmaState.RACE_DAY_RACE_READY);
         }
         checkUiByAreaAndState(playScreen.getArea());
+        
+        game.saveCurrent();
     }
 
     public void trainAndNextDay(String trainDescription, List<ResourcePair> costList, List<ResourcePair> gainList) {
@@ -247,14 +266,19 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                 if (getState() == UmaState.TRAIN_DAY) {
                     playScreen.getMainInfoBoard().updateAsHorseStatus(umaSaveData.playerHorse, null, null);
                 } else {
-                    playScreen.getMainInfoBoard().updateAsText("Not train-day.");
+                    playScreen.getMainInfoBoard().updateAsHorseStatus(umaSaveData.playerHorse, "Not train-day.", null);
                 }
                 break;
             case GameArea.AREA_RACE:
                 if (getState() == UmaState.RACE_DAY_RACE_READY) {
                     RacePrototype racePrototype = currentTurnConfig.race;
-                    List<HorsePrototype> rivalHorses = currentTurnConfig.rivalHorses;
-                    playScreen.getMainInfoBoard().updateAsRaceReady(racePrototype, rivalHorses);
+                    Map<HorsePrototype, String> rivalHorsesToRunStrategyTextMap = currentTurnConfig.rivalHorses.stream()
+                            .collect(Collectors.toMap(
+                                    horse -> horse, 
+                                    horse -> translator.get(horse.getDefaultRunStrategyType()))
+                                    )
+                            ;
+                    playScreen.getMainInfoBoard().updateAsRaceReady(racePrototype, rivalHorsesToRunStrategyTextMap);
                 } else if (getState() == UmaState.RACE_DAY_RACE_HAS_RESULT_RECORD) {
                     if (waitingEndRaceRecord()) {
                         playScreen.getMainInfoBoard().updateAsRaceEndResult(
@@ -275,7 +299,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                                 ));
                     } else {
                         playScreen.getMainInfoBoard().updateAsText(
-                                "No more race-day."
+                                TextUmaGame.NO_MORE_RACE_MESSAGE
                                 );
                     }
                 }

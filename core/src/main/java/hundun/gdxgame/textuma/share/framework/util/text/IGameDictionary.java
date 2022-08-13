@@ -9,4 +9,6 @@ public interface IGameDictionary {
     String gameAreaIdToShowName(String gameAreaId);
 
     String resourceIdToShowName(String type);
+
+    String gameWordToShowName(String gameWord);
 }

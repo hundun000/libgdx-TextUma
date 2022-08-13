@@ -12,9 +12,9 @@ import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
  * @author hundun
  * Created on 2021/11/25
  */
-public class ResourceAmountPairNode<T_GAME extends BaseHundunGame> extends HorizontalGroup {
+public class ResourceAmountPairNode<T_GAME extends BaseHundunGame> extends BaseAmountPairNode<T_GAME> {
 
-    T_GAME game;
+    
 
     String resourceType;
     // ------ replace-lombok ------
@@ -22,27 +22,16 @@ public class ResourceAmountPairNode<T_GAME extends BaseHundunGame> extends Horiz
         return resourceType;
     }
 
-    Label image;
-    Label label;
-
     public ResourceAmountPairNode(T_GAME game, String resourceType) {
-        super();
-        this.game = game;
+        super(game);
         this.resourceType = resourceType;
         String textureRegion = game.getGameDictionary().resourceIdToShowName(resourceType);
-        this.image = new Label(textureRegion, game.getButtonSkin(), TextUmaGame.GAME_WORD_SKIN_KEY);
-        this.addActor(image);
-        this.label = new Label("", game.getButtonSkin());
-        this.addActor(label);
+        lazyInit(textureRegion);
     }
-
-    public void update(long amout) {
-        label.setText(
-                game.getTextFormatTool().format(amout)
-                );
+    
+    @Override
+    public BaseAmountPairNode<T_GAME> update(long amout) {
+        return super.update(game.getTextFormatTool().format(amout));
     }
-
-
-
 
 }

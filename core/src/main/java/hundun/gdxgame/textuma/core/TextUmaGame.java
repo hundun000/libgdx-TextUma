@@ -35,6 +35,8 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.menu.MenuScreen;
 public class TextUmaGame extends BaseHundunGame {
 
     public static final String GAME_WORD_SKIN_KEY = "game-word";
+
+    public static final String NO_MORE_RACE_MESSAGE = "No more race-day. This is the end of the demo version.";
     
     private ScreenContext screenContext;
     // ------ replace-lombok ------
@@ -76,6 +78,7 @@ public class TextUmaGame extends BaseHundunGame {
         screenContext.setMenuScreen(new MenuScreen<>(
                 this,
                 ScreenId.MENU,
+                "Text Uma",
                 new InputListener(){
                     @Override
                     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {

@@ -35,7 +35,7 @@ import hundun.gdxgame.textuma.share.starter.ui.component.GameImageDrawer;
 import hundun.gdxgame.textuma.share.starter.ui.component.StorageInfoBoard;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst;
-import hundun.simulationgame.umamusume.horse.HorsePrototype;
+import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
 
 /**
  * @author hundun
@@ -75,7 +75,7 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
         
         storageInfoTable = new StorageInfoBoard<TextUmaGame>(this);
         storageInfoTable.lazyInit(ResourceType.VALUES_FOR_SHOW_ORDER);
-        uiRootTable.add(TextNinePatchWrapper.build(this, storageInfoTable))
+        uiRootTable.add(TextNinePatchWrapper.build(this.game, storageInfoTable))
                 .height(layoutConst.STORAGE_BOARD_ROOT_BOX_HEIGHT)
                 .fill()
                 .colspan(2)
@@ -100,7 +100,7 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
                 ;
         
         gameAreaControlBoard = new GameAreaControlBoard<TextUmaGame>(this, GameArea.values);
-        uiRootTable.add(TextNinePatchWrapper.build(this, gameAreaControlBoard))
+        uiRootTable.add(TextNinePatchWrapper.build(this.game, gameAreaControlBoard))
                 .right()
                 .row()
                 ;
@@ -109,7 +109,7 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
         
         // impl switchable
         constructionControlBoard = new ScrollConstructionControlBoard(this);
-        uiRootTable.add(TextNinePatchWrapper.build(this, constructionControlBoard))
+        uiRootTable.add(TextNinePatchWrapper.build(this.game, constructionControlBoard))
                 .height(layoutConst.CONSTRUCION_BOARD_ROOT_BOX_HEIGHT)
                 .bottom()
                 .fill()

@@ -1,6 +1,6 @@
 package hundun.gdxgame.textuma.share.framework.model.resource;
 
-import hundun.simulationgame.umamusume.util.JavaFeatureForGwt;
+import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
 
 /**
  * ResourceType and amount

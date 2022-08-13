@@ -28,7 +28,6 @@ import hundun.gdxgame.textuma.share.starter.ui.component.BackgroundImageBox;
 import hundun.gdxgame.textuma.share.starter.ui.component.GameAreaControlBoard;
 import hundun.gdxgame.textuma.share.starter.ui.component.GameImageDrawer;
 import hundun.gdxgame.textuma.share.starter.ui.component.StorageInfoBoard;
-import hundun.simulationgame.umamusume.record.gui.GuiFrameData.RaceInfo;
 
 
 /**

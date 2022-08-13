@@ -13,20 +13,22 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
+import hundun.gdxgame.textuma.core.logic.GameDictionary.GameWord;
 import hundun.gdxgame.textuma.core.logic.handler.race.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
+import hundun.gdxgame.textuma.share.starter.ui.component.BaseAmountPairNode;
 import hundun.gdxgame.textuma.share.starter.ui.component.ResourceAmountPairNode;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
-import hundun.simulationgame.umamusume.horse.HorsePrototype;
-import hundun.simulationgame.umamusume.race.RacePrototype;
-import hundun.simulationgame.umamusume.race.RaceSituation;
-import hundun.simulationgame.umamusume.record.RecordPackage.EndRecordNode;
-import hundun.simulationgame.umamusume.record.RecordPackage.RecordNode;
-import hundun.simulationgame.umamusume.record.RecordPackage.EndRecordNode.EndRecordHorseInfo;
+import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
+import hundun.simulationgame.umamusume.core.race.RacePrototype;
+import hundun.simulationgame.umamusume.core.race.RaceSituation;
+import hundun.simulationgame.umamusume.record.base.RecordPackage.EndRecordNode;
+import hundun.simulationgame.umamusume.record.base.RecordPackage.RecordNode;
+import hundun.simulationgame.umamusume.record.base.RecordPackage.EndRecordNode.EndRecordHorseInfo;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
 
 
@@ -56,24 +58,6 @@ public class MainInfoBoard extends Table {
         container.fill(true);
         return container;
     }
-
-
-
-
-
-    public void updateAsTrainInfo(BaseTrainActionHandler model) {
-        this.clearChildren();
-
-        add(new Label("wait action", parent.game.getButtonSkin()));
-
-        if (parent.game.debugMode) {
-            this.debug();
-        }
-    }
-
-
-
-
 
 /*
  * builder.append(horsePrototype.getName()).append(" ")
@@ -107,10 +91,10 @@ public class MainInfoBoard extends Table {
     }
 
 
-    public void updateAsRaceReady(RacePrototype racePrototype, List<HorsePrototype> rivalHorses) {
+    public void updateAsRaceReady(RacePrototype racePrototype, Map<HorsePrototype, String> rivalHorsesToRunStrategyTextMap) {
         this.clearChildren();
         
-        MainInfoHelper.buildRaceReady(this, parent.game, racePrototype, rivalHorses);
+        MainInfoHelper.buildRaceReady(this, parent.game, racePrototype, rivalHorsesToRunStrategyTextMap);
         
         if (parent.game.debugMode) {
             this.debug();
@@ -154,17 +138,16 @@ public class MainInfoBoard extends Table {
     private static class MainInfoHelper {
 
         
-        private static void buildOneInfo(Table table, TextUmaGame game, 
+        private static void buildOneInfoOneLine(Table table, TextUmaGame game, 
                 String key, Object value, ResourcePair gainPair) {
             table.add(new Label(key, game.getButtonSkin(), TextUmaGame.GAME_WORD_SKIN_KEY));
             table.add(new Label(": ", game.getButtonSkin()));
-            table.add(new Label(value.toString(), game.getButtonSkin()));
             if (gainPair != null) {
+                table.add(new Label(value.toString(), game.getButtonSkin()));
                 table.add(new Label(" -> ", game.getButtonSkin()));
                 table.add(new Label(((int)value) + gainPair.getAmount() + "", game.getButtonSkin()));
             } else {
-                table.add(new Image());
-                table.add(new Image());
+                table.add(new Label(value.toString(), game.getButtonSkin())).colspan(3);
             }
             table.row();
         }
@@ -176,41 +159,90 @@ public class MainInfoBoard extends Table {
                 table.add(new Label(trainDescription, game.getButtonSkin())).colspan(5).row();
             }
             
-            MainInfoHelper.buildOneInfo(table, game, "Name", horsePrototype.getName(), null);
-            MainInfoHelper.buildOneInfo(table, game, 
+            table.add(new Label("Your horse status", game.getButtonSkin())).colspan(5).row();
+            //MainInfoHelper.buildOneInfoOneLine(table, game, "Name", horsePrototype.get(), null);
+            MainInfoHelper.buildOneInfoOneLine(table, game, 
                     game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_SPEED), 
                     horsePrototype.getBaseSpeed(),
                     gainList == null ? null : gainList.stream().filter(it -> it.getType().equals(ResourceType.HORSE_SPEED)).findFirst().orElseGet(() -> null)
                     );
-            MainInfoHelper.buildOneInfo(table, game, 
+            MainInfoHelper.buildOneInfoOneLine(table, game, 
                     game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_STAMINA), 
                     horsePrototype.getBaseStamina(),
                     gainList == null ? null : gainList.stream().filter(it -> it.getType().equals(ResourceType.HORSE_STAMINA)).findFirst().orElseGet(() -> null)
                     );
-            MainInfoHelper.buildOneInfo(table, game, 
+            MainInfoHelper.buildOneInfoOneLine(table, game, 
                     game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_POWER), 
                     horsePrototype.getBasePower(),
                     gainList == null ? null : gainList.stream().filter(it -> it.getType().equals(ResourceType.HORSE_POWER)).findFirst().orElseGet(() -> null)
                     );
+            MainInfoHelper.buildOneInfoOneLine(table, game, 
+                    game.getGameDictionary().gameWordToShowName(GameWord.RUN_STRATEGY), 
+                    horsePrototype.getDefaultRunStrategyType(),
+                    null
+                    );
         }
 
         public static void buildRaceReady(Table table, TextUmaGame game, RacePrototype racePrototype,
-                List<HorsePrototype> rivalHorses) {
+                Map<HorsePrototype, String> rivalHorsesToRunStrategyTextMap) {
             
-            table.add(new Label("RaceReady", game.getButtonSkin())).colspan(5).row();
+            table.add(new Label("Race ready", game.getButtonSkin())).colspan(7).row();
             
-            MainInfoHelper.buildOneInfo(table, game, "Name", racePrototype.getName(), null);
-            MainInfoHelper.buildOneInfo(table, game, 
+            MainInfoHelper.buildOneInfoOneLine(table, game, "Name", racePrototype.getName(), null);
+            MainInfoHelper.buildOneInfoOneLine(table, game, 
                     "Length", 
                     racePrototype.getLength(),
                     null
                     );
+            
+            table.add(new Label("Rivals status", game.getButtonSkin())).colspan(7).padTop(10).row();
+            rivalHorsesToRunStrategyTextMap.forEach((horsePrototype, runStrategyText) -> {
+                MainInfoHelper.buildAllHorseInfoOneLine(table, game, 
+                        horsePrototype.getCharImage(),
+                        game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_SPEED), 
+                        horsePrototype.getBaseSpeed(),
+                        game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_STAMINA), 
+                        horsePrototype.getBaseStamina(),
+                        game.getGameDictionary().resourceIdToShowName(ResourceType.HORSE_POWER), 
+                        horsePrototype.getBasePower(),
+                        runStrategyText
+                        );
+            });
+        }
+
+        private static void buildAllHorseInfoOneLine(Table table, TextUmaGame game, 
+                String name,
+                String baseSpeedShowName, int baseSpeed, 
+                String baseStaminaShowName, int baseStamina, 
+                String basePowerShowName, int basePower, 
+                String runStrategyText
+                ) {
+            
+            table.add(new Label(name, game.getButtonSkin()));
+            table.add(new Label(": ", game.getButtonSkin()));
+            table.add(new BaseAmountPairNode<>(game)
+                    .lazyInit(baseSpeedShowName)
+                    .update(baseSpeed)
+                    ).padRight(10);
+            table.add(new BaseAmountPairNode<>(game)
+                    .lazyInit(baseStaminaShowName)
+                    .update(baseStamina)
+                    ).padRight(10);
+            table.add(new BaseAmountPairNode<>(game)
+                    .lazyInit(basePowerShowName)
+                    .update(basePower)
+                    ).padRight(10);
+            table.add(new BaseAmountPairNode<>(game)
+                    .lazyInit(game.getGameDictionary().gameWordToShowName(GameWord.RUN_STRATEGY))
+                    .update(runStrategyText)
+                    );
+            table.row();
         }
 
         public static void buildRaceEnd(Table table, TextUmaGame game,
                 List<EndRecordHorseInfo> sortedRaceEndRecordNode, Map<Integer, Integer> rankToAwardMap) {
             
-            table.add(new Label("RaceEnd", game.getButtonSkin())).colspan(5).row();
+            table.add(new Label("Race end", game.getButtonSkin())).colspan(5).row();
             for (int i = 0; i < sortedRaceEndRecordNode.size(); i++) {
                 EndRecordHorseInfo horseInfo = sortedRaceEndRecordNode.get(i);
                 int prize = rankToAwardMap.get(i);
@@ -223,9 +255,10 @@ public class MainInfoBoard extends Table {
         private static void buildOnePrize(Table table, TextUmaGame game, EndRecordHorseInfo horseInfo, int prize) {
             table.add(new Label(horseInfo.getHorseName(), game.getButtonSkin())).padRight(5);
             table.add(new Label(horseInfo.getReachTimeText(), game.getButtonSkin())).padRight(5);
-            table.add(new Label(game.getGameDictionary().resourceIdToShowName(ResourceType.COIN), game.getButtonSkin(), TextUmaGame.GAME_WORD_SKIN_KEY));
-            table.add(new Label("x", game.getButtonSkin()));
-            table.add(new Label(String.valueOf(prize), game.getButtonSkin()));
+            table.add(new BaseAmountPairNode<>(game)
+                    .lazyInit(game.getGameDictionary().resourceIdToShowName(ResourceType.COIN))
+                    .update(prize)
+                    );
             table.row();
         }
 

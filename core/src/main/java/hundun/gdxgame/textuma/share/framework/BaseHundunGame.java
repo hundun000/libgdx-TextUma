@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 import hundun.gdxgame.textuma.core.TextUmaGameConfig.UmaSaveDataFactory;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
+import hundun.gdxgame.textuma.share.framework.BaseHundunGame.SaveDataHelper;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
 import hundun.gdxgame.textuma.share.framework.data.StarterData;
@@ -239,4 +240,9 @@ public abstract class BaseHundunGame extends Game {
     }
     
     protected abstract ChildGameConfig getChildGameConfig();
+
+    public void saveCurrent() {
+        Gdx.app.log(this.getClass().getSimpleName(), "saveCurrent called");
+        getSaveTool().saveRootSaveData(SaveDataHelper.currentSituationToSaveData(this.getModelContext()));
+    }
 }
