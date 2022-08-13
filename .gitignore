@@ -1,3 +1,6 @@
+## My special
+html/lib/*.jar
+
 ## Gradle
 .gradle
 gradle-app.setting

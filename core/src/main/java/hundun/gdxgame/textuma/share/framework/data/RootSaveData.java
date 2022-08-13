@@ -4,12 +4,14 @@ import java.util.Map;
 import java.util.Set;
 
 import hundun.gdxgame.textuma.core.data.UmaSaveData;
+import lombok.Getter;
 
 /**
  * @author hundun
  * Created on 2021/11/09
  */
 public class RootSaveData {
+    @Getter
     Map<String, Long> ownResoueces;
     Set<String> unlockedResourceTypes;
     Map<String, Integer> buffAmounts;
@@ -18,9 +20,9 @@ public class RootSaveData {
     UmaSaveData umaSaveData;
     
     // ------ replace-lombok ------
-    public Map<String, Long> getOwnResoueces() {
-        return ownResoueces;
-    }
+//    public Map<String, Long> getOwnResoueces() {
+//        return ownResoueces;
+//    }
     public void setOwnResoueces(Map<String, Long> ownResoueces) {
         this.ownResoueces = ownResoueces;
     }

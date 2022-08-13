@@ -55,6 +55,9 @@ project(":core") {
 	   // from share
 	   api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.5'
 	   api group: 'com.github.nmorel.gwtjackson', name: 'gwt-jackson', version: '0.15.4'
+	   
+	   implementation 'org.projectlombok:lombok:1.18.4'
+       annotationProcessor 'org.projectlombok:lombok:1.18.4'
 	}
 }
 
@@ -71,11 +74,16 @@ project(":html") {
 	apply plugin: "war"
 	apply plugin: "org.gretty"
 
+    configurations { lombok }
+
 	dependencies {
 		implementation project(':core')
 		implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"
+
+		implementation 'org.projectlombok:lombok:1.18.4'
+		annotationProcessor 'org.projectlombok:lombok:1.18.4'
 	}
 }
 

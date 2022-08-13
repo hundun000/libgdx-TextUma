@@ -73,6 +73,20 @@ task dist(dependsOn: [clean, compileGwt]) {
 	}
 }
 
+def lombokasPath = "lib/lombok.jar"
+
+draftCompileGwt {
+    doFirst {
+        jvmArgs "-javaagent:${lombokasPath}=ECJ"
+    }
+}
+
+compileGwt {
+    doFirst {
+        jvmArgs "-javaagent:${lombokasPath}=ECJ"
+    }
+}
+
 task addSource {
 	doLast {
 		sourceSets.main.compileClasspath += files(project(':core').sourceSets.main.allJava.srcDirs)
