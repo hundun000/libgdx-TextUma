@@ -15,7 +15,11 @@ import hundun.simulationgame.umamusume.core.race.TrackGroundType;
 import hundun.simulationgame.umamusume.record.base.RecordPackage.EndRecordNode;
 import hundun.simulationgame.umamusume.record.base.RecordPackage.RecordNode;
 import hundun.simulationgame.umamusume.record.base.RecordPackage.EndRecordNode.EndRecordHorseInfo;
+import hundun.simulationgame.umamusume.record.gui.GuiFrameData;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @author hundun
@@ -30,11 +34,13 @@ public class UmaSaveData {
     public List<EndRecordHorseInfo> sortedRaceEndRecordNode;
     
 
-    
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class TurnConfig {
-        public RacePrototype race;
-        public List<HorsePrototype> rivalHorses;
-        public Map<Integer, Integer> rankToAwardMap;
+        private RacePrototype race;
+        private List<HorsePrototype> rivalHorses;
+        private Map<Integer, Integer> rankToAwardMap;
     }
     
 }

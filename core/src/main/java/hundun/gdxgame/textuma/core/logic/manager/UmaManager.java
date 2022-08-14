@@ -173,10 +173,10 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
     @Override
     public void raceStart() {
         TurnConfig currentTurnConfig = getCurrentTurnConfig();
-        RaceSituation currentRaceSituation = new RaceSituation(displayer, currentTurnConfig.race, TrackWetType.GOOD);
+        RaceSituation currentRaceSituation = new RaceSituation(displayer, currentTurnConfig.getRace(), TrackWetType.GOOD);
         HorsePrototype base = umaSaveData.playerHorse;
         
-        List<HorsePrototype> randomRivals = currentTurnConfig.rivalHorses;
+        List<HorsePrototype> randomRivals = currentTurnConfig.getRivalHorses();
         randomRivals.forEach(item -> {
             currentRaceSituation.addHorse(item, item.getDefaultRunStrategyType());
         });
@@ -271,8 +271,8 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                 break;
             case GameArea.AREA_RACE:
                 if (getState() == UmaState.RACE_DAY_RACE_READY) {
-                    RacePrototype racePrototype = currentTurnConfig.race;
-                    Map<HorsePrototype, String> rivalHorsesToRunStrategyTextMap = currentTurnConfig.rivalHorses.stream()
+                    RacePrototype racePrototype = currentTurnConfig.getRace();
+                    Map<HorsePrototype, String> rivalHorsesToRunStrategyTextMap = currentTurnConfig.getRivalHorses().stream()
                             .collect(Collectors.toMap(
                                     horse -> horse, 
                                     horse -> translator.get(horse.getDefaultRunStrategyType()))
@@ -283,7 +283,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                     if (waitingEndRaceRecord()) {
                         playScreen.getMainInfoBoard().updateAsRaceEndResult(
                                 umaSaveData.sortedRaceEndRecordNode,
-                                currentTurnConfig.rankToAwardMap
+                                currentTurnConfig.getRankToAwardMap()
                                 );
                     } else {
                         playScreen.getMainInfoBoard().updateAsRaceRecordNode(umaSaveData.currentRaceRecordNodes.get(umaSaveData.currentRaceRecordNodeIndex));
@@ -324,7 +324,7 @@ public class UmaManager implements IGameAreaChangeListener, IUserRaceActionHandl
                 .get()
                 ;
         int rank = umaSaveData.sortedRaceEndRecordNode.indexOf(playerHorseInfo);
-        long award = getCurrentTurnConfig().rankToAwardMap.get(rank);
+        long award = getCurrentTurnConfig().getRankToAwardMap().get(rank);
         game.getModelContext().getStorageManager().modifyAllResourceNum(
                 JavaFeatureForGwt.mapOf(ResourceType.COIN, award), true);
         umaSaveData.currentRaceRecordNodes = null;

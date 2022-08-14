@@ -151,10 +151,10 @@ public class TextUmaGameConfig extends ChildGameConfig {
 
             
             RacePrototype racePrototype = raceTemplate(raceRand);
-            turnConfig.race = racePrototype;
+            turnConfig.setRace(racePrototype);
             
-            int numRival = turnConfig.race.getDefaultHorseNum() - 1;
-            turnConfig.rivalHorses = new ArrayList<>();
+            int numRival = turnConfig.getRace().getDefaultHorseNum() - 1;
+            turnConfig.setRivalHorses(new ArrayList<>());
             
             for (int i = 0; i < numRival; i++) {
                 horsePrototype = new HorsePrototype();
@@ -167,13 +167,13 @@ public class TextUmaGameConfig extends ChildGameConfig {
                 horsePrototype.setDefaultRunStrategyType(rivalRunStrategyTypes[i]);
                 HorsePrototypeFactory.fillDefaultFields(horsePrototype);
                 horsePrototype.setCharImage("Rival" + (i + 1));
-                turnConfig.rivalHorses.add(horsePrototype);
+                turnConfig.getRivalHorses().add(horsePrototype);
             }
             
             int maxAward = 100 + 50 * racePrototype.getDefaultHorseNum();
-            turnConfig.rankToAwardMap = new HashMap<>();
+            turnConfig.setRankToAwardMap(new HashMap<>());
             for (int i = 0; i< racePrototype.getDefaultHorseNum(); i++) {
-                turnConfig.rankToAwardMap.put(i, maxAward - (50 * i));
+                turnConfig.getRankToAwardMap().put(i, maxAward - (50 * i));
             }
             return turnConfig;
         }
