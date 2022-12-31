@@ -63,11 +63,11 @@ public class UmaPlayScreen extends BasePlayScreen<TextUmaGame> {
         gameImageDrawer = new GameImageDrawer<>(this, gameEntityFactory);
         
         logicFrameListeners.add(constructionControlBoard);
-        logicFrameListeners.add(game.getModelContext().getUmaManager());
+        logicFrameListeners.add(game.getModelContext().getGameplayFrontend());
         gameAreaChangeListeners.add(backgroundImageBox);
         gameAreaChangeListeners.add(constructionControlBoard);
         gameAreaChangeListeners.add(gameAreaControlBoard);
-        gameAreaChangeListeners.add(game.getModelContext().getUmaManager());
+        gameAreaChangeListeners.add(game.getModelContext().getGameplayFrontend());
     }
 
     @Override

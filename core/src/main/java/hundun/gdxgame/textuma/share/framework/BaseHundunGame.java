@@ -12,8 +12,9 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-import hundun.gdxgame.textuma.core.TextUmaGameConfig.UmaSaveDataFactory;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
+import hundun.gdxgame.textuma.core.logic.manager.LibgdxFrontEndSaveData;
+import hundun.gdxgame.textuma.core.logic.manager.LibgdxGameplayFrontend;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame.SaveDataHelper;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
@@ -33,6 +34,8 @@ import hundun.gdxgame.textuma.share.framework.model.manager.StorageManager;
 import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
 import hundun.gdxgame.textuma.share.framework.util.text.IGameDictionary;
 import hundun.gdxgame.textuma.share.framework.util.text.TextFormatTool;
+import hundun.simulationgame.umamusume.gameplay.JavaHighVersionFeature;
+import hundun.simulationgame.umamusume.gameplay.UmaSaveDataFactory;
 
 
 public abstract class BaseHundunGame extends Game {
@@ -135,7 +138,9 @@ public abstract class BaseHundunGame extends Game {
 
 	public static class SaveDataHelper {
         public static void applySaveData(RootSaveData saveData, ManagerContext modelContext) {
-            modelContext.getStorageManager().setOwnResoueces(saveData.getOwnResoueces());
+            modelContext.getGameplayFrontend().subApplySaveData(saveData.getUmaSaveData(), saveData.getGameRuleData(), saveData.getFrontEndSaveData()); 
+            
+            modelContext.getStorageManager().setOwnResoueces(modelContext.getGameplayFrontend().getOwnResoueces());
             modelContext.getStorageManager().setUnlockedResourceTypes(saveData.getUnlockedResourceTypes());
             modelContext.getBuffManager().setBuffAmounts(saveData.getBuffAmounts());
             modelContext.getAchievementManager().setUnlockedAchievementNames(saveData.getUnlockedAchievementNames());
@@ -144,7 +149,6 @@ public abstract class BaseHundunGame extends Game {
             for (UmaActionHandler construction : constructions) {
                 loadConstructionSaveData(map, construction);
             }
-            modelContext.getUmaManager().applySaveData(saveData.getUmaSaveData()); 
         }
         
         private static void loadConstructionSaveData(Map<String, UmaUserActionHandlerSaveData> map, UmaActionHandler construction) {
@@ -154,7 +158,6 @@ public abstract class BaseHundunGame extends Game {
         
 	    public static RootSaveData currentSituationToSaveData(ManagerContext modelContext) {
 	        RootSaveData saveData = new RootSaveData();
-	        saveData.setOwnResoueces(modelContext.getStorageManager().getOwnResoueces());
 	        saveData.setUnlockedResourceTypes(modelContext.getStorageManager().getUnlockedResourceTypes());
 	        saveData.setBuffAmounts(modelContext.getBuffManager().getBuffAmounts());
 	        saveData.setUnlockedAchievementNames(modelContext.getAchievementManager().getUnlockedAchievementNames());
@@ -165,7 +168,8 @@ public abstract class BaseHundunGame extends Game {
 	        }
 	        saveData.setConstructionSaveDataMap(map);
 	        
-	        saveData.setUmaSaveData(modelContext.getUmaManager().getUmaSaveData());
+	        modelContext.getGameplayFrontend().subCurrentSituationToSaveData(saveData);
+	        
 	        return saveData;
 	    }
 	    
@@ -177,12 +181,13 @@ public abstract class BaseHundunGame extends Game {
 	        RootSaveData saveData = new RootSaveData();
 	        saveData.setBuffAmounts(new HashMap<>());
 	        saveData.setConstructionSaveDataMap(new HashMap<>());
-	        saveData.setOwnResoueces(new HashMap<>());
 	        saveData.setUnlockedAchievementNames(new HashSet<>());
 	        saveData.setUnlockedResourceTypes(new HashSet<>());
-	        saveData.setUmaSaveData(UmaSaveDataFactory.forNewGame());
-	        saveData.getOwnResoueces().put(ResourceType.TURN, 1L);
-	        saveData.getOwnResoueces().put(ResourceType.COIN, 100L);
+	        saveData.setUmaSaveData(JavaHighVersionFeature.mapOf(
+	                LibgdxGameplayFrontend.SINGLETON_ID, 
+	                UmaSaveDataFactory.forNewAccount(LibgdxGameplayFrontend.SINGLETON_ID)));
+	        saveData.setGameRuleData(UmaSaveDataFactory.forNewGameRuleData());
+	        saveData.setFrontEndSaveData(new LibgdxFrontEndSaveData());
 	        saveData.getUnlockedResourceTypes().add(ResourceType.TURN);
 	        saveData.getUnlockedResourceTypes().add(ResourceType.COIN);
 	        return saveData;

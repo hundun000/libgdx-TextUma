@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.core.logic.manager.UmaManager.UmaState;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.DescriptionPackage.ILevelDescroptionProvider;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainLevelComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
+import hundun.simulationgame.umamusume.gameplay.AccountSaveData.OperationBoardState;
 
 /**
  * @author hundun
@@ -75,18 +75,18 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
     @Override
     public void onEffectableClick() {
         
-        game.getModelContext().getUmaManager().trainAndNextDay(
+        game.getModelContext().getGameplayFrontend().trainAndNextDay(
                 "Train done.",
                 outputComponent.getOutputCostPack() != null ?
                         outputComponent.getOutputCostPack().getModifiedValues() : null,
-                outputComponent.getOutputGainPack().getModifiedValues()
+                        outputComponent.getOutputGainPack().getModifiedValues()
                 );
         
     }
 
     @Override
     public ClickEffectType canClickEffect() {
-        if (game.getModelContext().getUmaManager().getState() != UmaState.TRAIN_DAY) {
+        if (game.getModelContext().getGameplayFrontend().getOperationBoardState() != OperationBoardState.TRAIN_DAY) {
             return ClickEffectType.CANNOT_BY_STATE;
         } else if (!outputComponent.canOutput()) {
             return ClickEffectType.CANNOT_BY_COST;

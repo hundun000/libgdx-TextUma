@@ -17,7 +17,7 @@ import hundun.gdxgame.textuma.core.logic.GameDictionary;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.ScreenId;
 import hundun.gdxgame.textuma.core.logic.manager.TextureManager;
-import hundun.gdxgame.textuma.core.logic.manager.UmaManager;
+import hundun.gdxgame.textuma.core.logic.manager.LibgdxGameplayFrontend;
 import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.core.ui.screen.ScreenContext;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
@@ -106,7 +106,7 @@ public class TextUmaGame extends BaseHundunGame {
         ));
         screenContext.setPlayScreen(new UmaPlayScreen(this));
         
-        getModelContext().setUmaManager(new UmaManager(this, screenContext.getPlayScreen()));
+        getModelContext().setGameplayFrontend(new LibgdxGameplayFrontend(this, screenContext.getPlayScreen()));
     }
 
     @Override

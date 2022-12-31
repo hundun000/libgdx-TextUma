@@ -2,9 +2,9 @@ package hundun.gdxgame.textuma.core.logic.handler.race;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.core.logic.manager.UmaManager.UmaState;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
+import hundun.simulationgame.umamusume.gameplay.AccountSaveData.OperationBoardState;
 
 /**
  * @author hundun
@@ -22,12 +22,12 @@ public class StartRaceActionHandler extends BaseRaceActionHandler {
 
     @Override
     public void onEffectableClick() {
-        game.getModelContext().getUmaManager().raceStart();
+        game.getModelContext().getGameplayFrontend().raceStart();
     }
 
     @Override
     public ClickEffectType canClickEffect() {
-        if (game.getModelContext().getUmaManager().getState() != UmaState.RACE_DAY_RACE_READY) {
+        if (game.getModelContext().getGameplayFrontend().getOperationBoardState() != OperationBoardState.RACE_DAY_RACE_READY) {
             return ClickEffectType.CANNOT_BY_STATE;
         }
         return ClickEffectType.CAN;
