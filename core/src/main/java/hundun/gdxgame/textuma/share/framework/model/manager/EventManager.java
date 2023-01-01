@@ -8,6 +8,7 @@ import com.badlogic.gdx.Gdx;
 
 import hundun.gdxgame.textuma.share.framework.listener.IAchievementUnlockListener;
 import hundun.gdxgame.textuma.share.framework.listener.IBuffChangeListener;
+import hundun.gdxgame.textuma.share.framework.listener.IGameStartListener;
 import hundun.gdxgame.textuma.share.framework.listener.IOneFrameResourceChangeListener;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
 
@@ -18,11 +19,15 @@ import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
  * Created on 2021/11/12
  */
 public class EventManager {
+    List<IGameStartListener> gameStartListeners = new ArrayList<>();
     List<IBuffChangeListener> buffChangeListeners = new ArrayList<>();
     List<IAchievementUnlockListener> achievementUnlockListeners = new ArrayList<>();
     List<IOneFrameResourceChangeListener> oneFrameResourceChangeListeners = new ArrayList<>();
 
     public void registerListener(Object listener) {
+        if (listener instanceof IGameStartListener && !gameStartListeners.contains(listener)) {
+            gameStartListeners.add((IGameStartListener) listener);
+        }
         if (listener instanceof IBuffChangeListener && !buffChangeListeners.contains(listener)) {
             buffChangeListeners.add((IBuffChangeListener) listener);
         }
@@ -34,6 +39,13 @@ public class EventManager {
         }
     }
 
+    public void notifyGameStart() {
+        Gdx.app.log(this.getClass().getSimpleName(), "notifyGameStart");
+        for (IGameStartListener listener : gameStartListeners) {
+            listener.onGameStart();
+        }
+    }
+    
     public void notifyBuffChange() {
         Gdx.app.log(this.getClass().getSimpleName(), "notifyBuffChange");
         for (IBuffChangeListener listener : buffChangeListeners) {

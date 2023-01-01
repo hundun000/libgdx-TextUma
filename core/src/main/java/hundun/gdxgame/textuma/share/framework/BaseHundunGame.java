@@ -34,7 +34,7 @@ import hundun.gdxgame.textuma.share.framework.model.manager.StorageManager;
 import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
 import hundun.gdxgame.textuma.share.framework.util.text.IGameDictionary;
 import hundun.gdxgame.textuma.share.framework.util.text.TextFormatTool;
-import hundun.simulationgame.umamusume.gameplay.JavaHighVersionFeature;
+import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
 import hundun.simulationgame.umamusume.gameplay.UmaSaveDataFactory;
 
 
@@ -134,6 +134,7 @@ public abstract class BaseHundunGame extends Game {
 
 	    SaveDataHelper.applySaveData(saveData, modelContext);
 	    Gdx.app.log(this.getClass().getSimpleName(), load ? "load game done" : "new game done");
+	    eventManager.notifyGameStart();
 	}
 
 	public static class SaveDataHelper {
@@ -183,7 +184,7 @@ public abstract class BaseHundunGame extends Game {
 	        saveData.setConstructionSaveDataMap(new HashMap<>());
 	        saveData.setUnlockedAchievementNames(new HashSet<>());
 	        saveData.setUnlockedResourceTypes(new HashSet<>());
-	        saveData.setUmaSaveData(JavaHighVersionFeature.mapOf(
+	        saveData.setUmaSaveData(JavaFeatureForGwt.mapOf(
 	                LibgdxGameplayFrontend.SINGLETON_ID, 
 	                UmaSaveDataFactory.forNewAccount(LibgdxGameplayFrontend.SINGLETON_ID)));
 	        saveData.setGameRuleData(UmaSaveDataFactory.forNewGameRuleData());

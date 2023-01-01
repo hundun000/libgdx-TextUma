@@ -17,11 +17,9 @@ import hundun.gdxgame.textuma.core.logic.handler.train.SwimmingTrainActionHandle
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainLevelComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
-import hundun.gdxgame.textuma.share.framework.util.JavaHighVersionFeature;
 
 
 public class BuiltinConstructionsLoader {
@@ -51,10 +49,10 @@ public class BuiltinConstructionsLoader {
         constructions.add(new FreeTrainActionHandler(game));
     }
     
-    public static ResourcePack toPack(Map<String, Integer> map) {
+    public static ResourcePack toPack(Map<String, Long> map) {
         ResourcePack pack = new ResourcePack();
         List<ResourcePair> pairs = new ArrayList<>(map.size());
-        map.entrySet().forEach(entry -> pairs.add(new ResourcePair(entry.getKey(), (long)entry.getValue())));
+        map.entrySet().forEach(entry -> pairs.add(new ResourcePair(entry.getKey(), entry.getValue())));
         pack.setBaseValues(pairs);
         return pack;
     }

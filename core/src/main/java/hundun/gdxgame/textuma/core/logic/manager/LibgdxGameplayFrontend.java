@@ -15,34 +15,27 @@ import hundun.gdxgame.textuma.core.logic.GameArea;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
-import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
-import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
-import hundun.gdxgame.textuma.share.framework.util.JavaHighVersionFeature;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
-import hundun.simulationgame.umamusume.core.horse.HorsePrototypeFactory;
 import hundun.simulationgame.umamusume.core.race.RacePrototype;
-import hundun.simulationgame.umamusume.core.race.RacePrototypeFactory;
-import hundun.simulationgame.umamusume.core.race.RaceSituation;
-import hundun.simulationgame.umamusume.core.race.TrackWetType;
 import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
 import hundun.simulationgame.umamusume.gameplay.GameResourcePair;
 import hundun.simulationgame.umamusume.gameplay.GameResourceType;
 import hundun.simulationgame.umamusume.gameplay.GameRuleData;
 import hundun.simulationgame.umamusume.gameplay.IGameplayFrontend;
+import hundun.simulationgame.umamusume.gameplay.TrainActionType;
+import hundun.simulationgame.umamusume.gameplay.TrainRuleConfig;
 import hundun.simulationgame.umamusume.gameplay.TurnConfig;
-import hundun.simulationgame.umamusume.gameplay.UmaManager;
+import hundun.simulationgame.umamusume.gameplay.UmaGameplayManager;
 import hundun.simulationgame.umamusume.gameplay.AccountSaveData;
 import hundun.simulationgame.umamusume.gameplay.AccountSaveData.OperationBoardState;
-import hundun.simulationgame.umamusume.record.base.IRecorder;
+import hundun.simulationgame.umamusume.record.base.IRaceRecorder;
 import hundun.simulationgame.umamusume.record.base.RecordPackage.RecordNode;
-import hundun.simulationgame.umamusume.record.base.RecordPackage.EndRecordNode.EndRecordHorseInfo;
 import hundun.simulationgame.umamusume.record.text.CharImageRecorder;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
-import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.StrategyPackage;
-import hundun.simulationgame.umamusume.record.text.BotTextCharImageRender.Translator;
-import lombok.Getter;
+import hundun.simulationgame.umamusume.record.text.Translator;
+import hundun.simulationgame.umamusume.record.text.Translator.StrategyPackage;
 
 /**
  * implements ILibgdxGameplayFrontend: 对Libgdx提供服务；
@@ -53,7 +46,7 @@ import lombok.Getter;
 public class LibgdxGameplayFrontend implements ILibgdxGameplayFrontend, IGameplayFrontend {
     TextUmaGame game;
     private UmaPlayScreen playScreen;
-    private UmaManager manager;
+    private UmaGameplayManager manager;
     LibgdxFrontEndSaveData frontEndSaveData;
     public static final String SINGLETON_ID = "LIBGDX_GAMEPLAY_FRONTEND";
     
@@ -63,7 +56,19 @@ public class LibgdxGameplayFrontend implements ILibgdxGameplayFrontend, IGamepla
     public LibgdxGameplayFrontend(TextUmaGame game, UmaPlayScreen playScreen) {
         this.playScreen = playScreen;
         this.game = game;
-        this.manager = new UmaManager(this);
+        
+        Translator translator = Translator.Factory.english();
+        StrategyPackage strategyPackage = new StrategyPackage();
+        StrategyPackage.Factory.toLongWidth(strategyPackage);
+        StrategyPackage.Factory.toCameraProcessBarCharType2(strategyPackage);
+
+        strategyPackage.setHorseRaceStartTemplate(
+                "${TRACK_PART}: ${NAME_PART} "
+                + "${SPEED_KEY}${SPEED_VALUE}, "
+                + "${STAMINA_KEY}${STAMINA_VALUE}, "
+                + "${POWER_KEY}${POWER_VALUE}\n");
+        IRaceRecorder<TextFrameData> raceRecorder = new CharImageRecorder(translator, strategyPackage);
+        this.manager = new UmaGameplayManager(translator, raceRecorder, this);
     }
 
     @Override
@@ -240,21 +245,18 @@ public class LibgdxGameplayFrontend implements ILibgdxGameplayFrontend, IGamepla
     }
 
     @Override
-    public void notifiedCheckUi() {
+    public void notifiedChangeOperationBoardState() {
         this.checkUiByAreaAndState(playScreen.getArea());
-    }
-
-    @Override
-    public void saveCurrent() {
         game.saveCurrent();
     }
 
+
     @Override
-    public void notifiedHorseStatusChange(HorsePrototype horsePrototype, String trainDescription,
+    public void notifiedHorseStatusChange(HorsePrototype horsePrototype,
             List<GameResourcePair> gainList) {
         playScreen.getMainInfoBoard().updateAsHorseStatus(
                 horsePrototype, 
-                trainDescription, 
+                "Train done.", 
                 gainList.stream()
                     .map(it -> new ResourcePair(
                             gameResourceTypeToInner(it.getType()), 
@@ -277,8 +279,8 @@ public class LibgdxGameplayFrontend implements ILibgdxGameplayFrontend, IGamepla
     }
 
     @Override
-    public void trainAndNextDay(String trainDescription, List<ResourcePair> costList, List<ResourcePair> gainList) {
-        manager.trainAndNextDay(manager.getAccountSaveData(SINGLETON_ID), trainDescription, innerToGameResourceType(costList), innerToGameResourceType(gainList));
+    public void trainAndNextDay(TrainActionType type) {
+        manager.trainAndNextDay(manager.getAccountSaveData(SINGLETON_ID), type);
     }
 
     public void subApplySaveData(Map<String, AccountSaveData> umaSaveData, GameRuleData gameRuleData,
@@ -321,6 +323,18 @@ public class LibgdxGameplayFrontend implements ILibgdxGameplayFrontend, IGamepla
                         it -> gameResourceTypeToInner(it.getKey()), 
                         it -> it.getValue())), 
                 plus);
+    }
+
+    @Override
+    public TrainRuleConfig getTrainOutputComponentConfig(TrainActionType trainActionType) {
+        return manager.getGameRuleData().getTrainRuleConfigMap().get(trainActionType);
+    }
+
+    @Override
+    public Map<String, Long> gameResourceTypeToInner(List<GameResourcePair> list) {
+        return list.stream().collect(Collectors.toMap(
+                it -> gameResourceTypeToInner(it.getType()), 
+                it -> it.getAmount()));
     }
 
     

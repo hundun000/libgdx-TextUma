@@ -3,22 +3,34 @@ package hundun.gdxgame.textuma.core.logic.handler.train;
 import com.badlogic.gdx.Gdx;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
+import hundun.gdxgame.textuma.core.logic.BuiltinConstructionsLoader;
+import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+import hundun.gdxgame.textuma.share.framework.listener.IGameStartListener;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.DescriptionPackage.ILevelDescroptionProvider;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainLevelComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.simulationgame.umamusume.gameplay.AccountSaveData.OperationBoardState;
+import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
+import hundun.simulationgame.umamusume.gameplay.TrainActionType;
+import hundun.simulationgame.umamusume.gameplay.TrainRuleConfig;
 
 /**
  * @author hundun
  * Created on 2022/08/03
  */
-public abstract class BaseTrainActionHandler extends UmaActionHandler {
+public abstract class BaseTrainActionHandler extends UmaActionHandler implements IGameStartListener {
 
-    public BaseTrainActionHandler(TextUmaGame game, String userActionId) {
+    protected final TrainActionType trainActionType;
+    public BaseTrainActionHandler(TextUmaGame game, String userActionId, TrainActionType trainActionType) {
         super(game, userActionId);
+        this.trainActionType = trainActionType;
+        
+        this.descriptionPackage = UmaActionHandler.TRAIN_DESCRIPTION_PACKAGE;
+        
+        TrainOutputComponent outputComponent = new TrainOutputComponent(this);
+        this.setOutputComponent(outputComponent);
     }
 
     
@@ -29,7 +41,20 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
         
     }
     
-    ILevelDescroptionProvider levelDescroptionProvider;
+    @Override
+    public void onGameStart() {
+        // ----- lazy ------
+        TrainRuleConfig trainRuleConfig = game.getModelContext().getGameplayFrontend().getTrainOutputComponentConfig(trainActionType);
+        outputComponent.setOutputCostPack(BuiltinConstructionsLoader.toPack(
+                game.getModelContext().getGameplayFrontend().gameResourceTypeToInner(trainRuleConfig.getCostList()) 
+                ));
+        outputComponent.setOutputGainPack(BuiltinConstructionsLoader.toPack(
+                game.getModelContext().getGameplayFrontend().gameResourceTypeToInner(trainRuleConfig.getGainList()) 
+                ));
+        
+        this.lazyInitDescription();
+        this.updateModifiedValues();
+    }
     
     /**
      * NotNull
@@ -41,18 +66,6 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
     }
     public void setOutputComponent(TrainOutputComponent outputComponent) {
         this.outputComponent = outputComponent;
-    }
-    
-    /**
-     * NotNull
-     */
-    protected TrainLevelComponent levelComponent;
-    // ------ replace-lombok ------
-    public TrainLevelComponent getLevelComponent() {
-        return levelComponent;
-    }
-    public void setLevelComponent(TrainLevelComponent levelComponent) {
-        this.levelComponent = levelComponent;
     }
 
     public void lazyInitDescription() {
@@ -76,10 +89,7 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
     public void onEffectableClick() {
         
         game.getModelContext().getGameplayFrontend().trainAndNextDay(
-                "Train done.",
-                outputComponent.getOutputCostPack() != null ?
-                        outputComponent.getOutputCostPack().getModifiedValues() : null,
-                        outputComponent.getOutputGainPack().getModifiedValues()
+                trainActionType
                 );
         
     }
@@ -96,23 +106,23 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler {
     
     @Override
     public String getWorkingLevelDescroption() {
-        return levelComponent.getWorkingLevelDescroption();
+        return "";
     }
 
 
 
 
-    public long calculateModifiedOutput(long baseValue, int level) {
-        return (long) (baseValue * (1 + 0.2 * level));
-    }
+//    public long calculateModifiedOutput(long baseValue, int level) {
+//        return (long) (baseValue * (1 + 0.2 * level));
+//    }
+//
+//    public long calculateModifiedOutputCost(long baseValue, int level) {
+//        return (long) (baseValue * (1 + 0.2 * level));
+//    }
 
-    public long calculateModifiedOutputCost(long baseValue, int level) {
-        return (long) (baseValue * (1 + 0.2 * level));
-    }
 
-
-    public ILevelDescroptionProvider getLevelDescroptionProvider() {
-        return levelDescroptionProvider;
-    }
+//    public ILevelDescroptionProvider getLevelDescroptionProvider() {
+//        return levelDescroptionProvider;
+//    }
 
 }

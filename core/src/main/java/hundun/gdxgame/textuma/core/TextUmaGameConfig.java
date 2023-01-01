@@ -19,13 +19,13 @@ import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.StarterData;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
-import hundun.gdxgame.textuma.share.framework.util.JavaHighVersionFeature;
 import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
 import hundun.simulationgame.umamusume.core.horse.HorsePrototypeFactory;
 import hundun.simulationgame.umamusume.core.horse.RunStrategyType;
 import hundun.simulationgame.umamusume.core.race.RaceLengthType;
 import hundun.simulationgame.umamusume.core.race.RacePrototype;
 import hundun.simulationgame.umamusume.core.race.TrackGroundType;
+import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
 import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt.NumberFormat;
 import hundun.simulationgame.umamusume.gameplay.TurnConfig;
 import hundun.simulationgame.umamusume.gameplay.AccountSaveData;
@@ -44,19 +44,19 @@ public class TextUmaGameConfig extends ChildGameConfig {
         this.setConstructions(builtinConstructionsLoader.load());
         
         Map<String, List<String>> areaShownConstructionIds = new HashMap<>(); 
-        areaShownConstructionIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
+        areaShownConstructionIds.put(GameArea.AREA_RACE, JavaFeatureForGwt.arraysAsList(
                 UserActionId.START_RACE,
                 UserActionId.NEXT_RACE_RECORD_NODE,
                 UserActionId.REPLAY_RACE_RECORD,
                 UserActionId.END_RACE_RECORD
         ));
-        areaShownConstructionIds.put(GameArea.AREA_TRAIN, JavaHighVersionFeature.arraysAsList(
+        areaShownConstructionIds.put(GameArea.AREA_TRAIN, JavaFeatureForGwt.arraysAsList(
                 UserActionId.RUNNING_TRAIN,
                 UserActionId.SWIMMING_TRAIN,
                 UserActionId.POWER_TRAIN,
                 UserActionId.FREE_TRAIN
         ));
-//        areaShownConstructionIds.put(GameArea.AREA_RECORD, JavaHighVersionFeature.arraysAsList(
+//        areaShownConstructionIds.put(GameArea.AREA_RECORD, JavaFeatureForGwt.arraysAsList(
 //                UserActionId.RECORD_PRE_PAGE,
 //                UserActionId.RECORD_NEXT_PAGE
 //        ));
@@ -65,14 +65,14 @@ public class TextUmaGameConfig extends ChildGameConfig {
         this.setAreaShowEntityByOwnAmountConstructionIds(areaShownConstructionIds);
         
         Map<String, List<String>> areaShownResourceIds = new HashMap<>(); 
-//        areaShownResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
+//        areaShownResourceIds.put(GameArea.AREA_RACE, JavaFeatureForGwt.arraysAsList(
 //                ResourceType.TURN,
 //                ResourceType.COIN
 //        ));
         this.setAreaShowEntityByOwnAmountResourceIds(areaShownResourceIds);
         
         Map<String, List<String>> areaShowEntityByChangeAmountResourceIds = new HashMap<>(); 
-//        areaShowEntityByChangeAmountResourceIds.put(GameArea.AREA_RACE, JavaHighVersionFeature.arraysAsList(
+//        areaShowEntityByChangeAmountResourceIds.put(GameArea.AREA_RACE, JavaFeatureForGwt.arraysAsList(
 //                ResourceType.TURN,
 //                ResourceType.COIN
 //        ));
@@ -85,15 +85,15 @@ public class TextUmaGameConfig extends ChildGameConfig {
         starterData.setConstructionStarterWorkingLevelMap(constructionStarterWorkingLevelMap);
         this.setStarterData(starterData); 
         
-//        Map<String, String> screenIdToFilePathMap = JavaHighVersionFeature.mapOf(
+//        Map<String, String> screenIdToFilePathMap = JavaFeatureForGwt.mapOf(
 //                ScreenId.MENU, "audio/Loop-Menu.wav",
 //                ScreenId.PLAY, "audio/forest.mp3"
 //                );
 //        this.setScreenIdToFilePathMap(screenIdToFilePathMap);
         
-        List<AchievementPrototype> achievementPrototypes = JavaHighVersionFeature.arraysAsList(
+        List<AchievementPrototype> achievementPrototypes = JavaFeatureForGwt.arraysAsList(
                 new AchievementPrototype("Game win", "You win the game!",
-                        JavaHighVersionFeature.mapOf(BuffId.WIN, 1),
+                        JavaFeatureForGwt.mapOf(BuffId.WIN, 1),
                         null
                         )
                 );

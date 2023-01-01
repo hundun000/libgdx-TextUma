@@ -155,7 +155,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         // ------ update text ------
         //constructionNameLabel.setText(model.getName());
         clickEffectButton.contentSetText(model.getButtonDescroption());
-        workingLevelLabel.setText(model.getWorkingLevelDescroption());
+        workingLevelLabel.setText("");
 
         // ------ update clickable-state ------
         boolean canClickEffect = model.canClickEffect() == ClickEffectType.CAN;

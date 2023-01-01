@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
+import hundun.simulationgame.umamusume.gameplay.TrainRuleConfig;
 
 
 /**
@@ -59,12 +60,7 @@ public class TrainOutputComponent {
      // --------------
         if (outputGainPack != null) {
             outputGainPack.setModifiedValues(
-                    outputGainPack.getBaseValues().stream()
-                        .map(pair -> {
-                                long newAmout = construction.calculateModifiedOutput(pair.getAmount(), construction.saveData.getWorkingLevel());
-                                return new ResourcePair(pair.getType(), newAmout);
-                            })
-                        .collect(Collectors.toList())
+                    outputGainPack.getBaseValues()
             );
             this.outputGainPack.setModifiedValuesDescription(
                     outputGainPack.getModifiedValues().stream()
@@ -80,12 +76,7 @@ public class TrainOutputComponent {
         // --------------
         if (outputCostPack != null) {
             outputCostPack.setModifiedValues(
-                    outputCostPack.getBaseValues().stream()
-                        .map(pair -> {
-                                long newAmout = construction.calculateModifiedOutputCost(pair.getAmount(), construction.saveData.getWorkingLevel());
-                                return new ResourcePair(pair.getType(), newAmout);
-                            })
-                        .collect(Collectors.toList())
+                    outputCostPack.getBaseValues()
             );
             this.outputCostPack.setModifiedValuesDescription(
                     outputCostPack.getModifiedValues().stream()

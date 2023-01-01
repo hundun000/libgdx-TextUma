@@ -69,10 +69,10 @@ public class MainInfoBoard extends Table {
                 .append("\n");
  */
 
-    public void updateAsHorseStatus(HorsePrototype horsePrototype, String trainDescription, List<ResourcePair> gainList) {
+    public void updateAsHorseStatus(HorsePrototype horsePrototype, String title, List<ResourcePair> gainList) {
         this.clearChildren();
         
-        MainInfoHelper.buildHorseStatus(this, parent.game, horsePrototype, trainDescription, gainList);
+        MainInfoHelper.buildHorseStatus(this, parent.game, horsePrototype, title, gainList);
         
         if (parent.game.debugMode) {
             this.debug();
