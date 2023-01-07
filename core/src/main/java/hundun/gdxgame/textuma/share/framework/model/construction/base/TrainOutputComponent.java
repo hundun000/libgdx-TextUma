@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
-import hundun.simulationgame.umamusume.gameplay.TrainRuleConfig;
+import hundun.simulationgame.umamusume.game.gameplay.data.TrainRuleConfig;
 
 
 /**

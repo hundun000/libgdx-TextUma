@@ -1,7 +1,7 @@
 package hundun.gdxgame.textuma.core.logic.manager;
 
-import hundun.simulationgame.umamusume.gameplay.AccountSaveData;
-import hundun.simulationgame.umamusume.gameplay.GameRuleData;
+import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData;
+import hundun.simulationgame.umamusume.game.gameplay.data.GameRuleData;
 import lombok.Data;
 
 /**

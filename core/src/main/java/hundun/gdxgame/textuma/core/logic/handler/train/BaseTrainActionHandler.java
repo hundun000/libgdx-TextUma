@@ -11,10 +11,10 @@ import hundun.gdxgame.textuma.share.framework.listener.IGameStartListener;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.DescriptionPackage.ILevelDescroptionProvider;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.simulationgame.umamusume.gameplay.AccountSaveData.OperationBoardState;
 import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
-import hundun.simulationgame.umamusume.gameplay.TrainActionType;
-import hundun.simulationgame.umamusume.gameplay.TrainRuleConfig;
+import hundun.simulationgame.umamusume.game.gameplay.data.TrainActionType;
+import hundun.simulationgame.umamusume.game.gameplay.data.TrainRuleConfig;
+import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData.OperationBoardState;
 
 /**
  * @author hundun

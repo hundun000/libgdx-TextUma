@@ -35,7 +35,7 @@ import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
 import hundun.gdxgame.textuma.share.framework.util.text.IGameDictionary;
 import hundun.gdxgame.textuma.share.framework.util.text.TextFormatTool;
 import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
-import hundun.simulationgame.umamusume.gameplay.UmaSaveDataFactory;
+import hundun.simulationgame.umamusume.game.gameplay.UmaSaveDataFactory;
 
 
 public abstract class BaseHundunGame extends Game {

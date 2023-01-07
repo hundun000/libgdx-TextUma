@@ -7,7 +7,7 @@ import hundun.gdxgame.textuma.core.logic.UserActionId;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
-import hundun.simulationgame.umamusume.gameplay.TrainActionType;
+import hundun.simulationgame.umamusume.game.gameplay.data.TrainActionType;
 
 /**
  * @author hundun

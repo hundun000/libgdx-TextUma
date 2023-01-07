@@ -8,14 +8,14 @@ import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
-import hundun.simulationgame.umamusume.gameplay.AccountSaveData;
-import hundun.simulationgame.umamusume.gameplay.AccountSaveData.OperationBoardState;
-import hundun.simulationgame.umamusume.gameplay.GameResourcePair;
-import hundun.simulationgame.umamusume.gameplay.GameResourceType;
-import hundun.simulationgame.umamusume.gameplay.GameRuleData;
-import hundun.simulationgame.umamusume.gameplay.IGameplayFrontend;
-import hundun.simulationgame.umamusume.gameplay.TrainActionType;
-import hundun.simulationgame.umamusume.gameplay.TrainRuleConfig;
+import hundun.simulationgame.umamusume.game.gameplay.IGameplayFrontend;
+import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData;
+import hundun.simulationgame.umamusume.game.gameplay.data.GameResourcePair;
+import hundun.simulationgame.umamusume.game.gameplay.data.GameResourceType;
+import hundun.simulationgame.umamusume.game.gameplay.data.GameRuleData;
+import hundun.simulationgame.umamusume.game.gameplay.data.TrainActionType;
+import hundun.simulationgame.umamusume.game.gameplay.data.TrainRuleConfig;
+import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData.OperationBoardState;
 
 /**
  * @author hundun

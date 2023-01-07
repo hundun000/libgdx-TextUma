@@ -4,7 +4,7 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.simulationgame.umamusume.gameplay.AccountSaveData.OperationBoardState;
+import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData.OperationBoardState;
 
 /**
  * @author hundun
