@@ -23,7 +23,7 @@ allprojects {
     	targetCompatibility = JavaVersion.VERSION_1_8
     }
 	ext {
-        appName = 'TextUma'
+        appName = 'libgdx-TextUma'
         gwtFrameworkVersion = '2.8.2'
         
         gdxVersion = '1.9.12'

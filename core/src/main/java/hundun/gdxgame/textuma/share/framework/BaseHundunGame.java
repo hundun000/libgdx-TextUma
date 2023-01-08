@@ -18,7 +18,6 @@ import hundun.gdxgame.textuma.core.logic.manager.LibgdxGameplayFrontend;
 import hundun.gdxgame.textuma.share.framework.BaseHundunGame.SaveDataHelper;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
 import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
-import hundun.gdxgame.textuma.share.framework.data.StarterData;
 import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
 import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
@@ -101,9 +100,6 @@ public abstract class BaseHundunGame extends Game {
         return textFormatTool;
     }
 
-
-    private StarterData starterData;
-
     public BaseHundunGame(int LOGIC_WIDTH, int LOGIC_HEIGHT, ISaveTool saveTool) {
         this.LOGIC_WIDTH = LOGIC_WIDTH;
         this.LOGIC_HEIGHT = LOGIC_HEIGHT;
@@ -129,7 +125,7 @@ public abstract class BaseHundunGame extends Game {
 	    if (load) {
 	        saveData = saveTool.loadRootSaveData();
 	    } else {
-	        saveData = SaveDataHelper.getNewGameSaveData(starterData, modelContext);
+	        saveData = SaveDataHelper.getNewGameSaveData(modelContext);
 	    }
 
 	    SaveDataHelper.applySaveData(saveData, modelContext);
@@ -178,7 +174,7 @@ public abstract class BaseHundunGame extends Game {
 	        map.put(construction.getSaveDataKey(), construction.getSaveData());
 	    }
 	    
-	    public static RootSaveData getNewGameSaveData(StarterData starterData, ManagerContext modelContext) {
+	    public static RootSaveData getNewGameSaveData(ManagerContext modelContext) {
 	        RootSaveData saveData = new RootSaveData();
 	        saveData.setBuffAmounts(new HashMap<>());
 	        saveData.setConstructionSaveDataMap(new HashMap<>());
@@ -233,8 +229,6 @@ public abstract class BaseHundunGame extends Game {
 
     private void contextsLazyInit() {
         ChildGameConfig childGameConfig = getChildGameConfig();
-
-        this.starterData = childGameConfig.getStarterData();
 
         modelContext.getConstructionFactory().lazyInit(childGameConfig.getConstructions());
         modelContext.getConstructionManager().lazyInit(childGameConfig.getAreaControlableConstructionIds());

@@ -17,7 +17,6 @@ import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.ScreenId;
 import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
-import hundun.gdxgame.textuma.share.framework.data.StarterData;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
 import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
 import hundun.simulationgame.umamusume.core.horse.RunStrategyType;
@@ -77,13 +76,6 @@ public class TextUmaGameConfig extends ChildGameConfig {
 //                ResourceType.COIN
 //        ));
         this.setAreaShowEntityByChangeAmountResourceIds(areaShowEntityByChangeAmountResourceIds);
-        
-        StarterData starterData = new StarterData();
-        Map<String, Integer> constructionStarterLevelMap = new HashMap<>();
-        starterData.setConstructionStarterLevelMap(constructionStarterLevelMap);
-        Map<String, Boolean> constructionStarterWorkingLevelMap = new HashMap<>();
-        starterData.setConstructionStarterWorkingLevelMap(constructionStarterWorkingLevelMap);
-        this.setStarterData(starterData); 
         
 //        Map<String, String> screenIdToFilePathMap = JavaFeatureForGwt.mapOf(
 //                ScreenId.MENU, "audio/Loop-Menu.wav",
