@@ -290,6 +290,7 @@ public class LibgdxGameplayFrontend implements ILibgdxGameplayFrontend, IGamepla
     }
 
     public void subCurrentSituationToSaveData(RootSaveData saveData) {
+        saveData.setFrontEndSaveData(frontEndSaveData);
         saveData.setUmaSaveData(manager.getAccountSaveDataMap());
         saveData.setGameRuleData(manager.getGameRuleData());
     }
