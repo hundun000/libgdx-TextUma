@@ -7,6 +7,8 @@ import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePack;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
 import hundun.simulationgame.umamusume.game.gameplay.data.TrainRuleConfig;
+import lombok.Getter;
+import lombok.Setter;
 
 
 /**
@@ -19,28 +21,16 @@ public class TrainOutputComponent {
     /**
      * 对于Click型，即为基础点击收益；对于Auto型，即为基础自动收益；
      */
+    @Getter
+    @Setter
     protected ResourcePack outputGainPack;
-    // ------ replace-lombok ------
-    public ResourcePack getOutputGainPack() {
-        return outputGainPack;
-    }
-    public void setOutputGainPack(ResourcePack outputGainPack) {
-        this.outputGainPack = outputGainPack;
-    }
 
     /**
      * output行为所需要支付的费用; 无费用时为null
      */
+    @Getter
+    @Setter
     protected ResourcePack outputCostPack;
-    // ------ replace-lombok ------
-    public ResourcePack getOutputCostPack() {
-        return outputCostPack;
-    }
-    public void setOutputCostPack(ResourcePack outputCostPack) {
-        this.outputCostPack = outputCostPack;
-    }
-
-
 
 
     public TrainOutputComponent(BaseTrainActionHandler construction) {
@@ -101,6 +91,6 @@ public class TrainOutputComponent {
         }
 
         List<ResourcePair> compareTarget = outputCostPack.getModifiedValues();
-        return construction.game.getModelContext().getStorageManager().isEnough(compareTarget);
+        return construction.getGame().getManagerContext().getStorageManager().isEnough(compareTarget);
     }
 }

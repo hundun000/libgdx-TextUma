@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.utils.Disposable;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+import hundun.gdxgame.textuma.core.TextUmaGame;
 
 /**
  * @author hundun
@@ -18,11 +18,11 @@ public class AudioPlayManager implements Disposable {
     long currentBgmId;
     Sound currentBgmSound;
 
-    BaseHundunGame game;
+    TextUmaGame game;
 
     Map<String, Sound> screenIdToSoundMap = new HashMap<>();
 
-    public AudioPlayManager(BaseHundunGame game) {
+    public AudioPlayManager(TextUmaGame game) {
         this.game = game;
     }
 
@@ -40,7 +40,7 @@ public class AudioPlayManager implements Disposable {
 
 
     public void intoScreen(String screenId) {
-        if (game.drawGameImageAndPlayAudio && screenIdToSoundMap.containsKey(screenId)) {
+        if (screenIdToSoundMap.containsKey(screenId)) {
             setScreenBgm(screenIdToSoundMap.get(screenId));
         }
     }

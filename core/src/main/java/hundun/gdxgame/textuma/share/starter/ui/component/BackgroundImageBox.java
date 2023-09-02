@@ -13,32 +13,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
-import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
-import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
-public class BackgroundImageBox<T_GAME extends BaseHundunGame> extends Container<Image> implements IGameAreaChangeListener{
-    BasePlayScreen<T_GAME> parent;
+import hundun.gdxgame.textuma.core.logic.GameArea;
+import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
+import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseUmaPlayScreen;
+
+public class BackgroundImageBox extends Container<Image> implements IGameAreaChangeListener{
+    BaseUmaPlayScreen parent;
     Map<String, Drawable> imageMap = new HashMap<>();
 
-    public BackgroundImageBox(BasePlayScreen<T_GAME> parent) {
+    public BackgroundImageBox(BaseUmaPlayScreen parent) {
         this.parent = parent;
         this.setFillParent(true);
         //this.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
-        for (String gameArea : parent.game.getGameAreaValues()) {
-            imageMap.put(gameArea, new SpriteDrawable(new Sprite(parent.game.getTextureManager().getBackgroundTexture(gameArea))));
+        for (String gameArea : GameArea.values) {
+            imageMap.put(gameArea, new SpriteDrawable(new Sprite(parent.getGame().getTextureManager().getBackgroundTexture(gameArea))));
         }
 
     }
 
     @Override
     public void onGameAreaChange(String last, String current) {
-        if (parent.game.drawGameImageAndPlayAudio) {
-            Drawable image = imageMap.get(current);
-            this.setBackground(image);
-        }
+        Drawable image = imageMap.get(current);
+        this.setBackground(image);
     }
 
 }

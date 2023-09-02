@@ -1,9 +1,12 @@
 package hundun.gdxgame.textuma.share.framework.model.manager;
 
+import hundun.gdxgame.corelib.base.BaseHundunGame;
+import hundun.gdxgame.textuma.core.TextUmaGame;
+
 import java.util.HashMap;
 import java.util.Map;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
 
 /**
  * @author hundun
@@ -11,7 +14,7 @@ import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
  */
 public class BuffManager {
 
-    private BaseHundunGame game;
+    private TextUmaGame game;
 
     private Map<String, Integer> buffAmounts = new HashMap<>();
     // ------ replace-lombok ------
@@ -22,7 +25,7 @@ public class BuffManager {
         this.buffAmounts = buffAmounts;
     }
 
-    public BuffManager(BaseHundunGame game) {
+    public BuffManager(TextUmaGame game) {
         this.game = game;
     }
 

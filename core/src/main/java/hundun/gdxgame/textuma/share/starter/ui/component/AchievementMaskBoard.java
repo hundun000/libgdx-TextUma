@@ -10,9 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
+import hundun.gdxgame.corelib.base.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
-import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
+import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseUmaPlayScreen;
 
 /**
  * @author hundun
@@ -20,18 +21,18 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
  */
 public class AchievementMaskBoard<T_GAME extends BaseHundunGame> extends Table {
 
-    BasePlayScreen<T_GAME> parent;
+    BaseUmaPlayScreen parent;
     Label label;
 
-    public AchievementMaskBoard(BasePlayScreen<T_GAME> parent) {
+    public AchievementMaskBoard(BaseUmaPlayScreen parent) {
         this.parent = parent;
-        this.setBackground(new SpriteDrawable(new Sprite(parent.game.getTextureManager().getWinTexture())));
+        this.setBackground(new SpriteDrawable(new Sprite(parent.getGame().getTextureManager().getWinTexture())));
         this.setBounds(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
-        label = new Label("", parent.game.getButtonSkin());
+        label = new Label("", parent.getGame().getMainSkin());
         this.add(label).center().row();
 
-        Button textButton = new TextButton("continue", parent.game.getButtonSkin());
+        Button textButton = new TextButton("continue", parent.getGame().getMainSkin());
         textButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

@@ -4,14 +4,10 @@ import com.badlogic.gdx.Gdx;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.BuiltinConstructionsLoader;
-import hundun.gdxgame.textuma.core.logic.ResourceType;
-import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
 import hundun.gdxgame.textuma.share.framework.listener.IGameStartListener;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.DescriptionPackage.ILevelDescroptionProvider;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
 import hundun.simulationgame.umamusume.game.gameplay.data.TrainActionType;
 import hundun.simulationgame.umamusume.game.gameplay.data.TrainRuleConfig;
 import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData.OperationBoardState;
@@ -44,12 +40,12 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler implements
     @Override
     public void onGameStart() {
         // ----- lazy ------
-        TrainRuleConfig trainRuleConfig = game.getModelContext().getGameplayFrontend().getTrainOutputComponentConfig(trainActionType);
+        TrainRuleConfig trainRuleConfig = game.getManagerContext().getGameplayUIController().getTrainOutputComponentConfig(trainActionType);
         outputComponent.setOutputCostPack(BuiltinConstructionsLoader.toPack(
-                game.getModelContext().getGameplayFrontend().gameResourceTypeToInner(trainRuleConfig.getCostList()) 
+                game.getManagerContext().getGameplayUIController().gameResourceTypeToInner(trainRuleConfig.getCostList())
                 ));
         outputComponent.setOutputGainPack(BuiltinConstructionsLoader.toPack(
-                game.getModelContext().getGameplayFrontend().gameResourceTypeToInner(trainRuleConfig.getGainList()) 
+                game.getManagerContext().getGameplayUIController().gameResourceTypeToInner(trainRuleConfig.getGainList())
                 ));
         
         this.lazyInitDescription();
@@ -88,7 +84,7 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler implements
     @Override
     public void onEffectableClick() {
         
-        game.getModelContext().getGameplayFrontend().trainAndNextDay(
+        game.getManagerContext().getGameplayUIController().trainAndNextDay(
                 trainActionType
                 );
         
@@ -96,7 +92,7 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler implements
 
     @Override
     public ClickEffectType canClickEffect() {
-        if (game.getModelContext().getGameplayFrontend().getOperationBoardState() != OperationBoardState.TRAIN_DAY) {
+        if (game.getManagerContext().getGameplayUIController().getOperationBoardState() != OperationBoardState.TRAIN_DAY) {
             return ClickEffectType.CANNOT_BY_STATE;
         } else if (!outputComponent.canOutput()) {
             return ClickEffectType.CANNOT_BY_COST;

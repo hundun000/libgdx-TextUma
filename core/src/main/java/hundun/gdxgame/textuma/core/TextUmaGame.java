@@ -1,117 +1,87 @@
 package hundun.gdxgame.textuma.core;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.InputListener;
 
-import hundun.gdxgame.textuma.core.logic.BuiltinConstructionsLoader;
-import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.core.logic.GameArea;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
+import com.ray3k.stripe.FreeTypeSkin;
+import hundun.gdxgame.corelib.base.BaseHundunGame;
+import hundun.gdxgame.gamelib.base.save.ISaveTool;
+import hundun.gdxgame.textuma.core.data.RootSaveData;
+import hundun.gdxgame.textuma.core.data.TextUmaSaveHandler;
 import hundun.gdxgame.textuma.core.logic.GameDictionary;
-import hundun.gdxgame.textuma.core.logic.ResourceType;
-import hundun.gdxgame.textuma.core.logic.ScreenId;
 import hundun.gdxgame.textuma.core.logic.manager.TextureManager;
-import hundun.gdxgame.textuma.core.logic.manager.LibgdxGameplayFrontend;
-import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.core.ui.screen.ScreenContext;
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
-import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
-import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
 import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
-import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
-import hundun.gdxgame.textuma.share.framework.model.manager.GameEntityManager;
-import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
+import hundun.gdxgame.textuma.share.framework.model.manager.AudioPlayManager;
+import hundun.gdxgame.textuma.share.framework.model.manager.EventManager;
+import hundun.gdxgame.textuma.share.framework.util.text.IGameDictionary;
 import hundun.gdxgame.textuma.share.framework.util.text.TextFormatTool;
-import hundun.gdxgame.textuma.share.starter.ui.screen.menu.MenuScreen;
+import hundun.gdxgame.textuma.share.starter.ui.screen.menu.TextUmaMenuScreen;
+import lombok.Getter;
 
 
-public class TextUmaGame extends BaseHundunGame {
+public class TextUmaGame extends BaseHundunGame<RootSaveData> {
 
     public static final String GAME_WORD_SKIN_KEY = "game-word";
 
     public static final String NO_MORE_RACE_MESSAGE = "No more race-day. This is the end of the demo version.";
-    
+    public static final String SINGLETON_ID = "LIBGDX_GAMEPLAY_FRONTEND";
+
+    @Getter
     private ScreenContext screenContext;
-    // ------ replace-lombok ------
-    public ScreenContext getScreenContext() {
-        return screenContext;
-    }
-    
-    public TextUmaGame(ISaveTool saveTool) {
-        super(640, 480, saveTool);
-        //this.skinFilePath = "skins/orange/skin/uiskin.json";
-        desktopScale = 1;
-        drawGameImageAndPlayAudio = true;
-        debugMode = false;
-    }
-    
-    @Override
-    protected ChildGameConfig getChildGameConfig() {
-        return new TextUmaGameConfig(this);
-    }
-    
-    @Override
-    public void create () {
-        super.create();
-        
-        setScreen(screenContext.getMenuScreen());
-        getAudioPlayManager().intoScreen(screenContext.getMenuScreen().getScreenId());
-    }
-    
-    @Override
-    protected void initContexts() {
-        super.initContexts();
-        
-        
-        
+    @Getter
+    private ManagerContext managerContext;
+    @Getter
+    private EventManager eventManager;
+    @Getter
+    protected TextFormatTool textFormatTool;
+    @Getter
+    private Viewport sharedViewport;
+    @Getter
+    protected IGameDictionary gameDictionary;
+    @Getter
+    protected TextureManager textureManager;
+    @Getter
+    private AudioPlayManager audioPlayManager;
+
+    public TextUmaGame(ISaveTool<RootSaveData> saveTool) {
+        super(640, 480);
+
+        this.sharedViewport = new ScreenViewport();
+        this.textFormatTool = new TextFormatTool();
+        this.saveHandler = new TextUmaSaveHandler(this.frontend, saveTool);
+        this.mainSkinFilePath = null;
         this.gameDictionary = new GameDictionary();
         this.textureManager = new TextureManager();
-        
         this.screenContext = new ScreenContext();
-        screenContext.setMenuScreen(new MenuScreen<>(
-                this,
-                ScreenId.MENU,
-                "Text Uma",
-                new InputListener(){
-                    @Override
-                    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                        TextUmaGame.this.loadOrNewGame(true);
-                        TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getPlayScreen());
-                        TextUmaGame.this.getAudioPlayManager().intoScreen(ScreenId.PLAY);
-                    }
-                    @Override
-                    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                        return true;
-                    }
-                },
-                new InputListener(){
-                    @Override
-                    public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
-                        TextUmaGame.this.loadOrNewGame(false);
-                        TextUmaGame.this.setScreen(TextUmaGame.this.getScreenContext().getPlayScreen());
-                        TextUmaGame.this.getAudioPlayManager().intoScreen(ScreenId.PLAY);
-                    }
-                    @Override
-                    public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                        return true;
-                    }
-                }
-        ));
-        screenContext.setPlayScreen(new UmaPlayScreen(this));
-        
-        getModelContext().setGameplayFrontend(new LibgdxGameplayFrontend(this, screenContext.getPlayScreen()));
+        this.managerContext = new ManagerContext(this);
+        this.eventManager = new EventManager();
+        this.audioPlayManager = new AudioPlayManager(this);
     }
 
     @Override
-    public List<String> getGameAreaValues() {
-        return GameArea.values;
+    protected void createStage1() {
+        super.createStage1();
+        this.mainSkin = new FreeTypeSkin(Gdx.files.internal("skins/freetype/skin.json"));
+    }
+
+    @Override
+    protected void createStage2() {
+        textureManager.lazyInitOnGameCreateStage2();
+        screenContext.lazyInit(this);
+    }
+
+    @Override
+    protected void createStage3() {
+        ChildGameConfig childGameConfig = new TextUmaGameConfig(this);
+        managerContext.lazyInitOnGameCreate(childGameConfig);
+        audioPlayManager.lazyInit(childGameConfig.getScreenIdToFilePathMap());
+
+
+        screenManager.pushScreen(TextUmaMenuScreen.class.getSimpleName(), "blending_transition");
+        getAudioPlayManager().intoScreen(TextUmaMenuScreen.class.getSimpleName());
     }
 
 }

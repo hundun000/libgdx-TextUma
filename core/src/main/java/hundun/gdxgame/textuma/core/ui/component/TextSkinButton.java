@@ -8,7 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+import hundun.gdxgame.corelib.base.BaseHundunGame;
+import hundun.gdxgame.textuma.core.TextUmaGame;
 
 /**
  * @author hundun
@@ -20,10 +21,10 @@ public class TextSkinButton extends Table {
     Label contentLabel;
     public boolean fakeEnable;
     
-    private static TextSkinButton type2(String content, BaseHundunGame game) {
+    private static TextSkinButton type2(String content, TextUmaGame game) {
         TextSkinButton result = new TextSkinButton();
         //LabelStyle styleOrSkin = new LabelStyle(TextNinePatchWrapper.boxBitmapFont, Color.RED);
-        Skin styleOrSkin = game.getButtonSkin();
+        Skin styleOrSkin = game.getMainSkin();
         //String subType = "as-button";
         
         result.contentLabel = new Label("", styleOrSkin);
@@ -43,7 +44,7 @@ public class TextSkinButton extends Table {
         return result;
     }
     
-    public static TextSkinButton typeButton(String content, BaseHundunGame game) {
+    public static TextSkinButton typeButton(String content, TextUmaGame game) {
         return type2(content, game);
     }
 

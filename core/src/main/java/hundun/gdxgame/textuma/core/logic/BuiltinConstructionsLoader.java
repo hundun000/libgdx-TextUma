@@ -14,7 +14,7 @@ import hundun.gdxgame.textuma.core.logic.handler.train.FreeTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.train.PowerTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.train.RunningTrainActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.train.SwimmingTrainActionHandler;
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
 import hundun.gdxgame.textuma.share.framework.model.construction.BaseConstructionFactory;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.TrainOutputComponent;

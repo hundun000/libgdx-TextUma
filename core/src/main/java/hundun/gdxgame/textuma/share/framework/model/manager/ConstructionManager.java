@@ -7,7 +7,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
+import hundun.gdxgame.corelib.base.BaseHundunGame;
+import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
@@ -17,10 +19,10 @@ import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionH
  */
 public class ConstructionManager {
 
-    BaseHundunGame game;
+    TextUmaGame game;
 
 
-    public ConstructionManager(BaseHundunGame game) {
+    public ConstructionManager(TextUmaGame game) {
         this.game = game;
     }
 
@@ -36,7 +38,7 @@ public class ConstructionManager {
     Map<String, List<UmaActionHandler>> areaControlableConstructions;
 
     public void lazyInit(Map<String, List<String>> areaControlableConstructionIds) {
-        ManagerContext modelContext = game.getModelContext();
+        ManagerContext modelContext = game.getManagerContext();
         areaControlableConstructions = new HashMap<>();
         if (areaControlableConstructionIds != null) {
             for (Entry<String, List<String>> entry : areaControlableConstructionIds.entrySet()) {

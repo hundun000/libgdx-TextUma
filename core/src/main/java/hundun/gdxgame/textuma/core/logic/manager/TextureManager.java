@@ -22,9 +22,8 @@ public class TextureManager extends AbstractTextureManager {
             return new Texture(Gdx.files.internal("badlogic.jpg"));
         }
     }
-    
-    public TextureManager() {
 
+    public void lazyInitOnGameCreateStage2() {
         winTexture = textureOrDefault(Gdx.files.internal("win.png"));
         menuTexture = textureOrDefault(Gdx.files.internal("menu.png"));
         {
@@ -40,7 +39,7 @@ public class TextureManager extends AbstractTextureManager {
             //constructionEntityMap.put(ConstructionId.COOKIE_CLICK_PROVIDER, regions[0][0]);
             constructionEntityMap.put(UserActionId.RUNNING_TRAIN, regions[0][1]);
             //constructionEntityMap.put(ConstructionId.WIN_PROVIDER, regions[0][3]);
-        }  
+        }
         {
             Texture texture = textureOrDefault(Gdx.files.internal("areas.png"));
             TextureRegion[][] regions = TextureRegion.split(texture, 640, 480);
@@ -49,7 +48,5 @@ public class TextureManager extends AbstractTextureManager {
             gameAreaBackMap.put(GameArea.AREA_TRAIN, regions[0][2]);
 //            gameAreaBackMap.put(GameArea.AREA_RECORD, regions[0][3]);
         }
-        
     }
-
 }

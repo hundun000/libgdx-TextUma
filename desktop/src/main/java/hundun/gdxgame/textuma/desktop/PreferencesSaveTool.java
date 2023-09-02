@@ -1,41 +1,33 @@
 package hundun.gdxgame.textuma.desktop;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 
-import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
-import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.gdxgame.textuma.share.framework.util.save.AbstractSaveDataSaveTool;
-import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
-import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
+import hundun.gdxgame.corelib.base.save.AbstractSaveDataSaveTool;
+import hundun.gdxgame.textuma.core.data.MyGameplaySaveData;
+import hundun.gdxgame.textuma.core.data.RootSaveData;
 
 
 /**
  * @author hundun
  * Created on 2021/11/10
  */
-public class PreferencesSaveTool extends AbstractSaveDataSaveTool {
+public class PreferencesSaveTool extends AbstractSaveDataSaveTool<RootSaveData> {
     
     private ObjectMapper objectMapper;
-    
+
     public PreferencesSaveTool(String preferencesName) {
         super(preferencesName);
         this.objectMapper = new ObjectMapper()
                 .enable(SerializationFeature.INDENT_OUTPUT)
-                ;
-        
+                .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
+        ;
+
     }
 
 
@@ -48,7 +40,7 @@ public class PreferencesSaveTool extends AbstractSaveDataSaveTool {
 
 
     @Override
-    public void saveRootSaveData(RootSaveData saveData) {
+    public void writeRootSaveData(RootSaveData saveData) {
         try {
             preferences.putString(ROOT_KEY, objectMapper.writeValueAsString(saveData));
             preferences.flush();
@@ -61,7 +53,7 @@ public class PreferencesSaveTool extends AbstractSaveDataSaveTool {
 
 
     @Override
-    public RootSaveData loadRootSaveData() {
+    public RootSaveData readRootSaveData() {
         try {
             String date = preferences.getString(ROOT_KEY);
             RootSaveData saveData = objectMapper.readValue(date, RootSaveData.class);

@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
+import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
 
 import java.util.Set;
@@ -17,7 +18,7 @@ import java.util.Set;
  */
 public class StorageManager {
 
-    BaseHundunGame game;
+    TextUmaGame game;
 
     Map<String, Long> ownResoueces = new HashMap<>();
     // ------ replace-lombok ------
@@ -39,7 +40,7 @@ public class StorageManager {
 
     Map<String, Long> oneFrameDeltaResoueces = new HashMap<>();
 
-    public StorageManager(BaseHundunGame game) {
+    public StorageManager(TextUmaGame game) {
         this.game = game;
     }
 

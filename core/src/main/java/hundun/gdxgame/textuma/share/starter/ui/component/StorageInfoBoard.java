@@ -9,8 +9,9 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.scenes.scene2d.ui.Cell;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
-import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
+
+import hundun.gdxgame.corelib.base.BaseHundunGame;
+import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseUmaPlayScreen;
 
 /**
  * @author hundun
@@ -25,9 +26,9 @@ public class StorageInfoBoard<T_GAME extends BaseHundunGame> extends Table {
 
     List<String> shownOrders;
     Set<String> shownTypes = new HashSet<>();
-    BasePlayScreen<T_GAME> parent;
+    BaseUmaPlayScreen parent;
 
-    List<ResourceAmountPairNode<T_GAME>> nodes = new ArrayList<>();
+    List<TextUmaResourceAmountPairNode> nodes = new ArrayList<>();
 
     public void lazyInit(List<String> shownOrders) {
         this.shownOrders = shownOrders;
@@ -37,12 +38,12 @@ public class StorageInfoBoard<T_GAME extends BaseHundunGame> extends Table {
     //Label mainLabel;
 
 
-    public StorageInfoBoard(BasePlayScreen<T_GAME> parent) {
+    public StorageInfoBoard(BaseUmaPlayScreen parent) {
         this.parent = parent;
         //this.setBackground(BasePlayScreen.blackBoard);
 
 
-        if (parent.game.debugMode) {
+        if (parent.getGame().debugMode) {
             this.debugAll();
         }
     }
@@ -56,10 +57,10 @@ public class StorageInfoBoard<T_GAME extends BaseHundunGame> extends Table {
         for (int i = 0; i < shownOrders.size(); i++) {
             String resourceType = shownOrders.get(i);
             if (shownTypes.contains(resourceType)) {
-                ResourceAmountPairNode<T_GAME> node = new ResourceAmountPairNode<>(parent.game, resourceType);
+                TextUmaResourceAmountPairNode node = new TextUmaResourceAmountPairNode(parent.getGame(), resourceType);
                 nodes.add(node);
                 shownTypes.add(resourceType);
-                Cell<ResourceAmountPairNode<T_GAME>> cell = this.add(node).width(NODE_WIDTH).height(NODE_HEIGHT);
+                Cell<TextUmaResourceAmountPairNode> cell = this.add(node).width(NODE_WIDTH).height(NODE_HEIGHT);
                 if ((i + 1) % NUM_NODE_PER_ROW == 0) {
                     cell.row();
                 }
@@ -78,18 +79,18 @@ public class StorageInfoBoard<T_GAME extends BaseHundunGame> extends Table {
 //        }
 
 //        String text = shownResources.stream()
-//                .map(shownResource -> parent.game.getModelContext().getStorageManager().getResourceDescription(shownResource))
+//                .map(shownResource -> parent.getGame().getManagerContext().getStorageManager().getResourceDescription(shownResource))
 //                .collect(Collectors.joining("    "));
-//        text += "\nBuffs = " + parent.game.getModelContext().getBuffManager().getBuffAmounts();
+//        text += "\nBuffs = " + parent.getGame().getManagerContext().getBuffManager().getBuffAmounts();
 //        mainLabel.setText(text);
-        boolean needRebuildCells = !shownTypes.equals(parent.game.getModelContext().getStorageManager().getUnlockedResourceTypes());
+        boolean needRebuildCells = !shownTypes.equals(parent.getGame().getManagerContext().getStorageManager().getUnlockedResourceTypes());
         if (needRebuildCells) {
             shownTypes.clear();
-            shownTypes.addAll(parent.game.getModelContext().getStorageManager().getUnlockedResourceTypes());
+            shownTypes.addAll(parent.getGame().getManagerContext().getStorageManager().getUnlockedResourceTypes());
             rebuildCells();
         }
 
-        nodes.stream().forEach(node -> node.update(parent.game.getModelContext().getStorageManager().getResourceNumOrZero(node.getResourceType())));
+        nodes.stream().forEach(node -> node.update(parent.getGame().getManagerContext().getStorageManager().getResourceNumOrZero(node.getResourceType())));
     }
 
     @Override

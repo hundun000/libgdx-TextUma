@@ -6,14 +6,11 @@ package hundun.gdxgame.textuma.share.framework.model.construction.base;
 
 import java.util.Random;
 
-import com.badlogic.gdx.Gdx;
-
 import hundun.gdxgame.textuma.core.TextUmaGame;
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
-import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
-import hundun.gdxgame.textuma.share.framework.listener.IBuffChangeListener;
-import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
+
+import hundun.gdxgame.textuma.core.data.UmaUserActionHandlerSaveData;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.DescriptionPackage.ILevelDescroptionProvider;
+import lombok.Getter;
 
 public abstract class UmaActionHandler {
 
@@ -31,6 +28,7 @@ public abstract class UmaActionHandler {
             ILevelDescroptionProvider.WORKING_LEVEL_IMP);
 
     protected Random random = new Random();
+    @Getter
     protected final TextUmaGame game;
 
     /**

@@ -1,19 +1,11 @@
 package hundun.gdxgame.textuma.core.ui.entity;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.core.logic.ResourceType;
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
 import hundun.gdxgame.textuma.share.framework.model.entity.BaseGameEntityFactory;
 import hundun.gdxgame.textuma.share.framework.model.entity.GameEntity;
-import hundun.gdxgame.textuma.share.framework.model.entity.RandomMoveEntity;
-import hundun.gdxgame.textuma.share.starter.ui.component.GameAreaControlBoard;
-import hundun.gdxgame.textuma.share.starter.ui.component.StorageInfoBoard;
-import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
+import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseUmaPlayScreen;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst;
 
 /**
@@ -28,7 +20,7 @@ public class GameEntityFactory extends BaseGameEntityFactory {
 
     public float RESOURCE_MAX_DRAW_NUM = 15;
     
-    public GameEntityFactory(PlayScreenLayoutConst layoutConst, BasePlayScreen<TextUmaGame> parent) {
+    public GameEntityFactory(PlayScreenLayoutConst layoutConst, BaseUmaPlayScreen parent) {
         super(layoutConst, parent);
     }
     

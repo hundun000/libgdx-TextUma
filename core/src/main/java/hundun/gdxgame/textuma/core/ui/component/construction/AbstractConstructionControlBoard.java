@@ -16,7 +16,6 @@ import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 
 public abstract class AbstractConstructionControlBoard extends Table implements ILogicFrameListener, IGameAreaChangeListener {
     protected UmaPlayScreen parent;
@@ -35,7 +34,7 @@ public abstract class AbstractConstructionControlBoard extends Table implements 
     @Override
     public void onLogicFrame() {
         constructionControlNodes.forEach(item -> item.onLogicFrame());
-        //parent.game.getModelContext().getConstructionManager().logicFrameForAllConstructionModels();
+        //parent.getGame().getManagerContext().getConstructionManager().logicFrameForAllConstructionModels();
 
     }
 
@@ -43,7 +42,7 @@ public abstract class AbstractConstructionControlBoard extends Table implements 
     public void onGameAreaChange(String last, String current) {
 
 
-        List<UmaActionHandler> newConstructions = parent.game.getModelContext().getConstructionManager().getAreaShownConstructionsOrEmpty(current);
+        List<UmaActionHandler> newConstructions = parent.getGame().getManagerContext().getConstructionManager().getAreaShownConstructionsOrEmpty(current);
 
         int childrenSize = initChild(newConstructions.size());
 

@@ -1,37 +1,22 @@
 package hundun.gdxgame.textuma.html;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.github.nmorel.gwtjackson.client.ObjectMapper;
 import com.google.gwt.core.client.GWT;
 
-import hundun.gdxgame.textuma.share.framework.data.UmaUserActionHandlerSaveData;
-import hundun.gdxgame.textuma.share.framework.data.RootSaveData;
-import hundun.gdxgame.textuma.share.framework.model.ManagerContext;
-import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
-import hundun.gdxgame.textuma.share.framework.util.save.AbstractSaveDataSaveTool;
-import hundun.gdxgame.textuma.share.framework.util.save.ISaveTool;
-
-
+import hundun.gdxgame.corelib.base.save.AbstractSaveDataSaveTool;
+import hundun.gdxgame.textuma.core.data.RootSaveData;
 
 
 /**
  * @author hundun
  * Created on 2021/11/10
  */
-public class GwtPreferencesSaveTool extends AbstractSaveDataSaveTool {
+public class GwtPreferencesSaveTool extends AbstractSaveDataSaveTool<RootSaveData> {
 
     
     private SaveDataMapper objectMapper;
-    
+
     public static interface SaveDataMapper extends ObjectMapper<RootSaveData> {}
     
     
@@ -42,7 +27,7 @@ public class GwtPreferencesSaveTool extends AbstractSaveDataSaveTool {
 
 
     @Override
-    public void saveRootSaveData(RootSaveData saveData) {
+    public void writeRootSaveData(RootSaveData saveData) {
         try {
             preferences.putString(ROOT_KEY, objectMapper.write(saveData));
             preferences.flush();
@@ -55,7 +40,7 @@ public class GwtPreferencesSaveTool extends AbstractSaveDataSaveTool {
 
 
     @Override
-    public RootSaveData loadRootSaveData() {
+    public RootSaveData readRootSaveData() {
 
         try {
             String date = preferences.getString(ROOT_KEY);

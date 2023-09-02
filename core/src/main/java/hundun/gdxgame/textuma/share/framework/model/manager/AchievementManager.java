@@ -10,7 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+import hundun.gdxgame.corelib.base.BaseHundunGame;
+import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.share.framework.listener.IBuffChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.IGameStartListener;
 import hundun.gdxgame.textuma.share.framework.listener.IOneFrameResourceChangeListener;
@@ -19,7 +20,7 @@ import hundun.gdxgame.textuma.share.framework.model.AchievementPrototype;
 import java.util.Set;
 
 public class AchievementManager implements IBuffChangeListener, IOneFrameResourceChangeListener, IGameStartListener {
-    BaseHundunGame game;
+    TextUmaGame game;
 
     Map<String, AchievementPrototype> prototypes = new HashMap<>();
 
@@ -33,7 +34,7 @@ public class AchievementManager implements IBuffChangeListener, IOneFrameResourc
     }
 
 
-    public AchievementManager(BaseHundunGame game) {
+    public AchievementManager(TextUmaGame game) {
         this.game = game;
         game.getEventManager().registerListener(this);
     }
@@ -47,7 +48,7 @@ public class AchievementManager implements IBuffChangeListener, IOneFrameResourc
             return true;
         }
         for (Entry<String, Integer> entry : requiredResources.entrySet()) {
-            long own = game.getModelContext().getStorageManager().getResourceNumOrZero(entry.getKey());
+            long own = game.getManagerContext().getStorageManager().getResourceNumOrZero(entry.getKey());
             if (own < entry.getValue()) {
                 return false;
             }
@@ -60,7 +61,7 @@ public class AchievementManager implements IBuffChangeListener, IOneFrameResourc
             return true;
         }
         for (Entry<String, Integer> entry : map.entrySet()) {
-            int own = game.getModelContext().getBuffManager().getBuffAmoutOrDefault(entry.getKey());
+            int own = game.getManagerContext().getBuffManager().getBuffAmoutOrDefault(entry.getKey());
             if (own < entry.getValue()) {
                 return false;
             }

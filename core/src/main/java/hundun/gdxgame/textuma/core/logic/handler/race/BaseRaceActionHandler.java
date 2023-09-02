@@ -2,7 +2,7 @@ package hundun.gdxgame.textuma.core.logic.handler.race;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.logic.UserActionId;
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
+
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 
 /**

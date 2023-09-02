@@ -1,24 +1,20 @@
 package hundun.gdxgame.textuma.core.ui.component.construction.impl;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 import hundun.gdxgame.textuma.core.logic.handler.race.BaseRaceActionHandler;
 import hundun.gdxgame.textuma.core.logic.handler.train.BaseTrainActionHandler;
-import hundun.gdxgame.textuma.core.ui.component.TextNinePatchWrapper;
 import hundun.gdxgame.textuma.core.ui.component.TextSkinButton;
 import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler;
 import hundun.gdxgame.textuma.share.framework.model.construction.base.UmaActionHandler.ClickEffectType;
-import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.PlayScreenLayoutConst;
 
 
@@ -67,10 +63,10 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         int BUTTON_CHILD_HEIGHT = playScreenLayoutConst.CONSTRUCION_CHILD_BOX_BUTTON_HEIGHT;
         int NAME_CHILD_HEIGHT = playScreenLayoutConst.CONSTRUCION_CHILD_BOX_NAME_HEIGHT;
 
-        //this.constructionNameLabel = new Label("", parent.game.getButtonSkin());
+        //this.constructionNameLabel = new Label("", parent.getGame().getMainSkin());
         //constructionNameLabel.setWrap(true);
 
-        this.clickEffectButton = TextSkinButton.typeButton("", parent.game);
+        this.clickEffectButton = TextSkinButton.typeButton("", parent.getGame());
         clickEffectButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -115,7 +111,7 @@ public class BaseUserActionControlNode extends Table implements ILogicFrameListe
         this.changeWorkingLevelGroup = new Table();
 
         
-        this.workingLevelLabel = new Label("", parent.game.getButtonSkin());
+        this.workingLevelLabel = new Label("", parent.getGame().getMainSkin());
         workingLevelLabel.setAlignment(Align.center);
         changeWorkingLevelGroup.add(workingLevelLabel).size(CHILD_WIDTH / 2, BUTTON_CHILD_HEIGHT);
 

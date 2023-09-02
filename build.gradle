@@ -24,9 +24,12 @@ allprojects {
     }
 	ext {
         appName = 'libgdx-TextUma'
-        gwtFrameworkVersion = '2.8.2'
-        
-        gdxVersion = '1.9.12'
+		gdxVersion = '1.10.0'
+		gdxFreeTypeGwtVersion = '1.9.10.1'
+		gwtFrameworkVersion = '2.8.2'
+
+		hundunLibVersion = 'f5e40d5fb1'
+		raeleusStripeVersion = '1.4.1'
 	}
 	
 	repositories {
@@ -49,15 +52,22 @@ subprojects {
 
 project(":core") {
 	dependencies {
-	   api "com.badlogicgames.gdx:gdx:$gdxVersion"
-	   api project(':umamusume-simulation')
-	   //implementation 'com.github.hundun000:umamusume-simulation:3a61a316ed'
-	   // from share
-	   api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.5'
-	   api group: 'com.github.nmorel.gwtjackson', name: 'gwt-jackson', version: '0.15.4'
+		api project(':umamusume-simulation')
+
+		api "com.github.hundun000:libgdx-hundun-lib:$hundunLibVersion"
+
+	   	api "com.badlogicgames.gdx:gdx:$gdxVersion"
+		implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+
+		implementation "com.github.raeleus.stripe:freetype:$raeleusStripeVersion"
+
+	   	//implementation 'com.github.hundun000:umamusume-simulation:3a61a316ed'
+	   	// from share
+	   	api group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.5'
+	   	api group: 'com.github.nmorel.gwtjackson', name: 'gwt-jackson', version: '0.15.4'
 	   
-	   compileOnly 'org.projectlombok:lombok:1.18.4'
-       annotationProcessor 'org.projectlombok:lombok:1.18.4'
+	   	compileOnly 'org.projectlombok:lombok:1.18.4'
+       	annotationProcessor 'org.projectlombok:lombok:1.18.4'
 	}
 }
 
@@ -65,6 +75,7 @@ project(":desktop") {
 	dependencies {
 		implementation project(':core')
 		implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+		implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
 		implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
 	}
 }
@@ -78,6 +89,11 @@ project(":html") {
 
 	dependencies {
 		implementation project(':core')
+
+		implementation "com.github.hundun000.libgdx-hundun-lib:corelib:$hundunLibVersion:sources"
+		implementation "com.github.hundun000.libgdx-hundun-lib:gamelib:$hundunLibVersion:sources"
+
+
 		implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion:sources"

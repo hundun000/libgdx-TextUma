@@ -13,9 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.VerticalGroup;
 
-import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
-import hundun.gdxgame.textuma.share.framework.BaseHundunGame;
-import hundun.gdxgame.textuma.share.starter.ui.screen.play.BasePlayScreen;
+import hundun.gdxgame.corelib.base.BaseHundunGame;
 
 /**
  * @author hundun
@@ -30,14 +28,14 @@ public class TextNinePatchWrapper extends Table {
     static String vertical = "│";
     static String horizontal = "─";
     
-    public static TextNinePatchWrapper build(BaseHundunGame game, Actor content) {
+    public static TextNinePatchWrapper build(BaseHundunGame<?> game, Actor content) {
         return type1(game, content);
     }
     
-    private static TextNinePatchWrapper type1(BaseHundunGame game, Actor content) {
+    private static TextNinePatchWrapper type1(BaseHundunGame<?> game, Actor content) {
         TextNinePatchWrapper result = new TextNinePatchWrapper();
         //LabelStyle styleOrSkin = new LabelStyle(boxBitmapFont, Color.RED);
-        Skin styleOrSkin = game.getButtonSkin();
+        Skin styleOrSkin = game.getMainSkin();
         
         result.add(new Label(corners[0], styleOrSkin));
         result.add(new Label(horizontal, styleOrSkin)).left().expandX();
