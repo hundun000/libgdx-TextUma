@@ -7,12 +7,14 @@ import java.util.stream.Collectors;
 import com.badlogic.gdx.Gdx;
 
 import hundun.gdxgame.textuma.core.TextUmaGame;
+import hundun.gdxgame.textuma.core.data.RootSaveData.MySystemSettingSaveData;
 import hundun.gdxgame.textuma.core.logic.GameArea;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.ui.screen.ScreenContext;
 import hundun.gdxgame.textuma.core.ui.screen.UmaPlayScreen;
 import hundun.gdxgame.textuma.core.data.MyGameplaySaveData;
 import hundun.gdxgame.textuma.share.framework.model.resource.ResourcePair;
+import hundun.gdxgame.textuma.share.framework.util.text.Language;
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseUmaPlayScreen;
 import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
 import hundun.simulationgame.umamusume.core.race.RacePrototype;
@@ -33,6 +35,8 @@ import hundun.simulationgame.umamusume.record.text.CharImageRecorder;
 import hundun.simulationgame.umamusume.record.text.TextFrameData;
 import hundun.simulationgame.umamusume.record.text.Translator;
 import hundun.simulationgame.umamusume.record.text.Translator.StrategyPackage;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * implements ILibgdxGameplayFrontend: 对Libgdx提供服务；
@@ -49,7 +53,10 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     
     static final int smallStepColdDownCountReset = BaseUmaPlayScreen.LOGIC_FRAME_PER_SECOND * 2;
     int smallStepColdDownCount = -1;
-    
+    @Setter
+    @Getter
+    private Language language;
+
     public TextUmaGameplayUIController(TextUmaGame game, ScreenContext screenContext) {
         this.playScreen = screenContext.getPlayScreen();
         this.game = game;
@@ -66,8 +73,6 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
                 + "${POWER_KEY}${POWER_VALUE}\n");
         IRaceRecorder<TextFrameData> raceRecorder = new CharImageRecorder(translator, strategyPackage);
         this.manager = new UmaGameplayManager(translator, raceRecorder, this);
-
-        game.getSaveHandler().registerSubHandler(this);
     }
 
     @Override
@@ -338,6 +343,14 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
                 it -> it.getAmount()));
     }
 
-    
 
+    @Override
+    public void applySystemSetting(MySystemSettingSaveData systemSettingSave) {
+        this.language = systemSettingSave.getLanguage();
+    }
+
+    @Override
+    public void currentSituationToSystemSetting(MySystemSettingSaveData systemSettingSave) {
+        systemSettingSave.setLanguage(this.getLanguage());
+    }
 }

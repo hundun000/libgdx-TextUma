@@ -1,20 +1,26 @@
 package hundun.gdxgame.textuma.core.data;
 
 import hundun.gdxgame.gamelib.starter.save.IRootSaveExtension;
+import hundun.gdxgame.textuma.share.framework.util.text.Language;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class RootSaveData {
     MySystemSettingSaveData systemSettingSaveData;
     MyGameplaySaveData gameplaySaveData;
 
     @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @Builder
     public static class MySystemSettingSaveData {
-
+        Language language;
     }
 
     public static final class Factory implements IRootSaveExtension<RootSaveData, MySystemSettingSaveData, MyGameplaySaveData> {

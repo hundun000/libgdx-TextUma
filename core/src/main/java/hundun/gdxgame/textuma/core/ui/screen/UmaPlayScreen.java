@@ -46,11 +46,11 @@ public class UmaPlayScreen extends BaseUmaPlayScreen {
         gameAreaChangeListeners.clear();
 
         logicFrameListeners.add(constructionControlBoard);
-        logicFrameListeners.add(game.getManagerContext().getGameplayUIController());
+        logicFrameListeners.add(game.getGameplayUIController());
         gameAreaChangeListeners.add(backgroundImageBox);
         gameAreaChangeListeners.add(constructionControlBoard);
         gameAreaChangeListeners.add(gameAreaControlBoard);
-        gameAreaChangeListeners.add(game.getManagerContext().getGameplayUIController());
+        gameAreaChangeListeners.add(game.getGameplayUIController());
     }
 
     @Override

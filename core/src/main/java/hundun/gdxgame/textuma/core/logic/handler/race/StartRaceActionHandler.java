@@ -22,12 +22,12 @@ public class StartRaceActionHandler extends BaseRaceActionHandler {
 
     @Override
     public void onEffectableClick() {
-        game.getManagerContext().getGameplayUIController().raceStart();
+        game.getGameplayUIController().raceStart();
     }
 
     @Override
     public ClickEffectType canClickEffect() {
-        if (game.getManagerContext().getGameplayUIController().getOperationBoardState() != OperationBoardState.RACE_DAY_RACE_READY) {
+        if (game.getGameplayUIController().getOperationBoardState() != OperationBoardState.RACE_DAY_RACE_READY) {
             return ClickEffectType.CANNOT_BY_STATE;
         }
         return ClickEffectType.CAN;

@@ -19,12 +19,12 @@ public class ReplayRaceRecordNodeActionHandler extends BaseRaceActionHandler {
 
     @Override
     public void onEffectableClick() {
-        game.getManagerContext().getGameplayUIController().replayRaceRecord();
+        game.getGameplayUIController().replayRaceRecord();
     }
 
     @Override
     public ClickEffectType canClickEffect() {
-        if (!game.getManagerContext().getGameplayUIController().isWaitingEndRaceRecord()) {
+        if (!game.getGameplayUIController().isWaitingEndRaceRecord()) {
             return ClickEffectType.CANNOT_BY_STATE;
         }
         return ClickEffectType.CAN;

@@ -28,24 +28,16 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler implements
         TrainOutputComponent outputComponent = new TrainOutputComponent(this);
         this.setOutputComponent(outputComponent);
     }
-
-    
-    protected void quickSetTrainOutputComponent(
-            int costCoinNum,
-            int gain
-            ) {
-        
-    }
     
     @Override
     public void onGameStart() {
         // ----- lazy ------
-        TrainRuleConfig trainRuleConfig = game.getManagerContext().getGameplayUIController().getTrainOutputComponentConfig(trainActionType);
+        TrainRuleConfig trainRuleConfig = game.getGameplayUIController().getTrainOutputComponentConfig(trainActionType);
         outputComponent.setOutputCostPack(BuiltinConstructionsLoader.toPack(
-                game.getManagerContext().getGameplayUIController().gameResourceTypeToInner(trainRuleConfig.getCostList())
+                game.getGameplayUIController().gameResourceTypeToInner(trainRuleConfig.getCostList())
                 ));
         outputComponent.setOutputGainPack(BuiltinConstructionsLoader.toPack(
-                game.getManagerContext().getGameplayUIController().gameResourceTypeToInner(trainRuleConfig.getGainList())
+                game.getGameplayUIController().gameResourceTypeToInner(trainRuleConfig.getGainList())
                 ));
         
         this.lazyInitDescription();
@@ -84,7 +76,7 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler implements
     @Override
     public void onEffectableClick() {
         
-        game.getManagerContext().getGameplayUIController().trainAndNextDay(
+        game.getGameplayUIController().trainAndNextDay(
                 trainActionType
                 );
         
@@ -92,7 +84,7 @@ public abstract class BaseTrainActionHandler extends UmaActionHandler implements
 
     @Override
     public ClickEffectType canClickEffect() {
-        if (game.getManagerContext().getGameplayUIController().getOperationBoardState() != OperationBoardState.TRAIN_DAY) {
+        if (game.getGameplayUIController().getOperationBoardState() != OperationBoardState.TRAIN_DAY) {
             return ClickEffectType.CANNOT_BY_STATE;
         } else if (!outputComponent.canOutput()) {
             return ClickEffectType.CANNOT_BY_COST;

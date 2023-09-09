@@ -25,7 +25,7 @@ public class ManagerContext {
 
     BaseConstructionFactory constructionFactory;
     ConstructionManager constructionManager;
-    IGameplayUIController gameplayUIController;
+
 
     TextUmaGame game;
     public ManagerContext(TextUmaGame game) {
@@ -38,8 +38,6 @@ public class ManagerContext {
 
         this.setConstructionFactory(new BaseConstructionFactory());
         this.setConstructionManager(new ConstructionManager(game));
-        this.gameplayUIController = new TextUmaGameplayUIController(game,
-                game.getScreenContext());
 
         this.getConstructionFactory().lazyInit(childGameConfig.getConstructions());
         this.getConstructionManager().lazyInit(childGameConfig.getAreaControlableConstructionIds());

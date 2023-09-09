@@ -19,19 +19,19 @@ public abstract class AbstractMenuScreen extends BaseHundunScreen<TextUmaGame, R
 //
 //    private GlyphLayout menuText;
 
-    int BUTTON_WIDTH = 100;
-    int BUTTON_BIG_HEIGHT = 100;
-    int BUTTON_SMALL_HEIGHT = 75;
+    protected int BUTTON_WIDTH = 100;
+    protected int BUTTON_BIG_HEIGHT = 100;
+    protected int BUTTON_SMALL_HEIGHT = 75;
 
-    final InputListener buttonContinueGameInputListener;
-    final InputListener buttonNewGameInputListener;
+    protected final InputListener buttonContinueGameInputListener;
+    protected final InputListener buttonNewGameInputListener;
 
-    String titleText;
-    Label titleLabel;
-    Image backImage;
-    TextSkinButton buttonContinueGame;
-    TextSkinButton buttonNewGame;
-    TextSkinButton buttonIntoSettingScreen;
+    protected String titleText;
+    protected Label titleLabel;
+    protected Image backImage;
+    protected TextSkinButton buttonContinueGame;
+    protected TextSkinButton buttonNewGame;
+    protected TextSkinButton buttonIntoSettingScreen;
 
     public AbstractMenuScreen(TextUmaGame game,
                               String titleText,
@@ -45,46 +45,7 @@ public abstract class AbstractMenuScreen extends BaseHundunScreen<TextUmaGame, R
 
     }
 
-    private void initScene2d() {
-
-        this.titleLabel = new Label(
-                JavaFeatureForGwt.stringFormat("     %s     ", titleText), 
-                game.getMainSkin());
-        titleLabel.setFontScale(1.5f);
-        this.backImage = new Image(game.getTextureManager().getMenuTexture());
-        
-        buttonContinueGame = TextSkinButton.typeButton("Continue game", game);
-        buttonContinueGame.addListener(buttonContinueGameInputListener);
-
-        buttonNewGame = TextSkinButton.typeButton("New game", game);
-        buttonNewGame.addListener(buttonNewGameInputListener);
-        
-        
-        backUiStage.clear();
-        uiRootTable.clear();
-        
-        backUiStage.addActor(backImage);
-
-        TextNinePatchWrapper titleTextNinePatchWrapper = TextNinePatchWrapper.build(game, titleLabel);
-        uiRootTable.add(titleTextNinePatchWrapper)
-                .row();
-        
-        if (game.getSaveHandler().hasContinuedGameplaySave()) {
-            uiRootTable.add(buttonContinueGame)
-                .height(BUTTON_BIG_HEIGHT)
-                .fillY()
-                .padTop(10)
-                .row();
-        }
-        
-        uiRootTable.add(buttonNewGame)
-            .height(game.getSaveHandler().hasContinuedGameplaySave() ? BUTTON_SMALL_HEIGHT : BUTTON_BIG_HEIGHT)
-            .fillY()
-            .padTop(10)
-            .row();
-        
-        uiRootTable.debugAll();
-    }
+    protected abstract void initScene2d();
 
     @Override
     public void show() {

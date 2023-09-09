@@ -1,6 +1,12 @@
 package hundun.gdxgame.textuma.core.logic;
 
+import hundun.gdxgame.gamelib.base.util.JavaFeatureForGwt;
+import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.share.framework.util.text.IGameDictionary;
+import hundun.gdxgame.textuma.share.framework.util.text.Language;
+
+import java.util.List;
+import java.util.Map;
 
 /**
  * @author hundun
@@ -8,7 +14,11 @@ import hundun.gdxgame.textuma.share.framework.util.text.IGameDictionary;
  */
 public class GameDictionary implements IGameDictionary {
 
-    
+    TextUmaGame game;
+    public GameDictionary(TextUmaGame game) {
+        this.game = game;
+    }
+
     public String constructionIdToShowName(String constructionId) {
         switch (constructionId) {
             case UserActionId.START_RACE:
@@ -76,5 +86,18 @@ public class GameDictionary implements IGameDictionary {
     
     public static class GameWord {
         public static final String RUN_STRATEGY = "ENUM_GW@RUN_STRATEGY";
+    }
+
+    @Override
+    public Map<Language, String> getLanguageShowNameMap() {
+        return JavaFeatureForGwt.mapOf(
+                Language.CN, "中文",
+                Language.EN, "English"
+        );
+    }
+
+    @Override
+    public List<String> getMemuScreenTexts() {
+        return JavaFeatureForGwt.arraysAsList("IdleDemo", "New Game", "Continue", "Language", "Take effect after restart");
     }
 }

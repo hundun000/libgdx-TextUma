@@ -4,7 +4,9 @@ import java.util.List;
 import java.util.Map;
 
 import hundun.gdxgame.gamelib.starter.save.PairChildrenSaveHandler.ISubGameplaySaveHandler;
+import hundun.gdxgame.gamelib.starter.save.PairChildrenSaveHandler.ISubSystemSettingSaveHandler;
 import hundun.gdxgame.textuma.core.data.MyGameplaySaveData;
+import hundun.gdxgame.textuma.core.data.RootSaveData.MySystemSettingSaveData;
 import hundun.gdxgame.textuma.share.framework.listener.IGameAreaChangeListener;
 import hundun.gdxgame.textuma.share.framework.listener.ILogicFrameListener;
 import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData;
@@ -21,7 +23,8 @@ import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData.Operat
 public interface IGameplayUIController extends
         IGameAreaChangeListener,
         ILogicFrameListener,
-        ISubGameplaySaveHandler<MyGameplaySaveData>
+        ISubGameplaySaveHandler<MyGameplaySaveData>,
+        ISubSystemSettingSaveHandler<MySystemSettingSaveData>
 {
     void raceStart();
     OperationBoardState getOperationBoardState();

@@ -10,6 +10,7 @@ import hundun.gdxgame.gamelib.base.save.ISaveTool;
 import hundun.gdxgame.textuma.core.data.RootSaveData;
 import hundun.gdxgame.textuma.core.data.TextUmaSaveHandler;
 import hundun.gdxgame.textuma.core.logic.GameDictionary;
+import hundun.gdxgame.textuma.core.logic.manager.TextUmaGameplayUIController;
 import hundun.gdxgame.textuma.core.logic.manager.TextureManager;
 import hundun.gdxgame.textuma.core.ui.screen.ScreenContext;
 import hundun.gdxgame.textuma.share.framework.data.ChildGameConfig;
@@ -25,6 +26,7 @@ import lombok.Getter;
 public class TextUmaGame extends BaseHundunGame<RootSaveData> {
 
     public static final String GAME_WORD_SKIN_KEY = "game-word";
+    public static final String GREEN_LABEL_STYLE_KEY = "misan-normal-green-small";
 
     public static final String NO_MORE_RACE_MESSAGE = "No more race-day. This is the end of the demo version.";
     public static final String SINGLETON_ID = "LIBGDX_GAMEPLAY_FRONTEND";
@@ -46,6 +48,9 @@ public class TextUmaGame extends BaseHundunGame<RootSaveData> {
     @Getter
     private AudioPlayManager audioPlayManager;
 
+    @Getter
+    TextUmaGameplayUIController gameplayUIController;
+
     public TextUmaGame(ISaveTool<RootSaveData> saveTool) {
         super(640, 480);
 
@@ -53,7 +58,7 @@ public class TextUmaGame extends BaseHundunGame<RootSaveData> {
         this.textFormatTool = new TextFormatTool();
         this.saveHandler = new TextUmaSaveHandler(this.frontend, saveTool);
         this.mainSkinFilePath = null;
-        this.gameDictionary = new GameDictionary();
+        this.gameDictionary = new GameDictionary(this);
         this.textureManager = new TextureManager();
         this.screenContext = new ScreenContext();
         this.managerContext = new ManagerContext(this);
@@ -64,7 +69,11 @@ public class TextUmaGame extends BaseHundunGame<RootSaveData> {
     @Override
     protected void createStage1() {
         super.createStage1();
-        this.mainSkin = new FreeTypeSkin(Gdx.files.internal("skins/freetype/skin.json"));
+        this.mainSkin = new FreeTypeSkin(Gdx.files.internal("skins/TextUma/skin.json"));
+
+        this.gameplayUIController = new TextUmaGameplayUIController(this, screenContext);
+        this.getSaveHandler().registerSubHandler(gameplayUIController);
+        saveHandler.systemSettingLoadOrStarter();
     }
 
     @Override
@@ -82,6 +91,13 @@ public class TextUmaGame extends BaseHundunGame<RootSaveData> {
 
         screenManager.pushScreen(TextUmaMenuScreen.class.getSimpleName(), "blending_transition");
         getAudioPlayManager().intoScreen(TextUmaMenuScreen.class.getSimpleName());
+    }
+
+    @Override
+    public void dispose() {
+        super.dispose();
+
+        saveHandler.gameSaveCurrent();
     }
 
 }

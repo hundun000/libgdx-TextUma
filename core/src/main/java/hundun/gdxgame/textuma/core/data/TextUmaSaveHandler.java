@@ -7,6 +7,7 @@ import hundun.gdxgame.textuma.core.TextUmaGame;
 import hundun.gdxgame.textuma.core.data.RootSaveData.MySystemSettingSaveData;
 import hundun.gdxgame.textuma.core.logic.ResourceType;
 import hundun.gdxgame.textuma.core.logic.manager.LibgdxFrontEndSaveData;
+import hundun.gdxgame.textuma.share.framework.util.text.Language;
 import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
 import hundun.simulationgame.umamusume.game.gameplay.UmaSaveDataFactory;
 
@@ -37,8 +38,12 @@ public class TextUmaSaveHandler extends PairChildrenSaveHandler<RootSaveData, My
         saveData.setFrontEndSaveData(new LibgdxFrontEndSaveData());
         saveData.getUnlockedResourceTypes().add(ResourceType.TURN);
         saveData.getUnlockedResourceTypes().add(ResourceType.COIN);
-        
-        return new RootSaveData(null, saveData);
+
+        MySystemSettingSaveData systemSettingSaveData = MySystemSettingSaveData.builder()
+                .language(Language.CN)
+                .build();
+
+        return new RootSaveData(systemSettingSaveData, saveData);
     }
 
 }

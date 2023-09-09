@@ -19,12 +19,12 @@ public class NextRaceRecordNodeActionHandler extends BaseRaceActionHandler {
 
     @Override
     public void onEffectableClick() {
-        game.getManagerContext().getGameplayUIController().bigStepRaceRecordNode();
+        game.getGameplayUIController().bigStepRaceRecordNode();
     }
 
     @Override
     public ClickEffectType canClickEffect() {
-        if (!game.getManagerContext().getGameplayUIController().isWaitingNextRaceRecordNode()) {
+        if (!game.getGameplayUIController().isWaitingNextRaceRecordNode()) {
             return ClickEffectType.CANNOT_BY_STATE;
         }
         return ClickEffectType.CAN;
