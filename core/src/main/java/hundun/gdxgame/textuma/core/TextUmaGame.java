@@ -71,7 +71,7 @@ public class TextUmaGame extends BaseHundunGame<RootSaveData> {
         super.createStage1();
         this.mainSkin = new FreeTypeSkin(Gdx.files.internal("skins/TextUma/skin.json"));
 
-        this.gameplayUIController = new TextUmaGameplayUIController(this, screenContext);
+        this.gameplayUIController = new TextUmaGameplayUIController();
         this.getSaveHandler().registerSubHandler(gameplayUIController);
         saveHandler.systemSettingLoadOrStarter();
     }
@@ -80,6 +80,7 @@ public class TextUmaGame extends BaseHundunGame<RootSaveData> {
     protected void createStage2() {
         textureManager.lazyInitOnGameCreateStage2();
         screenContext.lazyInit(this);
+        gameplayUIController.lazyInit(this, screenContext);
     }
 
     @Override

@@ -57,7 +57,7 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     @Getter
     private Language language;
 
-    public TextUmaGameplayUIController(TextUmaGame game, ScreenContext screenContext) {
+    public void lazyInit(TextUmaGame game, ScreenContext screenContext) {
         this.playScreen = screenContext.getPlayScreen();
         this.game = game;
         
