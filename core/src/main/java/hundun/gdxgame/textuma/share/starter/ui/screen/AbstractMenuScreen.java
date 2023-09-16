@@ -26,7 +26,6 @@ public abstract class AbstractMenuScreen extends BaseHundunScreen<TextUmaGame, R
     protected final InputListener buttonContinueGameInputListener;
     protected final InputListener buttonNewGameInputListener;
 
-    protected String titleText;
     protected Label titleLabel;
     protected Image backImage;
     protected TextSkinButton buttonContinueGame;
@@ -34,11 +33,9 @@ public abstract class AbstractMenuScreen extends BaseHundunScreen<TextUmaGame, R
     protected TextSkinButton buttonIntoSettingScreen;
 
     public AbstractMenuScreen(TextUmaGame game,
-                              String titleText,
                               InputListener buttonContinueGameInputListener,
                               InputListener buttonNewGameInputListener) {
         super(game, game.getSharedViewport());
-        this.titleText = titleText;
         this.buttonContinueGameInputListener = buttonContinueGameInputListener;
         this.buttonNewGameInputListener = buttonNewGameInputListener;
         

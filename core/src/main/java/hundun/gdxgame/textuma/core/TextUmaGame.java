@@ -28,7 +28,6 @@ public class TextUmaGame extends BaseHundunGame<RootSaveData> {
     public static final String GAME_WORD_SKIN_KEY = "game-word";
     public static final String GREEN_LABEL_STYLE_KEY = "misan-normal-green-small";
 
-    public static final String NO_MORE_RACE_MESSAGE = "No more race-day. This is the end of the demo version.";
     public static final String SINGLETON_ID = "LIBGDX_GAMEPLAY_FRONTEND";
 
     @Getter

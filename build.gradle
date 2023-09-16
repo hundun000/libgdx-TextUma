@@ -93,6 +93,9 @@ project(":html") {
 		implementation "com.github.hundun000.libgdx-hundun-lib:corelib:$hundunLibVersion:sources"
 		implementation "com.github.hundun000.libgdx-hundun-lib:gamelib:$hundunLibVersion:sources"
 
+		implementation "com.github.raeleus.stripe:freetype:$raeleusStripeVersion:sources"
+		implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$gdxFreeTypeGwtVersion"
+		implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$gdxFreeTypeGwtVersion:sources"
 
 		implementation "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
 		implementation "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"

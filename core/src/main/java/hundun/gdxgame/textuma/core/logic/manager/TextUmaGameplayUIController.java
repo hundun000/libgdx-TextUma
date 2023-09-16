@@ -57,14 +57,27 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     @Getter
     private Language language;
 
+    public static class StrategyPackageExtension {
+        public static void setForMisans(StrategyPackage strategyPackage) {
+            strategyPackage.setCameraProcessBarChar1("█");
+            strategyPackage.setCameraProcessBarChar2("▓");
+            strategyPackage.setCameraProcessBarChar3("▁");
+        }
+    }
+
     public void lazyInit(TextUmaGame game, ScreenContext screenContext) {
         this.playScreen = screenContext.getPlayScreen();
         this.game = game;
-        
-        Translator translator = Translator.Factory.english();
+
+        Translator translator;
+        if (language == Language.CN) {
+            translator = Translator.Factory.emptyAsChinese();
+        } else {
+            translator = Translator.Factory.english();
+        }
         StrategyPackage strategyPackage = new StrategyPackage();
         StrategyPackage.Factory.toLongWidth(strategyPackage);
-        StrategyPackage.Factory.toCameraProcessBarCharType2(strategyPackage);
+        StrategyPackageExtension.setForMisans(strategyPackage);
 
         strategyPackage.setHorseRaceStartTemplate(
                 "${TRACK_PART}: ${NAME_PART} "
@@ -136,24 +149,19 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     private void checkUiByAreaAndState(String currentArea) {
         AccountSaveData accountSaveData = manager.getAccountSaveData(SINGLETON_ID);
         TurnConfig currentTurnConfig = manager.getCurrentTurnConfig(accountSaveData);
+        List<String> mainInfoBoardTexts = game.getGameDictionary().getMainInfoBoardTexts();
         switch (currentArea) {
             case GameArea.AREA_TRAIN:
                 if (getOperationBoardState() == OperationBoardState.TRAIN_DAY) {
                     playScreen.getMainInfoBoard().updateAsHorseStatus(manager.getAccountSaveData(SINGLETON_ID).playerHorse, null, null);
                 } else {
-                    playScreen.getMainInfoBoard().updateAsHorseStatus(manager.getAccountSaveData(SINGLETON_ID).playerHorse, "Not train-day.", null);
+                    playScreen.getMainInfoBoard().updateAsHorseStatus(manager.getAccountSaveData(SINGLETON_ID).playerHorse,  mainInfoBoardTexts.get(0), null);
                 }
                 break;
             case GameArea.AREA_RACE:
                 if (getOperationBoardState() == OperationBoardState.RACE_DAY_RACE_READY) {
                     RacePrototype racePrototype = currentTurnConfig.getRace();
-                    Map<HorsePrototype, String> rivalHorsesToRunStrategyTextMap = currentTurnConfig.getRivalHorses().stream()
-                            .collect(Collectors.toMap(
-                                    horse -> horse, 
-                                    horse -> manager.getTranslator().get(horse.getDefaultRunStrategyType()))
-                                    )
-                            ;
-                    playScreen.getMainInfoBoard().updateAsRaceReady(racePrototype, rivalHorsesToRunStrategyTextMap);
+                    playScreen.getMainInfoBoard().updateAsRaceReady(racePrototype, currentTurnConfig.getRivalHorses());
                 } else if (getOperationBoardState() == OperationBoardState.RACE_DAY_RACE_HAS_RESULT_RECORD) {
                     if (isWaitingEndRaceRecord()) {
                         playScreen.getMainInfoBoard().updateAsRaceEndResult(
@@ -168,13 +176,13 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
                     Integer nextRaceTurnTimeDiff = manager.getNextRaceTurnTimeDiff(accountSaveData);
                     if (nextRaceTurnTimeDiff != null) {
                         playScreen.getMainInfoBoard().updateAsText(JavaFeatureForGwt.stringFormat(
-                                "Not race-day now. The next race is in %s %s.", 
+                                mainInfoBoardTexts.get(1),
                                 nextRaceTurnTimeDiff,
-                                nextRaceTurnTimeDiff > 1 ? "days" : "day"
+                                nextRaceTurnTimeDiff > 1 ? mainInfoBoardTexts.get(3) : mainInfoBoardTexts.get(2)
                                 ));
                     } else {
                         playScreen.getMainInfoBoard().updateAsText(
-                                TextUmaGame.NO_MORE_RACE_MESSAGE
+                                mainInfoBoardTexts.get(8)
                                 );
                     }
                 }
@@ -288,9 +296,10 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     }
 
     @Override
-    public void applyGameplaySaveData(MyGameplaySaveData saveData) {
-        manager.applySaveData(saveData.getUmaSaveData(), saveData.getGameRuleData());
-        this.frontEndSaveData = saveData.getFrontEndSaveData();
+    public void applyGameplaySaveData(MyGameplaySaveData gameplaySaveData) {
+        manager.applySaveData(gameplaySaveData.getUmaSaveData(), gameplaySaveData.getGameRuleData());
+        this.frontEndSaveData = gameplaySaveData.getFrontEndSaveData();
+        game.getManagerContext().getStorageManager().setUnlockedResourceTypes(gameplaySaveData.getUnlockedResourceTypes());
     }
 
     @Override
@@ -298,6 +307,7 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
         saveData.setFrontEndSaveData(frontEndSaveData);
         saveData.setUmaSaveData(manager.getAccountSaveDataMap());
         saveData.setGameRuleData(manager.getGameRuleData());
+        saveData.setUnlockedResourceTypes(game.getManagerContext().getStorageManager().getUnlockedResourceTypes());
     }
 
     @Override

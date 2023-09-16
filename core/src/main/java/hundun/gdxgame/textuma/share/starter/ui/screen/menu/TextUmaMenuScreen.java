@@ -1,6 +1,5 @@
 package hundun.gdxgame.textuma.share.starter.ui.screen.menu;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
@@ -29,7 +28,6 @@ public class TextUmaMenuScreen extends AbstractMenuScreen {
     public TextUmaMenuScreen(TextUmaGame game) {
         super(
                 game,
-                "Text Uma 你好世界",
                 new InputListener(){
                     @Override
                     public void touchUp (InputEvent event, float x, float y, int pointer, int button) {
@@ -61,17 +59,17 @@ public class TextUmaMenuScreen extends AbstractMenuScreen {
 
     @Override
     protected void initScene2d() {
-
+        List<String> menuScreenTexts = game.getGameDictionary().getMenuScreenTexts();
         this.titleLabel = new Label(
-                JavaFeatureForGwt.stringFormat("     %s     ", titleText),
+                JavaFeatureForGwt.stringFormat("     %s     ", menuScreenTexts.get(0)),
                 game.getMainSkin());
-        titleLabel.setFontScale(1.5f);
+        titleLabel.setFontScale(2.0f);
         this.backImage = new Image(game.getTextureManager().getMenuTexture());
 
-        buttonContinueGame = TextSkinButton.typeButton("Continue game", game);
+        buttonContinueGame = TextSkinButton.typeButton(menuScreenTexts.get(2), game);
         buttonContinueGame.addListener(buttonContinueGameInputListener);
 
-        buttonNewGame = TextSkinButton.typeButton("New game", game);
+        buttonNewGame = TextSkinButton.typeButton(menuScreenTexts.get(1), game);
         buttonNewGame.addListener(buttonNewGameInputListener);
 
 
@@ -98,12 +96,12 @@ public class TextUmaMenuScreen extends AbstractMenuScreen {
                 .padTop(10)
                 .row();
 
-        List<String> memuScreenTexts = game.getGameDictionary().getMemuScreenTexts();
+
         this.languageSwitchBoardVM = new LanguageSwitchBoard(this,
                 Language.values(),
                 game.getGameplayUIController().getLanguage(),
-                memuScreenTexts.get(3),
-                memuScreenTexts.get(4),
+                menuScreenTexts.get(3),
+                menuScreenTexts.get(4),
                 it -> game.getGameplayUIController().setLanguage(it)
         );
         uiRootTable.add(languageSwitchBoardVM)

@@ -9,6 +9,8 @@ import hundun.gdxgame.textuma.core.ui.component.TextSkinButton;
 
 import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseUmaPlayScreen;
 
+import java.util.List;
+
 
 /**
  * @author hundun
@@ -46,11 +48,12 @@ public class GameAreaControlNode extends Table {
 
     public void changeVersion(boolean enable) {
         //this.setBackground(getNewImage(enable));
+        List<String> texts = parent.getGame().getGameDictionary().getGameAreaBoardTexts();
         this.content.contentSetEnable(enable);
         if (enable) {
-            this.content.contentSetText("To " + text);
+            this.content.contentSetText(texts.get(0) + text);
         } else {
-            this.content.contentSetText("In " + text);
+            this.content.contentSetText(texts.get(1) + text);
         }
     }
 

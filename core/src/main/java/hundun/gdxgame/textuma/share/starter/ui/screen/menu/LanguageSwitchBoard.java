@@ -1,5 +1,6 @@
 package hundun.gdxgame.textuma.share.starter.ui.screen.menu;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
@@ -34,7 +35,7 @@ public class LanguageSwitchBoard extends Table {
                         Consumer<Language> onSelect
             ) {
         this.parent = parent;
-        this.setBackground(DrawableFactory.getSimpleBoardBackground());
+        this.setBackground(DrawableFactory.createAlphaBoard(1, 1, Color.GRAY, 1.0f));
         this.languageShowNameMap = parent.getGame().getGameDictionary().getLanguageShowNameMap();
         
         this.add(new Label(startText, parent.getGame().getMainSkin()));
