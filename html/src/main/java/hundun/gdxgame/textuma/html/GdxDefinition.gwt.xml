@@ -2,9 +2,18 @@
 <!DOCTYPE module PUBLIC "-//Google Inc.//DTD Google Web Toolkit 2.8.2//EN" "http://www.gwtproject.org/doctype/2.8.2/gwt-module.dtd">
 <module rename-to="html">
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
-    <inherits name="com.github.nmorel.gwtjackson.GwtJackson" />
+	<inherits name="com.badlogic.gdx.graphics.g2d.freetype.freetype-gwt" />
+
+	<inherits name="com.github.nmorel.gwtjackson.GwtJackson" />
 	<inherits name="com.ray3k.stripe" />
+	<inherits name="libgdx_screenmanager" />
+	<inherits name="libgdx_screenmanager_gwt" />
+	<inherits name='com.crashinvaders.vfx.GdxVfxCore' />
+	<inherits name='com.crashinvaders.vfx.GdxVfxGwt' />
+	<inherits name='com.crashinvaders.vfx.GdxVfxEffects' />
+
 	<inherits name="hundun.gdxgame.corelib.HundunLibCorelib" />
+	<inherits name="hundun.gdxgame.gamelib.HundunLibGamelib" />
 
 	<inherits name='HtmlApp' />
 	<entry-point class='hundun.gdxgame.textuma.html.client.HtmlLauncher' />

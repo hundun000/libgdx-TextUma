@@ -28,7 +28,7 @@ allprojects {
 		gdxFreeTypeGwtVersion = '1.9.10.1'
 		gwtFrameworkVersion = '2.8.2'
 
-		hundunLibVersion = 'f5e40d5fb1'
+		hundunLibVersion = '55576a2e89'
 		raeleusStripeVersion = '1.4.1'
 	}
 	
@@ -92,6 +92,20 @@ project(":html") {
 
 		implementation "com.github.hundun000.libgdx-hundun-lib:corelib:$hundunLibVersion:sources"
 		implementation "com.github.hundun000.libgdx-hundun-lib:gamelib:$hundunLibVersion:sources"
+
+		implementation 'com.crashinvaders.vfx:gdx-vfx-core:0.5.0:sources'
+		implementation 'com.crashinvaders.vfx:gdx-vfx-gwt:0.5.0'
+		implementation 'com.crashinvaders.vfx:gdx-vfx-gwt:0.5.0:sources'
+
+		api "com.github.crykn:libgdx-screenmanager:0.6.8:sources"
+		api "com.github.crykn:libgdx-screenmanager-gwt:0.6.8"
+		api "com.github.crykn:libgdx-screenmanager-gwt:0.6.8:sources"
+		api "com.github.tommyettinger:formic:0.1.4:sources"
+
+		implementation 'com.crashinvaders.vfx:gdx-vfx-core:0.5.0:sources'
+		implementation 'com.crashinvaders.vfx:gdx-vfx-gwt:0.5.0'
+		implementation 'com.crashinvaders.vfx:gdx-vfx-gwt:0.5.0:sources'
+		implementation 'com.crashinvaders.vfx:gdx-vfx-effects:0.5.0:sources'
 
 		implementation "com.github.raeleus.stripe:freetype:$raeleusStripeVersion:sources"
 		implementation "com.github.intrigus.gdx-freetype-gwt:gdx-freetype-gwt:$gdxFreeTypeGwtVersion"
