@@ -2,6 +2,7 @@ package hundun.gdxgame.textuma.core.logic.manager;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 import com.badlogic.gdx.Gdx;
@@ -19,12 +20,11 @@ import hundun.gdxgame.textuma.share.starter.ui.screen.play.BaseUmaPlayScreen;
 import hundun.simulationgame.umamusume.core.horse.HorsePrototype;
 import hundun.simulationgame.umamusume.core.race.RacePrototype;
 import hundun.simulationgame.umamusume.core.util.JavaFeatureForGwt;
-import hundun.simulationgame.umamusume.game.gameplay.IGameplayFrontend;
+import hundun.simulationgame.umamusume.game.gameplay.IGameplayLogicCallback;
 import hundun.simulationgame.umamusume.game.gameplay.UmaGameplayManager;
 import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData;
 import hundun.simulationgame.umamusume.game.gameplay.data.GameResourcePair;
 import hundun.simulationgame.umamusume.game.gameplay.data.GameResourceType;
-import hundun.simulationgame.umamusume.game.gameplay.data.GameRuleData;
 import hundun.simulationgame.umamusume.game.gameplay.data.TrainActionType;
 import hundun.simulationgame.umamusume.game.gameplay.data.TrainRuleConfig;
 import hundun.simulationgame.umamusume.game.gameplay.data.TurnConfig;
@@ -44,10 +44,10 @@ import lombok.Setter;
  * @author hundun
  * Created on 2022/08/02
  */
-public class TextUmaGameplayUIController implements IGameplayUIController, IGameplayFrontend {
+public class TextUmaGameplayUIController implements IGameplayUIController, IGameplayLogicCallback {
     TextUmaGame game;
     private UmaPlayScreen playScreen;
-    private UmaGameplayManager manager;
+    private UmaGameplayManager<TextFrameData> manager;
     LibgdxFrontEndSaveData frontEndSaveData;
     public static final String SINGLETON_ID = "LIBGDX_GAMEPLAY_FRONTEND";
     
@@ -85,7 +85,7 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
                 + "${STAMINA_KEY}${STAMINA_VALUE}, "
                 + "${POWER_KEY}${POWER_VALUE}\n");
         IRaceRecorder<TextFrameData> raceRecorder = new CharImageRecorder(translator, strategyPackage);
-        this.manager = new UmaGameplayManager(translator, raceRecorder, this);
+        this.manager = new UmaGameplayManager<>(translator, raceRecorder, this);
     }
 
     @Override
@@ -147,22 +147,25 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     }
     
     private void checkUiByAreaAndState(String currentArea) {
-        AccountSaveData accountSaveData = manager.getAccountSaveData(SINGLETON_ID);
+        AccountSaveData<TextFrameData> accountSaveData = manager.getAccountSaveData(SINGLETON_ID);
         TurnConfig currentTurnConfig = manager.getCurrentTurnConfig(accountSaveData);
         List<String> mainInfoBoardTexts = game.getGameDictionary().getMainInfoBoardTexts();
+        OperationBoardState operationBoardState = getOperationBoardState();
         switch (currentArea) {
             case GameArea.AREA_TRAIN:
-                if (getOperationBoardState() == OperationBoardState.TRAIN_DAY) {
+                if (operationBoardState == OperationBoardState.TRAIN_DAY) {
                     playScreen.getMainInfoBoard().updateAsHorseStatus(manager.getAccountSaveData(SINGLETON_ID).playerHorse, null, null);
                 } else {
                     playScreen.getMainInfoBoard().updateAsHorseStatus(manager.getAccountSaveData(SINGLETON_ID).playerHorse,  mainInfoBoardTexts.get(0), null);
                 }
                 break;
             case GameArea.AREA_RACE:
-                if (getOperationBoardState() == OperationBoardState.RACE_DAY_RACE_READY) {
+                if (operationBoardState == OperationBoardState.RACE_DAY_RACE_READY) {
                     RacePrototype racePrototype = currentTurnConfig.getRace();
                     playScreen.getMainInfoBoard().updateAsRaceReady(racePrototype, currentTurnConfig.getRivalHorses());
-                } else if (getOperationBoardState() == OperationBoardState.RACE_DAY_RACE_HAS_RESULT_RECORD) {
+                } else if (operationBoardState == OperationBoardState.RACE_DAY_RACE_RUNNING) {
+                    playScreen.getMainInfoBoard().updateAsRaceRecordNode(manager.getAccountSaveData(SINGLETON_ID).currentRaceRecordNodes.get(frontEndSaveData.currentRaceRecordNodeIndex));
+                } else if (operationBoardState == OperationBoardState.RACE_DAY_RACE_HAS_RESULT_RECORD) {
                     if (isWaitingEndRaceRecord()) {
                         playScreen.getMainInfoBoard().updateAsRaceEndResult(
                                 manager.getAccountSaveData(SINGLETON_ID).sortedRaceEndRecordNode,
@@ -199,7 +202,7 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
                 .skip(frontEndSaveData.currentRaceRecordNodeIndex + 1)
                 .filter(node -> node.getContent().getEventInfo() != null && node.getContent().getRaceInfo() != null)
                 .findFirst()
-                .orElseGet(() -> null);
+                .orElse(null);
         
         if (nextImportantNode != null) {
             int nextImportantNodeIndex = manager.getAccountSaveData(SINGLETON_ID).currentRaceRecordNodes.indexOf(nextImportantNode);
@@ -216,11 +219,7 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
         Gdx.app.log(this.getClass().getSimpleName(), "nextLimitOrEventRaceRecordNode result = " + frontEndSaveData.currentRaceRecordNodeIndex);
         checkUiByAreaAndState(playScreen.getArea());
     }
-    
-    @Override
-    public void notifiedReplayRaceRecord() {
-        replayRaceRecord();
-    }
+
     
     private String gameResourceTypeToInner(GameResourceType type) {
         switch (type) {
@@ -238,23 +237,7 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
                 throw new UnsupportedOperationException();
         }
     }
-    
-    private GameResourceType innerToGameResourceType(String type) {
-        switch (type) {
-            case ResourceType.TURN:
-                return GameResourceType.TURN;
-            case ResourceType.COIN:
-                return GameResourceType.COIN;
-            case ResourceType.HORSE_SPEED:
-                return GameResourceType.HORSE_SPEED;
-            case ResourceType.HORSE_POWER:
-                return GameResourceType.HORSE_POWER;
-            case ResourceType.HORSE_STAMINA:
-                return GameResourceType.HORSE_STAMINA;
-            default:
-                throw new UnsupportedOperationException();
-        }
-    }
+
 
     @Override
     public void notifiedChangeOperationBoardState() {
@@ -277,13 +260,6 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
                 );
     }
 
-    private List<GameResourcePair> innerToGameResourceType(List<ResourcePair> list) {
-        return list.stream()
-                .map(it -> new GameResourcePair(
-                        innerToGameResourceType(it.getType()), 
-                        it.getAmount()))
-                .collect(Collectors.toList());
-    }
 
     @Override
     public void onGameAreaChange(String last, String current) {
@@ -327,8 +303,8 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     public Map<String, Long> getOwnResoueces() {
         return manager.getAccountSaveData(SINGLETON_ID).getOwnResoueces().entrySet().stream()
                 .collect(Collectors.toMap(
-                        it -> gameResourceTypeToInner(it.getKey()), 
-                        it -> it.getValue()))
+                        it -> gameResourceTypeToInner(it.getKey()),
+                        Entry::getValue))
                 ;
     }
 
@@ -336,8 +312,8 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     public void notifiedModifiedResourceNum(Map<GameResourceType, Long> map, boolean plus) {
         game.getManagerContext().getStorageManager().modifyAllResourceNum(
                 map.entrySet().stream().collect(Collectors.toMap(
-                        it -> gameResourceTypeToInner(it.getKey()), 
-                        it -> it.getValue())), 
+                        it -> gameResourceTypeToInner(it.getKey()),
+                        Entry::getValue)),
                 plus);
     }
 
@@ -349,8 +325,8 @@ public class TextUmaGameplayUIController implements IGameplayUIController, IGame
     @Override
     public Map<String, Long> gameResourceTypeToInner(List<GameResourcePair> list) {
         return list.stream().collect(Collectors.toMap(
-                it -> gameResourceTypeToInner(it.getType()), 
-                it -> it.getAmount()));
+                it -> gameResourceTypeToInner(it.getType()),
+                GameResourcePair::getAmount));
     }
 
 

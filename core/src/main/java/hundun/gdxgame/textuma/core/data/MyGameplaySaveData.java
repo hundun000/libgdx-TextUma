@@ -6,6 +6,7 @@ import java.util.Set;
 import hundun.gdxgame.textuma.core.logic.manager.LibgdxFrontEndSaveData;
 import hundun.simulationgame.umamusume.game.gameplay.data.AccountSaveData;
 import hundun.simulationgame.umamusume.game.gameplay.data.GameRuleData;
+import hundun.simulationgame.umamusume.record.text.TextFrameData;
 import lombok.Data;
 
 /**
@@ -20,7 +21,7 @@ public class MyGameplaySaveData {
     Map<String, Integer> buffAmounts;
     Map<String, UmaUserActionHandlerSaveData> constructionSaveDataMap;
     Set<String> unlockedAchievementNames;
-    Map<String, AccountSaveData> umaSaveData;
+    Map<String, AccountSaveData<TextFrameData>> umaSaveData;
     GameRuleData gameRuleData;
     LibgdxFrontEndSaveData frontEndSaveData;
 
